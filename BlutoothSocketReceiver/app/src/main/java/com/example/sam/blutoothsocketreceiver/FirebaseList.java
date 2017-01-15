@@ -1,10 +1,13 @@
 package com.example.sam.blutoothsocketreceiver;
 
 import android.util.Log;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +20,27 @@ public class FirebaseList<T> {
 
     public FirebaseList(String url, FirebaseUpdatedCallback firebaseUpdatedCallback, Class<T> firebaseClass) {
         setupFirebaseListening(url, firebaseClass, firebaseUpdatedCallback);
+        Log.i("FIREBASELIST URL", url);
+        Log.i("FIREBASELIST CLASS", String.valueOf(firebaseClass));
+        Log.i("FIREBASELIST", "CONSTRUCTOR");
     }
 
     public void setupFirebaseListening(String url, final Class<T> firebaseClass, final FirebaseUpdatedCallback firebaseUpdatedCallback) {
-        Firebase firebase = new Firebase(url);
+        Log.i("FIREBASELIST", "SETUPFIREBASELISTENING");
+        String childString = "";
+        if(url.contains("Matches")){
+            childString = "Matches";
+        } else if(url.contains("TeamInMatchDatas")){
+            childString = "TeamInMatchDatas";
+        } else if(url.contains("Teams")){
+            childString = "Teams";
+        }
+        Log.i("FIREBASELIST", childString);
+        DatabaseReference firebase = FirebaseDatabase.getInstance().getReference().getRef().child(childString);
         firebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.i("FIREBASELIST", "ONCHILDADDED");
                 T model = dataSnapshot.getValue(firebaseClass);
                 String key = dataSnapshot.getKey();
 
@@ -47,6 +64,7 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.i("FIREBASELIST", "ONCHILDCHANGED");
                 String key = dataSnapshot.getKey();
                 T newModel = dataSnapshot.getValue(firebaseClass);
                 int index = keys.indexOf(key);
@@ -58,6 +76,7 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.i("FIREBASELIST", "ONCHILDREMOVED");
                 String key = dataSnapshot.getKey();
                 int index = keys.indexOf(key);
 
@@ -69,6 +88,7 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.i("FIREBASELIST", "ONCHILDMOVED");
                 String key = dataSnapshot.getKey();
                 T newModel = dataSnapshot.getValue(firebaseClass);
                 int index = keys.indexOf(key);
@@ -91,7 +111,7 @@ public class FirebaseList<T> {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError firebaseError) {
                 Log.e("Firebase List", "Listen was cancelled, no more updates will occur");
             }
         });

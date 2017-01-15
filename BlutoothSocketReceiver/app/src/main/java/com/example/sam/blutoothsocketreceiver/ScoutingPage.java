@@ -1,5 +1,6 @@
 package com.example.sam.blutoothsocketreceiver;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -47,26 +50,20 @@ public class ScoutingPage extends ActionBarActivity {
     String teamNumberOne;
     String teamNumberTwo;
     String teamNumberThree;
-    String firstDefense;
-    String secondDefense;
-    String thirdDefense;
-    String fourthDefense;
     String alliance;
-    String teamNote = "";
     String dataBaseUrl;
     String allianceScoreData;
     TextView teamNumberOneTextview;
     TextView teamNumberTwoTextview;
     TextView teamNumberThreeTextview;
-    ArrayList<String> defenses;
     ArrayList<String> teamOneDataName;
     ArrayList<String> teamOneDataScore;
     ArrayList<String> teamTwoDataName;
     ArrayList<String> teamTwoDataScore;
     ArrayList<String> teamThreeDataName;
     ArrayList<String> teamThreeDataScore;
-    Boolean breached = false;
-    Boolean captured = false;
+    Boolean rotorRP = false;
+    Boolean boilerRP = false;
     Boolean isMute;
     JSONObject object;
     Intent next;
@@ -85,9 +82,7 @@ public class ScoutingPage extends ActionBarActivity {
         Log.e("Super Scouting", dataBaseUrl);
         dataBase = new Firebase(dataBaseUrl);
         setPanels();
-        defenses = new ArrayList<>(Arrays.asList(firstDefense, secondDefense, thirdDefense, fourthDefense));
         initializeTeamTextViews();
-        setTeamListeners();
 
     }
 
@@ -120,52 +115,39 @@ public class ScoutingPage extends ActionBarActivity {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        if (id == R.id.getAllianceScore) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Input Alliance Score: ");
-            final EditText input = new EditText(this);
-            input.setText(allianceScoreData);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            input.setGravity(1);
-            builder.setView(input);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    allianceScoreData = input.getText().toString();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        if(id == R.id.endDataShortcut){
+            final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(this);
+            endDataBuilder.setCancelable(false);
+            endDataBuilder.setView(R.layout.finaldatapoints);
+            endDataBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
+            endDataBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Dialog d = (Dialog) dialog;
+                    EditText scoreText = (EditText) d.findViewById(R.id.finalScoreEditText);
+                    ToggleButton rotorsToggle = (ToggleButton) d.findViewById(R.id.rotorsToggleButton);
+                    ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
+                    rotorRP = rotorsToggle.isChecked();
+                    boilerRP = boilerToggle.isChecked();
+                    allianceScoreData = scoreText.getText().toString();
+                    dialog.cancel();
+                }
+            });
+            AlertDialog endDataDialog = endDataBuilder.create();
+            endDataDialog.show();
+        }
 
-            builder.show();
-        }
-        if (id == R.id.scoutDidBreach) {
-            if (item.getTitle().equals("Breached")) {
-                item.setTitle("didBreach?");
-                breached = false;
-            } else {
-                item.setTitle("Breached");
-                breached = true;
-            }
-        }
-        if (id == R.id.scoutDidCapture) {
-            if (item.getTitle().equals("Captured")) {
-                item.setTitle("didCapture?");
-                captured = false;
-            } else {
-                item.setTitle("Captured");
-                captured = true;
-            }
-        }
         if (id == R.id.finalNext) {
             final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
             final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
@@ -205,14 +187,6 @@ public class ScoutingPage extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendNotes(final String teamNumber, final String note) {
-        new Thread() {
-            public void run() {
-                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + numberOfMatch).child("superNotes").setValue(note);
-            }
-        }.start();
-    }
-
     public void getExtrasForScouting() {
 
         numberOfMatch = next.getExtras().getString("matchNumber");
@@ -220,14 +194,6 @@ public class ScoutingPage extends ActionBarActivity {
         teamNumberTwo = next.getExtras().getString("teamNumberTwo");
         teamNumberThree = next.getExtras().getString("teamNumberThree");
         alliance = next.getExtras().getString("alliance");
-        firstDefense = next.getExtras().getString("firstDefensePicked");
-        Log.e("DefenseOneReceived", firstDefense);
-        secondDefense = next.getExtras().getString("secondDefensePicked");
-        Log.e("DefenseTwoReceived", secondDefense);
-        thirdDefense = next.getExtras().getString("thirdDefensePicked");
-        Log.e("DefenseThreeReceived", thirdDefense);
-        fourthDefense = next.getExtras().getString("fourthDefensePicked");
-        Log.e("DefenseFourReceived", fourthDefense);
         dataBaseUrl = next.getExtras().getString("dataBaseUrl");
         isMute = next.getExtras().getBoolean("mute");
     }
@@ -252,36 +218,17 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putExtra("teamNumberTwo", teamNumberTwo);
         intent.putExtra("teamNumberThree", teamNumberThree);
         intent.putExtra("alliance", alliance);
-        /*intent.putExtra("teamOneNote", teamOneNote);
-        intent.putExtra("teamTwoNote", teamTwoNote);
-        intent.putExtra("teamThreeNote", teamThreeNote);*/
         intent.putExtra("dataBaseUrl", dataBaseUrl);
         intent.putExtra("allianceScore", allianceScoreData);
-        intent.putExtra("scoutDidBreach", breached);
-        intent.putExtra("scoutDidCapture", captured);
+        intent.putExtra("scoutRotorRPGained", rotorRP);
+        intent.putExtra("scoutBoilerRPGained", boilerRP);
         intent.putExtra("mute", isMute);
-        intent.putStringArrayListExtra("defenses", defenses);
         intent.putStringArrayListExtra("dataNameOne", teamOneDataName);
         intent.putStringArrayListExtra("ranksOfOne", teamOneDataScore);
         intent.putStringArrayListExtra("dataNameTwo", teamTwoDataName);
         intent.putStringArrayListExtra("ranksOfTwo", teamTwoDataScore);
         intent.putStringArrayListExtra("dataNameThree", teamThreeDataName);
         intent.putStringArrayListExtra("ranksOfThree", teamThreeDataScore);
-        /*if(!teamOneNote.equals("")) {
-            sendNotes(teamNumberOne, teamOneNote);
-        }else {
-            sendNotes(teamNumberOne, "No_Notes");
-        }
-        if(!teamTwoNote.equals("")) {
-            sendNotes(teamNumberTwo, teamTwoNote);
-        }else {
-            sendNotes(teamNumberTwo, "No_Notes");
-        }
-        if(!teamThreeNote.equals("")) {
-            sendNotes(teamNumberThree, teamThreeNote);
-        }else {
-            sendNotes(teamNumberThree, "No_Notes");
-        }*/
         startActivity(intent);
     }
 
@@ -323,41 +270,6 @@ public class ScoutingPage extends ActionBarActivity {
 
     }
 
-    public void setTeamClickedListener(final TextView textview) {
-        textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("teamNumber", "Clicked");
-                final Dialog dialog = new Dialog(ScoutingPage.this);
-                final View dialogView = getLayoutInflater().inflate(R.layout.dialog, null);
-                dialog.setContentView(dialogView);
-                final EditText note = (EditText) dialogView.findViewById(R.id.note);
-                dialog.setTitle("Team " + textview.getText().toString() + " Note:");
-
-                note.setText(teamNote);
-
-                Button ok = (Button) dialogView.findViewById(R.id.OKButton);
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String teamNumber = textview.getText().toString();
-                        teamNote = note.getText().toString();
-                        dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + numberOfMatch).child("superNotes").setValue(teamNote);
-                        Toast.makeText(getApplicationContext(), "Note Sent", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
-                Button cancel = (Button) dialogView.findViewById(R.id.CancelButton);
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        });
-    }
     public void initializeTeamTextViews(){
         SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
         SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
@@ -365,11 +277,6 @@ public class ScoutingPage extends ActionBarActivity {
         teamNumberOneTextview = (TextView)panelOne.getView().findViewById(R.id.teamNumberTextView);
         teamNumberTwoTextview = (TextView)panelTwo.getView().findViewById(R.id.teamNumberTextView);
         teamNumberThreeTextview = (TextView)panelThree.getView().findViewById(R.id.teamNumberTextView);
-    }
-    public void setTeamListeners(){
-        setTeamClickedListener(teamNumberOneTextview);
-        setTeamClickedListener(teamNumberTwoTextview);
-        setTeamClickedListener(teamNumberThreeTextview);
     }
 }
 

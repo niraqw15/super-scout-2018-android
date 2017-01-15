@@ -50,20 +50,16 @@ public class FinalDataPoints extends ActionBarActivity {
     TextView finalScore;
     EditText allianceScore;
     JSONObject superExternalData;
-    JSONObject teamOneJson;
-    JSONObject teamTwoJson;
-    JSONObject teamThreeJson;
     ArrayList<String> teamOneDataName;
     ArrayList<String> teamOneDataScore;
     ArrayList<String> teamTwoDataName;
     ArrayList<String> teamTwoDataScore;
     ArrayList<String> teamThreeDataName;
     ArrayList<String> teamThreeDataScore;
-    ArrayList<String> defenses;
-    ToggleButton captureCheck;
-    ToggleButton breachCheck;
-    Boolean breached;
-    Boolean captured;
+    ToggleButton rotorRP;
+    ToggleButton boilerRP;
+    Boolean rotorRPGained;
+    Boolean boilerRPGained;
     Boolean isMute;
     File dir;
     PrintWriter file;
@@ -82,12 +78,9 @@ public class FinalDataPoints extends ActionBarActivity {
 
         allianceScore = (EditText) findViewById(R.id.finalScoreEditText);
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
-        captureCheck = (ToggleButton) findViewById(R.id.captureToggleButton);
-        breachCheck = (ToggleButton) findViewById(R.id.didBreach);
+        rotorRP = (ToggleButton) findViewById(R.id.rotorsToggleButton);
+        boilerRP = (ToggleButton) findViewById(R.id.boilerToggleButton);
         superExternalData = new JSONObject();
-        teamOneJson = new JSONObject();
-        teamTwoJson = new JSONObject();
-        teamThreeJson = new JSONObject();
         allianceScore.setCursorVisible(false);
 
         if(alliance.equals("Blue Alliance")){
@@ -95,15 +88,15 @@ public class FinalDataPoints extends ActionBarActivity {
         }else if(alliance.equals("Red Alliance")){
             finalScore.setTextColor(Color.RED);
         }
-        if(breached){
-            breachCheck.setChecked(true);
+        if(rotorRPGained){
+            rotorRP.setChecked(true);
         }else{
-            breachCheck.setChecked(false);
+            rotorRP.setChecked(false);
         }
-        if(captured){
-            captureCheck.setChecked(true);
+        if(boilerRPGained){
+            boilerRP.setChecked(true);
         }else {
-            captureCheck.setChecked(false);
+            boilerRP.setChecked(false);
         }
         allianceScore.setText(allianceScoreData);
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data");
@@ -139,19 +132,6 @@ public class FinalDataPoints extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id == R.id.superNotes){
-            Intent toNotes = new Intent(this, SuperNotes.class);
-            toNotes.putExtra("alliance", alliance);
-            toNotes.putExtra("matchNumber", numberOfMatch);
-            toNotes.putExtra("teamOne", teamNumberOne);
-            toNotes.putExtra("teamTwo", teamNumberTwo);
-            toNotes.putExtra("teamThree", teamNumberThree);
-            toNotes.putExtra("teamOneNote", teamOneNote);
-            toNotes.putExtra("teamTwoNote", teamTwoNote);
-            toNotes.putExtra("teamThreeNote", teamThreeNote);
-            toNotes.putExtra("dataBaseUrl", dataBaseUrl);
-            startActivity(toNotes);
-        }
         if(id == R.id.forgotAllianceScore){
             Toast.makeText(this, "Not Available right now.", Toast.LENGTH_LONG).show();
             /*Intent intent = new Intent();
@@ -191,25 +171,50 @@ public class FinalDataPoints extends ActionBarActivity {
                         return;
                     }
                     try {
-                        superExternalData.put("didCapture", captureCheck.getText().toString());
-                        superExternalData.put("didBreach", breachCheck.getText().toString());
+                        String JsonStringTeamOne = "{";
+                        String JsonStringTeamTwo = "{";
+                        String JsonStringTeamThree = "{";
+                        Log.i("JSON", String.valueOf(teamOneDataScore.size()));
+                        for(int a = 0; a <= teamOneDataScore.size() - 1; a++){
+                            JsonStringTeamOne = JsonStringTeamOne + ("\"" + teamOneDataName.get(a) + "\": " + teamOneDataScore.get(a));
+                            if(a != teamOneDataScore.size() - 1){
+                                JsonStringTeamOne = JsonStringTeamOne + ",";
+                            } else {
+                                JsonStringTeamOne = JsonStringTeamOne + "}";
+                            }
+                        }
+                        for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
+                            JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + teamTwoDataName.get(a) + "\": " + teamTwoDataScore.get(a));
+                            if(a != teamTwoDataScore.size() - 1){
+                                JsonStringTeamTwo = JsonStringTeamTwo + ",";
+                            } else {
+                                JsonStringTeamTwo = JsonStringTeamTwo + "}";
+                            }
+                        }
+                        for(int a = 0; a <= teamThreeDataScore.size() - 1; a++){
+                            JsonStringTeamThree = JsonStringTeamThree + ("\"" + teamThreeDataName.get(a) + "\": " + teamThreeDataScore.get(a));
+                            if(a != teamThreeDataScore.size() - 1){
+                                JsonStringTeamThree = JsonStringTeamThree + ",";
+                            } else {
+                                JsonStringTeamThree = JsonStringTeamThree + "}";
+                            }
+                        }
+                        JSONObject JsonTeamOne = new JSONObject(JsonStringTeamOne);
+                        JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
+                        JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
+
+                        superExternalData.put("rotorRPGained", rotorRP.getText().toString());
+                        superExternalData.put("boilerRPGained", boilerRP.getText().toString());
                         superExternalData.put("matchNumber", numberOfMatch);
-                        superExternalData.put("defenseOne", defenses.get(0));
-                        superExternalData.put("defenseTwo", defenses.get(1));
-                        superExternalData.put("defenseThree", defenses.get(2));
-                        superExternalData.put("defenseFour", defenses.get(3));
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);
-                        superExternalData.put(teamNumberOne, teamOneJson);
-                        superExternalData.put(teamNumberTwo, teamTwoJson);
-                        superExternalData.put(teamNumberThree, teamThreeJson);
+                        superExternalData.put(teamNumberOne, JsonTeamOne);
+                        superExternalData.put(teamNumberTwo, JsonTeamTwo);
+                        superExternalData.put(teamNumberThree, JsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
-                        /*superExternalData.put("teamOneNote", teamOneNote);
-                        superExternalData.put("teamTwoNote", teamTwoNote);
-                        superExternalData.put("teamThreeNote", teamThreeNote);*/
-                        ArrayList<String> rankNames = new ArrayList<>(Arrays.asList("numTimesBeached", "numTimesSlowed", "numTimesUnaffected"));
+                        //ArrayList<String> rankNames = new ArrayList<>(Arrays.asList("numTimesBeached", "numTimesSlowed", "numTimesUnaffected"));
                     }catch(JSONException JE){
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
@@ -219,8 +224,6 @@ public class FinalDataPoints extends ActionBarActivity {
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
                     }
-
-                    sendScoutingData();
                     sendAfterMatchData();
 
                     System.out.println(superExternalData.toString());
@@ -254,61 +257,31 @@ public class FinalDataPoints extends ActionBarActivity {
         teamNumberOne = intent.getExtras().getString("teamNumberOne");
         teamNumberTwo = intent.getExtras().getString("teamNumberTwo");
         teamNumberThree = intent.getExtras().getString("teamNumberThree");
-        defenses = intent.getStringArrayListExtra("defenses");
-        Log.e("defenses", defenses.toString());
         alliance = intent.getExtras().getString("alliance");
+
         teamOneDataName = intent.getStringArrayListExtra("dataNameOne");
         teamOneDataScore = intent.getStringArrayListExtra("ranksOfOne");
         teamTwoDataName = intent.getStringArrayListExtra("dataNameTwo");
         teamTwoDataScore = intent.getStringArrayListExtra("ranksOfTwo");
         teamThreeDataName = intent.getStringArrayListExtra("dataNameThree");
         teamThreeDataScore = intent.getStringArrayListExtra("ranksOfThree");
-        /*teamOneNote = intent.getStringExtra("teamOneNote");
-        teamTwoNote = intent.getStringExtra("teamTwoNote");
-        teamThreeNote = intent.getStringExtra("teamThreeNote");*/
+
         dataBaseUrl = intent.getExtras().getString("dataBaseUrl");
         allianceScoreData = intent.getExtras().getString("allianceScore");
-        breached = intent.getExtras().getBoolean("scoutDidBreach");
-        captured = intent.getExtras().getBoolean("scoutDidCapture");
+        rotorRPGained = intent.getExtras().getBoolean("scoutRotorRPGained");
+        boilerRPGained = intent.getExtras().getBoolean("scoutBoilerRPGained");
         isMute = intent.getExtras().getBoolean("mute");
-    }
-
-    public void sendScoutingData(){
-        for (int i = 0; i < teamOneDataName.size(); i++) {
-            firebaseRef.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(teamOneDataName.get(i)).setValue(Integer.parseInt(teamOneDataScore.get(i)));
-            try {
-                teamOneJson.put(teamOneDataName.get(i), teamOneDataScore.get(i));
-            }catch (JSONException JE){
-                Log.e("JSON ERROR", "teamOne");
-            }
-        }
-        for (int i = 0; i < teamTwoDataName.size(); i++) {
-            firebaseRef.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(teamTwoDataName.get(i)).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
-            try {
-                teamTwoJson.put(teamTwoDataName.get(i), teamTwoDataScore.get(i));
-            }catch (JSONException JE){
-                Log.e("JSON ERROR", "teamTwo");
-            }
-        }
-        for (int i = 0; i < teamThreeDataName.size(); i++) {
-            firebaseRef.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(teamThreeDataName.get(i)).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
-            try {
-                teamThreeJson.put(teamThreeDataName.get(i), teamThreeDataScore.get(i));
-            }catch (JSONException JE){
-                Log.e("JSON ERROR", "teamThree");
-            }
-        }
     }
 
     public void sendAfterMatchData(){
         if (alliance.equals("Blue Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceDidCapture").setValue(captureCheck.isChecked() ? "true" : "false");
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceDidBreach").setValue(breachCheck.isChecked() ? "true" : "false");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsBlue").setValue(rotorRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsBlue").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceDidCapture").setValue(captureCheck.isChecked() ? "true" : "false");
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceDidBreach").setValue(breachCheck.isChecked() ? "true" : "false");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsRed").setValue(rotorRP.isChecked() ? "true" : "false");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsRed").setValue(boilerRP.isChecked() ? "true" : "false");
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
         }
     }

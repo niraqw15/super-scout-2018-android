@@ -7,10 +7,6 @@
         android:title="Alliance Score"
         app:showAsAction = "always"/>
     <item
-        android:id="@+id/superNotes"
-        android:title="Notes"
-        app:showAsAction = "always"/>
-    <item
         android:id="@+id/Submit"
         android:title="Submit"
         app:showAsAction = "always"/>
