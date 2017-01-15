@@ -29,6 +29,7 @@ public class TeamInMatchData extends Object {
 	public Integer rankAgility;
 	public Integer rankGearControl;
 	public Integer rankBallControl;
+	public Integer rankDefense;
 	public Integer numHighShotsTele;
 	public Integer numHighShotsAuto;
 	public Integer numLowShotsTele;

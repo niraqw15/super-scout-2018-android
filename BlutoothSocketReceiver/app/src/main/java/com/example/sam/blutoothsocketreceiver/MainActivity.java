@@ -41,7 +41,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
-import com.firebase.client.Firebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
     ListView listView;
     Boolean isRed = false;
     Integer matchNumber = 0;
-    Firebase dataBase;
+    DatabaseReference dataBase;
     String firstKey;
     String keys;
     String scoutAlliance;
@@ -89,7 +91,7 @@ public class MainActivity extends ActionBarActivity {
         teamNumberThree = (EditText) findViewById(R.id.teamThreeNumber);
         mute = (ToggleButton) findViewById(R.id.mute);
         alliance = (TextView) findViewById(R.id.allianceName);
-        dataBase = new Firebase(dataBaseUrl);
+        dataBase = FirebaseDatabase.getInstance().getReference();
         //If got intent from the last activity
         checkPreviousMatchNumAndAlliance();
         updateUI();

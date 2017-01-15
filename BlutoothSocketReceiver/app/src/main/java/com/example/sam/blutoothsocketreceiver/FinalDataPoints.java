@@ -20,9 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +63,7 @@ public class FinalDataPoints extends ActionBarActivity {
     Boolean isMute;
     File dir;
     PrintWriter file;
-    Firebase firebaseRef;
+    DatabaseReference firebaseRef;
     Intent intent;
 
     @Override
@@ -74,7 +74,7 @@ public class FinalDataPoints extends ActionBarActivity {
         intent = getIntent();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getExtrasForFinalData();
-        firebaseRef = new Firebase(dataBaseUrl);
+        firebaseRef = FirebaseDatabase.getInstance().getReference();
 
         allianceScore = (EditText) findViewById(R.id.finalScoreEditText);
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
@@ -280,8 +280,8 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsRed").setValue(rotorRP.isChecked() ? "true" : "false");
-            firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsRed").setValue(boilerRP.isChecked() ? "true" : "false");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsRed").setValue(rotorRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsRed").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
         }
     }

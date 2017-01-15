@@ -41,6 +41,7 @@ public class FirebaseList<T> {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.i("FIREBASELIST", "ONCHILDADDED");
+                Log.i("FIREBASELIST", dataSnapshot.getKey());
                 T model = dataSnapshot.getValue(firebaseClass);
                 String key = dataSnapshot.getKey();
 

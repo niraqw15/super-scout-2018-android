@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,9 +17,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.Instabug;
 
@@ -51,20 +56,24 @@ public class SuperScoutApplication extends Application implements Application.Ac
     public void onCreate() {
         registerActivityLifecycleCallbacks(this);
         super.onCreate();
-        Firebase.setAndroidContext(this);
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
-        Firebase firebase = new Firebase(url);
-        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-            }
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                Toast.makeText(getApplicationContext(), "Please wait...", Toast.LENGTH_SHORT).show();
-            }
-        };
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         if (dataBaseList.containsKey(url)) {
-            firebase.authWithCustomToken(dataBaseList.get(url), authResultHandler);
+            auth.signInWithCustomToken(dataBaseList.get(url))
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Please wait...", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
             FirebaseLists.matchesList = new FirebaseList<>(url + "Matches/", new FirebaseList.FirebaseUpdatedCallback() {
                 @Override

@@ -32,16 +32,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.FirebaseException;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -67,7 +67,7 @@ public class ScoutingPage extends ActionBarActivity {
     Boolean isMute;
     JSONObject object;
     Intent next;
-    Firebase dataBase;
+    DatabaseReference dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,7 @@ public class ScoutingPage extends ActionBarActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.super_scouting_panel, null);
         Log.e("Super Scouting", dataBaseUrl);
-        dataBase = new Firebase(dataBaseUrl);
+        dataBase = FirebaseDatabase.getInstance().getReference();
         setPanels();
         initializeTeamTextViews();
 
@@ -171,7 +171,7 @@ public class ScoutingPage extends ActionBarActivity {
                             Log.e("Scouting", "6");
                             dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(teamThreeDataName.get(i)).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
                         }
-                    } catch (FirebaseException FBE) {
+                    } catch (DatabaseException FBE) {
                         Log.e("firebase", "scoutingPage");
                     } catch (IndexOutOfBoundsException IOB) {
                         Log.e("ScoutingPage", "Index");

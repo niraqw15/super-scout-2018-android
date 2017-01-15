@@ -97,16 +97,7 @@
             android:layout_width="fill_parent"
             android:layout_height="330dp"
             android:id="@+id/view_files_received"
-            android:layout_above="@+id/scoutData" />
-        <Button
-            android:id="@+id/scoutData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="scout data"
-            android:textSize="10sp"
-            android:onClick="getScoutData"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_above="@+id/button" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
