@@ -32,8 +32,11 @@ import android.widget.ToggleButton;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -582,13 +585,13 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
                 Log.e("matchNameChange", editMatchNumber);
                 String filePath = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name;
-                String content = readFile(filePath);
+                final String content = readFile(filePath);
                 final JSONObject superData;
                 try {
                     superData = new JSONObject(content);
@@ -612,11 +615,28 @@ public class MainActivity extends ActionBarActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        previousScore = input.getText().toString();
-                        if (isRed) {
-                            dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
-                        } else {
-                            dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
+                        File dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name);
+                        dir.mkdir();
+                        previousScore = input.getText().toString(); //Now it's the new score
+                        try {
+                            JSONObject superScore = new JSONObject(content);
+                            PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
+                            if (isRed) {
+                                superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
+                                dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
+                            } else {
+                                superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
+                                dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
+                            }
+                            dirWriter.println(superScore.toString());
+                            dirWriter.close();
+                            toasts("Score Updated.", false);
+                        } catch (JSONException JSONex) {
+                            JSONex.printStackTrace();
+                            toasts("Failed to Save to Storage", false);
+                        } catch (FileNotFoundException fnfe) {
+                            fnfe.printStackTrace();
+                            toasts("Storage Not Located.", false);
                         }
                     }
                 });
