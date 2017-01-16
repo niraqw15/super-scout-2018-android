@@ -176,7 +176,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         String JsonStringTeamThree = "{";
                         Log.i("JSON", String.valueOf(teamOneDataScore.size()));
                         for(int a = 0; a <= teamOneDataScore.size() - 1; a++){
-                            JsonStringTeamOne = JsonStringTeamOne + ("\"" + teamOneDataName.get(a) + "\": " + teamOneDataScore.get(a));
+                            JsonStringTeamOne = JsonStringTeamOne + ("\"" + reformatDataNames(teamOneDataName.get(a)) + "\": " + teamOneDataScore.get(a));
                             if(a != teamOneDataScore.size() - 1){
                                 JsonStringTeamOne = JsonStringTeamOne + ",";
                             } else {
@@ -184,7 +184,7 @@ public class FinalDataPoints extends ActionBarActivity {
                             }
                         }
                         for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
-                            JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + teamTwoDataName.get(a) + "\": " + teamTwoDataScore.get(a));
+                            JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + reformatDataNames(teamTwoDataName.get(a)) + "\": " + teamTwoDataScore.get(a));
                             if(a != teamTwoDataScore.size() - 1){
                                 JsonStringTeamTwo = JsonStringTeamTwo + ",";
                             } else {
@@ -192,7 +192,7 @@ public class FinalDataPoints extends ActionBarActivity {
                             }
                         }
                         for(int a = 0; a <= teamThreeDataScore.size() - 1; a++){
-                            JsonStringTeamThree = JsonStringTeamThree + ("\"" + teamThreeDataName.get(a) + "\": " + teamThreeDataScore.get(a));
+                            JsonStringTeamThree = JsonStringTeamThree + ("\"" + reformatDataNames(teamThreeDataName.get(a)) + "\": " + teamThreeDataScore.get(a));
                             if(a != teamThreeDataScore.size() - 1){
                                 JsonStringTeamThree = JsonStringTeamThree + ",";
                             } else {
@@ -251,6 +251,11 @@ public class FinalDataPoints extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public String reformatDataNames(String dataName){
+        return ("rank" + dataName.replace(" ", ""));
+    }
+
     public void getExtrasForFinalData(){
 
         numberOfMatch = intent.getExtras().getString("matchNumber");

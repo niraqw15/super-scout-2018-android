@@ -161,15 +161,15 @@ public class ScoutingPage extends ActionBarActivity {
 
                         for (int i = 0; i < panelOne.getDataNameCount() - 1; i++) {
                             Log.e("Scouting", "4");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(teamOneDataName.get(i)).setValue(Integer.parseInt(teamOneDataScore.get(i)));
+                            dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(reformatDataNames(teamOneDataName.get(i))).setValue(Integer.parseInt(teamOneDataScore.get(i)));
                         }
                         for (int i = 0; i < panelTwo.getDataNameCount() - 1; i++) {
                             Log.e("Scouting", "5");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(teamTwoDataName.get(i)).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
+                            dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(reformatDataNames(teamTwoDataName.get(i))).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
                         }
                         for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
                             Log.e("Scouting", "6");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(teamThreeDataName.get(i)).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
+                            dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
                         }
                     } catch (DatabaseException FBE) {
                         Log.e("firebase", "scoutingPage");
@@ -268,6 +268,10 @@ public class ScoutingPage extends ActionBarActivity {
         Log.e("teamThreeDataName", teamThreeDataName.toString());
         Log.e("teamThreeDataScore", teamThreeDataScore.toString());
 
+    }
+
+    public String reformatDataNames(String dataName){
+        return ("rank" + dataName.replace(" ", ""));
     }
 
     public void initializeTeamTextViews(){
