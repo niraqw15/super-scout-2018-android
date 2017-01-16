@@ -68,6 +68,7 @@ public class ScoutingPage extends ActionBarActivity {
     JSONObject object;
     Intent next;
     DatabaseReference dataBase;
+    Boolean isRed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +147,11 @@ public class ScoutingPage extends ActionBarActivity {
             });
             AlertDialog endDataDialog = endDataBuilder.create();
             endDataDialog.show();
+            if(isRed) {
+                ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
+            } else {
+                ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLUE);
+            }
         }
 
         if (id == R.id.finalNext) {
@@ -196,6 +202,7 @@ public class ScoutingPage extends ActionBarActivity {
         alliance = next.getExtras().getString("alliance");
         dataBaseUrl = next.getExtras().getString("dataBaseUrl");
         isMute = next.getExtras().getBoolean("mute");
+        isRed = next.getExtras().getBoolean("allianceColor");
     }
 
     public void setPanels() {
@@ -203,11 +210,11 @@ public class ScoutingPage extends ActionBarActivity {
         SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
         SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
         SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
-        panelOne.setAllianceColor(SuperScoutApplication.isRed);
+        panelOne.setAllianceColor(isRed);
         panelOne.setTeamNumber(teamNumberOne);
-        panelTwo.setAllianceColor(SuperScoutApplication.isRed);
+        panelTwo.setAllianceColor(isRed);
         panelTwo.setTeamNumber(teamNumberTwo);
-        panelThree.setAllianceColor(SuperScoutApplication.isRed);
+        panelThree.setAllianceColor(isRed);
         panelThree.setTeamNumber(teamNumberThree);
     }
 
