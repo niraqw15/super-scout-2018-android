@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/finalScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Final Alliance Score"
+        android:textStyle="bold"
+        android:textColor="#0000FF"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finalScoreTextView"
+        android:layout_centerHorizontal="true"
+        android:hint="Score"
+        android:inputType="number"
+        android:textSize="25sp"
+        android:id="@+id/finalScoreEditText"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/allRotorsSpinningTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "All Rotors Spinning?"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"/>
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scale"
+        android:textSize="20sp"
+        android:layout_below="@id/allRotorsSpinningTextView"
+        android:layout_centerHorizontal="true"
+        android:checked="false"
+        android:id="@+id/rotorsToggleButton"
+        android:textOn="true"
+        android:textOff="false"/>
+    <TextView
+        android:id="@+id/KiloPascalsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40kPA Reached?"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="310dp"/>
+    <ToggleButton
+        android:id="@+id/boilerToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/KiloPascalsTextView"
+        android:layout_centerHorizontal="true"
+        android:checked="false"
+        android:text="Breach"
+        android:textSize="20sp"
+        android:textOff="false"
+        android:textOn="true"/>
+
+</RelativeLayout>
