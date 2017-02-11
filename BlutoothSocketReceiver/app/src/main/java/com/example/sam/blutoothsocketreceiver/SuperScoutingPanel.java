@@ -17,11 +17,13 @@ import java.util.Map;
  */
 public class SuperScoutingPanel extends Fragment {
     Boolean isRed;
+    public static Map<String,Boolean> FourApplied;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        FourApplied = new HashMap<>();
 
         return inflater.inflate(R.layout.super_scouting_panel, container, false);
     }
@@ -60,6 +62,13 @@ public class SuperScoutingPanel extends Fragment {
         }
 
         return mapOfData;
+    }
+
+    public void addToFourApplied(String dataName, Boolean fourApplied){
+        if(fourApplied == null){
+            fourApplied = false;
+        }
+        FourApplied.put(dataName, fourApplied);
     }
 
 }

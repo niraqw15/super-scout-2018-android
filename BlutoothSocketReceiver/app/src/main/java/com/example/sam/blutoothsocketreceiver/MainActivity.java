@@ -2,6 +2,7 @@ package com.example.sam.blutoothsocketreceiver;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +69,8 @@ public class MainActivity extends ActionBarActivity {
     String firstKey;
     String keys;
     String scoutAlliance;
-    String previousScore;
+    String previousScore, previousFoul;
+    Boolean previous40kpa, previousRotorsSpinning;
     final static String dataBaseUrl = Constants.dataBaseUrl;
     int matchNum;
     int stringIndex;
@@ -280,7 +283,7 @@ public class MainActivity extends ActionBarActivity {
         }
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence Register, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
@@ -597,46 +600,70 @@ public class MainActivity extends ActionBarActivity {
                     superData = new JSONObject(content);
                     if (isRed) {
                         previousScore = superData.get("Red Alliance Score").toString();
+                        previousFoul = superData.get("Red Alliance Foul").toString();
                         Log.e("previous Score", previousScore);
                     } else {
                         previousScore = superData.get("Blue Alliance Score").toString();
+                        previousFoul = superData.get("Blue Alliance Foul").toString();
                         Log.e("previous Score", previousScore);
                     }
+                    previous40kpa = Boolean.valueOf((String) superData.get("boilerRPGained"));
+                    previousRotorsSpinning = Boolean.valueOf((String) superData.get("rotorRPGained"));
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
-                final EditText input = new EditText(context);
-                input.setText(previousScore);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                input.setGravity(1);
-                builder.setView(input);
+                final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
+                ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
+                ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
+                ((ToggleButton) finalDataPtsView.findViewById(R.id.boilerToggleButton)).setChecked(previous40kpa);
+                ((ToggleButton) finalDataPtsView.findViewById(R.id.rotorsToggleButton)).setChecked(previousRotorsSpinning);
+                builder.setView(finalDataPtsView);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Dialog d = (Dialog) dialog;
                         File dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name);
                         dir.mkdir();
-                        previousScore = input.getText().toString(); //Now it's the new score
-                        try {
-                            JSONObject superScore = new JSONObject(content);
-                            PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
-                            if (isRed) {
-                                superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
-                                dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
-                            } else {
-                                superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
-                                dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
+                        previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
+                        previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
+                        previous40kpa = ((ToggleButton) d.findViewById(R.id.boilerToggleButton)).isChecked();
+                        previousRotorsSpinning = ((ToggleButton) d.findViewById(R.id.rotorsToggleButton)).isChecked();
+                        if (!previousScore.equals("") && !previousFoul.equals("")) {
+                            try {
+                                JSONObject superScore = new JSONObject(content);
+                                PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
+                                if (isRed) {
+                                    superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
+                                    superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
+                                    dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("didReach40KiloPascalsRed").setValue(previous40kpa);
+                                    dataBase.child("Matches").child(editMatchNumber).child("didStartAllRotorsRed").setValue(previousRotorsSpinning);
+                                } else {
+                                    superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
+                                    superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
+                                    dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("didReach40KiloPascalsBlue").setValue(previous40kpa);
+                                    dataBase.child("Matches").child(editMatchNumber).child("didStartAllRotorsBlue").setValue(previousRotorsSpinning);
+                                }
+                                superScore.put("boilerRPGained", String.valueOf(previous40kpa));
+                                superScore.put("rotorRPGained", String.valueOf(previousRotorsSpinning));
+
+                                dirWriter.println(superScore.toString());
+                                dirWriter.close();
+                                toasts("Score Updated.", false);
+                            } catch (JSONException JSONex) {
+                                JSONex.printStackTrace();
+                                toasts("Failed to Save to Storage", false);
+                            } catch (FileNotFoundException fnfe) {
+                                fnfe.printStackTrace();
+                                toasts("Storage Not Located.", false);
                             }
-                            dirWriter.println(superScore.toString());
-                            dirWriter.close();
-                            toasts("Score Updated.", false);
-                        } catch (JSONException JSONex) {
-                            JSONex.printStackTrace();
-                            toasts("Failed to Save to Storage", false);
-                        } catch (FileNotFoundException fnfe) {
-                            fnfe.printStackTrace();
-                            toasts("Storage Not Located.", false);
+                        } else {
+                            toasts("Please Enter Valid Inputs", false);
                         }
                     }
                 });

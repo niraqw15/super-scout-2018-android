@@ -24,13 +24,15 @@ public class Counter extends RelativeLayout {
     TextView counterTitleTextView;
     Button addButton;
     Button subtractButton;
-
+    SuperScoutingPanel superScoutingPanel;
+    Boolean fourApplied;
 
     public Counter(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        superScoutingPanel = new SuperScoutingPanel();
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.counter, this, true);
 
         counterTextView = (TextView)findViewById(R.id.scoreCounter);
@@ -53,7 +55,7 @@ public class Counter extends RelativeLayout {
             listenForAddClicked();
             listenForMinusClicked();
 
-        refreshCounter();
+            refreshCounter();
 
 
         } finally {
@@ -61,16 +63,42 @@ public class Counter extends RelativeLayout {
         }
     }
 
-
     private void listenForAddClicked(){
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SuperScoutingPanel.FourApplied.get(dataName) == null){
+                    superScoutingPanel.addToFourApplied(dataName,fourApplied);
+                }
+
+                fourApplied = SuperScoutingPanel.FourApplied.get(dataName);
+
+                Log.e("check", fourApplied.toString());
+
+                Log.e("dataName",dataName);
+                if(fourApplied){
+                    max = 3;
+                }else if(!fourApplied){
+                    max = 4;
+                }
+
                 if (value + increment <= max) {
                     value += increment;
                     refreshCounter();
                     Log.e("add", "clicked");
                 }
+
+                if(value == 4 && !fourApplied){
+                    fourApplied = true;
+                    SuperScoutingPanel.FourApplied.put(dataName,fourApplied);
+                    Log.e("checkFor", SuperScoutingPanel.FourApplied.get(dataName).toString());
+                    Log.e("check2", fourApplied.toString());
+                }
+                Log.e("check3", fourApplied.toString());
+
+                Log.e("max", max+"");
+
+                Log.e("value", value+"");
             }
         });
     }
@@ -78,7 +106,13 @@ public class Counter extends RelativeLayout {
         subtractButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (value - increment >= min) {
+                if (value - increment >= min && value == 4) {
+                    value -= increment;
+                    fourApplied = false;
+                    SuperScoutingPanel.FourApplied.put(dataName,fourApplied);
+                    refreshCounter();
+                    Log.e("subtract", "clicked");
+                }else if (value - increment >= min) {
                     value -= increment;
                     refreshCounter();
                     Log.e("subtract", "clicked");

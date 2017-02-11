@@ -42,13 +42,10 @@ public class FinalDataPoints extends ActionBarActivity {
     String teamNumberTwo;
     String teamNumberThree;
     String alliance;
-    String teamOneNote;
-    String teamTwoNote;
-    String teamThreeNote;
     String dataBaseUrl;
-    String allianceScoreData;
+    String allianceScoreData, allianceFoulData;
     TextView finalScore;
-    EditText allianceScore;
+    EditText allianceScore, allianceFoul;
     JSONObject superExternalData;
     ArrayList<String> teamOneDataName;
     ArrayList<String> teamOneDataScore;
@@ -77,6 +74,7 @@ public class FinalDataPoints extends ActionBarActivity {
         firebaseRef = FirebaseDatabase.getInstance().getReference();
 
         allianceScore = (EditText) findViewById(R.id.finalScoreEditText);
+        allianceFoul = (EditText) findViewById(R.id.finalFoulEditText);
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
         rotorRP = (ToggleButton) findViewById(R.id.rotorsToggleButton);
         boilerRP = (ToggleButton) findViewById(R.id.boilerToggleButton);
@@ -99,6 +97,7 @@ public class FinalDataPoints extends ActionBarActivity {
             boilerRP.setChecked(false);
         }
         allianceScore.setText(allianceScoreData);
+        allianceFoul.setText(allianceFoulData);
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data");
     }
     @Override
@@ -145,16 +144,19 @@ public class FinalDataPoints extends ActionBarActivity {
         if (id == R.id.Submit) {
             final Activity context = this;
             int score;
+            int foul;
             try {
                 score = Integer.parseInt(allianceScore.getText().toString());
+                foul = Integer.parseInt(allianceFoul.getText().toString());
             } catch (NumberFormatException nfe) {
-                Toast.makeText(this, "Invalid score", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Invalid inputs", Toast.LENGTH_LONG).show();
                 return false;
             } catch (NullPointerException npe) {
-                Toast.makeText(this, "Enter a score", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Enter a score and foul", Toast.LENGTH_LONG).show();
                 return false;
             }
             final int allianceScoreNum = score;
+            final int allianceFoulNum = foul;
 
             //Send the data of the super scout on a separate thread
             new Thread() {
@@ -208,6 +210,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);
+                        superExternalData.put(alliance + " Foul", allianceFoulNum);
                         superExternalData.put(teamNumberOne, JsonTeamOne);
                         superExternalData.put(teamNumberTwo, JsonTeamTwo);
                         superExternalData.put(teamNumberThree, JsonTeamThree);
@@ -273,6 +276,7 @@ public class FinalDataPoints extends ActionBarActivity {
 
         dataBaseUrl = intent.getExtras().getString("dataBaseUrl");
         allianceScoreData = intent.getExtras().getString("allianceScore");
+        allianceFoulData = intent.getExtras().getString("allianceFoul");
         rotorRPGained = intent.getExtras().getBoolean("scoutRotorRPGained");
         boilerRPGained = intent.getExtras().getBoolean("scoutBoilerRPGained");
         isMute = intent.getExtras().getBoolean("mute");
@@ -283,11 +287,13 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsBlue").setValue(rotorRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsBlue").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("didStartAllRotorsRed").setValue(rotorRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("didReach40KiloPascalsRed").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
         }
     }
 }
