@@ -639,15 +639,15 @@ public class MainActivity extends ActionBarActivity {
                                     superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("didReach40KiloPascalsRed").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("didStartAllRotorsRed").setValue(previousRotorsSpinning);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redDidReach40KiloPascals").setValue(previous40kpa);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redDidStartAllRotors").setValue(previousRotorsSpinning);
                                 } else {
                                     superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
                                     superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("didReach40KiloPascalsBlue").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("didStartAllRotorsBlue").setValue(previousRotorsSpinning);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidReach40KiloPascals").setValue(previous40kpa);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidStartAllRotors").setValue(previousRotorsSpinning);
                                 }
                                 superScore.put("boilerRPGained", String.valueOf(previous40kpa));
                                 superScore.put("rotorRPGained", String.valueOf(previousRotorsSpinning));
