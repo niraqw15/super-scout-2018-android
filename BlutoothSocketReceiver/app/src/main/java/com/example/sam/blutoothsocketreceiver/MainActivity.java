@@ -485,7 +485,7 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
                         }
                         if (!isRed){
-                            dataBase.child("Matches").child(matchNum).child("number").setValue(matchNum);
+                            dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
                             dataBase.child("Matches").child(matchNum).child("blueAllianceTeamNumbers").setValue(teamNumbers);
                             dataBase.child("Matches").child(matchNum).child("blueScore").setValue(Integer.parseInt(superData.get("Blue Alliance Score").toString()));
                             dataBase.child("Matches").child(matchNum).child("didReach40KiloPascalsBlue").setValue(Boolean.valueOf((String) superData.get("boilerRPGained")));
