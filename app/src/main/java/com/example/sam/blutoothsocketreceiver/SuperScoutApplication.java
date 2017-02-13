@@ -78,7 +78,6 @@ public class SuperScoutApplication extends Application implements Application.Ac
             FirebaseLists.matchesList = new FirebaseList<>(url + "Matches/", new FirebaseList.FirebaseUpdatedCallback() {
                 @Override
                 public void execute() {
-                    //understand this!!!!!!!!!!!!!!!!!!!!!
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent("matches_updated"));
                 }
             }, Match.class);

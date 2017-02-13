@@ -52,7 +52,7 @@ public class ScoutingPage extends ActionBarActivity {
     String teamNumberThree;
     String alliance;
     String dataBaseUrl;
-    String allianceScoreData;
+    String allianceScoreData, allianceFoulData;
     TextView teamNumberOneTextview;
     TextView teamNumberTwoTextview;
     TextView teamNumberThreeTextview;
@@ -137,16 +137,17 @@ public class ScoutingPage extends ActionBarActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     Dialog d = (Dialog) dialog;
                     EditText scoreText = (EditText) d.findViewById(R.id.finalScoreEditText);
+                    EditText foulText = (EditText) d.findViewById(R.id.finalFoulEditText);
                     ToggleButton rotorsToggle = (ToggleButton) d.findViewById(R.id.rotorsToggleButton);
                     ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
                     rotorRP = rotorsToggle.isChecked();
                     boilerRP = boilerToggle.isChecked();
+                    allianceFoulData = foulText.getText().toString();
                     allianceScoreData = scoreText.getText().toString();
                     dialog.cancel();
                 }
             });
             AlertDialog endDataDialog = endDataBuilder.create();
-            endDataDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             endDataDialog.show();
             if(isRed) {
                 ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
@@ -228,6 +229,7 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putExtra("alliance", alliance);
         intent.putExtra("dataBaseUrl", dataBaseUrl);
         intent.putExtra("allianceScore", allianceScoreData);
+        intent.putExtra("allianceFoul", allianceFoulData);
         intent.putExtra("scoutRotorRPGained", rotorRP);
         intent.putExtra("scoutBoilerRPGained", boilerRP);
         intent.putExtra("mute", isMute);

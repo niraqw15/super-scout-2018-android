@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,9 +22,9 @@ public class SuperScoutingPanel extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         FourApplied = new HashMap<>();
 
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.super_scouting_panel, container, false);
     }
 
@@ -60,7 +58,6 @@ public class SuperScoutingPanel extends Fragment {
             counter = (Counter)rootLayout.getChildAt(i + 1);
             String dataName = counter.getDataName();
             Integer dataScore = counter.getDataValue();
-
             mapOfData.put(dataName, dataScore);
         }
 
