@@ -285,13 +285,13 @@ public class FinalDataPoints extends ActionBarActivity {
     public void sendAfterMatchData(){
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidStartAllRotors").setValue(rotorRP.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidReach40KiloPascals").setValue(boilerRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidStartAllRotors").setValue(rotorRP.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redDidReach40KiloPascals").setValue(boilerRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
         }
