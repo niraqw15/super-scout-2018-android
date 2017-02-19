@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +20,21 @@ import java.util.Map;
  */
 public class SuperScoutingPanel extends Fragment {
     Boolean isRed;
-    public static Map<String,Boolean> FourApplied;
+    public static ArrayList<Integer> Speed;
+    public static ArrayList<Integer> GearControl;
+    public static ArrayList<Integer> BallControl;
+    public static ArrayList<Integer> Agility;
+    public static ArrayList<Integer> Defense;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FourApplied = new HashMap<>();
+        Speed = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
+        GearControl = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
+        BallControl = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
+        Agility = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
+        Defense = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
 
         return inflater.inflate(R.layout.super_scouting_panel, container, false);
     }
@@ -68,7 +79,7 @@ public class SuperScoutingPanel extends Fragment {
         if(fourApplied == null){
             fourApplied = false;
         }
-        FourApplied.put(dataName, fourApplied);
+
     }
 
 }

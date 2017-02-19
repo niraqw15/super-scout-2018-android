@@ -44,6 +44,7 @@ import java.lang.reflect.Array;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ScoutingPage extends ActionBarActivity {
     String numberOfMatch;
@@ -157,43 +158,56 @@ public class ScoutingPage extends ActionBarActivity {
         }
 
         if (id == R.id.finalNext) {
-            final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
-            final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
-            final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
-            listDataValues();
-            //new added code
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-
-                        for (int i = 0; i < panelOne.getDataNameCount() - 1; i++) {
-                            Log.e("Scouting", "4");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(reformatDataNames(teamOneDataName.get(i))).setValue(Integer.parseInt(teamOneDataScore.get(i)));
-                        }
-                        for (int i = 0; i < panelTwo.getDataNameCount() - 1; i++) {
-                            Log.e("Scouting", "5");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(reformatDataNames(teamTwoDataName.get(i))).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
-                        }
-                        for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
-                            Log.e("Scouting", "6");
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
-                        }
-                    } catch (DatabaseException FBE) {
-                        Log.e("firebase", "scoutingPage");
-                    } catch (IndexOutOfBoundsException IOB) {
-                        Log.e("ScoutingPage", "Index");
-                    }
+            boolean moreThanOne = false;
+            for (int a = 1; a <= 4; a++) {
+                if (SuperScoutingPanel.Defense.get(a) > 1 || SuperScoutingPanel.Speed.get(a) > 1 || SuperScoutingPanel.GearControl.get(a) > 1 || SuperScoutingPanel.BallControl.get(a) > 1 || SuperScoutingPanel.Agility.get(a) > 1) {
+                    moreThanOne = true;
                 }
-            }.start();
-            //New Added Code//
+            }
 
-            sendExtras();
+            if (!moreThanOne) {
+                final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
+                final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
+                final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
+                listDataValues();
+
+                //new added code
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            for (int i = 0; i < panelOne.getDataNameCount() - 1; i++) {
+                                Log.e("Scouting", "4");
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(reformatDataNames(teamOneDataName.get(i))).setValue(Integer.parseInt(teamOneDataScore.get(i)));
+                            }
+                            for (int i = 0; i < panelTwo.getDataNameCount() - 1; i++) {
+                                Log.e("Scouting", "5");
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(reformatDataNames(teamTwoDataName.get(i))).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
+                            }
+                            for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
+                                Log.e("Scouting", "6");
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
+                            }
+                        } catch (DatabaseException FBE) {
+                            Log.e("firebase", "scoutingPage");
+                        } catch (IndexOutOfBoundsException IOB) {
+                            Log.e("ScoutingPage", "Index");
+                        }
+                    }
+                }.start();
+                //New Added Code//
+
+                sendExtras();
+
+            } else {
+                Toast.makeText(getBaseContext(), "Different Teams Cannot Have the Same Rank for one category", Toast.LENGTH_LONG).show();
+            }
 
         }
-
         return super.onOptionsItemSelected(item);
     }
+
 
     public void getExtrasForScouting() {
 

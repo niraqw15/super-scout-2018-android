@@ -25,6 +25,9 @@ public class Counter extends RelativeLayout {
     Button addButton;
     Button subtractButton;
     SuperScoutingPanel superScoutingPanel;
+    Boolean oneApplied;
+    Boolean twoApplied;
+    Boolean threeApplied;
     Boolean fourApplied;
 
     public Counter(Context context, AttributeSet attrs) {
@@ -67,55 +70,71 @@ public class Counter extends RelativeLayout {
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SuperScoutingPanel.FourApplied.get(dataName) == null){
-                    superScoutingPanel.addToFourApplied(dataName,fourApplied);
-                }
-
-                fourApplied = SuperScoutingPanel.FourApplied.get(dataName);
-
-                Log.e("check", fourApplied.toString());
-
-                Log.e("dataName",dataName);
-                if(fourApplied){
-                    max = 3;
-                }else if(!fourApplied){
-                    max = 4;
-                }
-
+                Log.e("dataName", dataName);
                 if (value + increment <= max) {
                     value += increment;
                     refreshCounter();
                     Log.e("add", "clicked");
+                    Integer previousValue = value - 1;
+                    makeArrayChanges(value, previousValue);
                 }
-
-                if(value == 4 && !fourApplied){
-                    fourApplied = true;
-                    SuperScoutingPanel.FourApplied.put(dataName,fourApplied);
-                    Log.e("checkFor", SuperScoutingPanel.FourApplied.get(dataName).toString());
-                    Log.e("check2", fourApplied.toString());
-                }
-                Log.e("check3", fourApplied.toString());
-
-                Log.e("max", max+"");
-
-                Log.e("value", value+"");
             }
         });
     }
+
+    public void makeArrayChanges(Integer currentValue, Integer previousValue){
+        Log.i("HATRED DATANAME", dataName);
+        switch(dataName){
+            case "Defense" : {
+                Log.i("HATRED", "DEFENSE");
+                SuperScoutingPanel.Defense.set(currentValue, SuperScoutingPanel.Defense.get(currentValue) + 1);
+                SuperScoutingPanel.Defense.set(previousValue, SuperScoutingPanel.Defense.get(previousValue) - 1);
+                break;
+            }
+            case "Agility" : {
+                Log.i("HATRED", "AGILITY");
+                SuperScoutingPanel.Agility.set(currentValue, SuperScoutingPanel.Agility.get(currentValue) + 1);
+                SuperScoutingPanel.Agility.set(previousValue, SuperScoutingPanel.Agility.get(previousValue) - 1);
+                break;
+            }
+            case "Ball Control" : {
+                Log.i("HATRED", "BALL CTRL");
+                SuperScoutingPanel.BallControl.set(currentValue, SuperScoutingPanel.BallControl.get(currentValue) + 1);
+                SuperScoutingPanel.BallControl.set(previousValue, SuperScoutingPanel.BallControl.get(previousValue) - 1);
+                break;
+            }
+            case "Gear Control" : {
+                Log.i("HATRED", "GEAR CTRL");
+                SuperScoutingPanel.GearControl.set(currentValue, SuperScoutingPanel.GearControl.get(currentValue) + 1);
+                SuperScoutingPanel.GearControl.set(previousValue, SuperScoutingPanel.GearControl.get(previousValue) - 1);
+                break;
+            }
+            case "Speed" : {
+                Log.i("HATRED", "SPEED");
+                SuperScoutingPanel.Speed.set(currentValue, SuperScoutingPanel.Speed.get(currentValue) + 1);
+                SuperScoutingPanel.Speed.set(previousValue, SuperScoutingPanel.Speed.get(previousValue) - 1);
+                break;
+            }
+        }
+        for(int a = 0; a <= 4; a++){
+            Log.i("ARRAYSINFO SPEED" + a, String.valueOf(SuperScoutingPanel.Speed.get(a)));
+            Log.i("ARRAYSINFO DEFENSE" + a, String.valueOf(SuperScoutingPanel.Defense.get(a)));
+            Log.i("ARRAYSINFO BALL CTRL" + a, String.valueOf(SuperScoutingPanel.BallControl.get(a)));
+            Log.i("ARRAYSINFO GEAR CTRL" + a, String.valueOf(SuperScoutingPanel.GearControl.get(a)));
+            Log.i("ARRAYSINFO AGILITY" + a, String.valueOf(SuperScoutingPanel.Agility.get(a)));
+        }
+    }
+
     private void listenForMinusClicked(){
         subtractButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (value - increment >= min && value == 4) {
-                    value -= increment;
-                    fourApplied = false;
-                    SuperScoutingPanel.FourApplied.put(dataName,fourApplied);
-                    refreshCounter();
-                    Log.e("subtract", "clicked");
-                }else if (value - increment >= min) {
+                if (value - increment >= min) {
                     value -= increment;
                     refreshCounter();
                     Log.e("subtract", "clicked");
+                    Integer previousValue = value + 1;
+                    makeArrayChanges(value, previousValue);
                 }
             }
         });
