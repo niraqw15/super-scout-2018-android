@@ -20,6 +20,7 @@ public class Counter extends RelativeLayout {
     private int min;
     private int increment;
     private int value;
+    private int startingValue;
     TextView counterTextView;
     TextView counterTitleTextView;
     Button addButton;
@@ -53,12 +54,19 @@ public class Counter extends RelativeLayout {
             this.dataName = a.getString(R.styleable.Counter_dataName);
             this.max = a.getInt(R.styleable.Counter_max, 4);
             this.min = a.getInt(R.styleable.Counter_min, 0);
+            this.startingValue = a.getInt(R.styleable.Counter_startingValue, 2);
             this.increment = a.getInt(R.styleable.Counter_increment, 1);
+
+            this.value = this.startingValue;
+
+            Log.e("start value", counterTextView.getText().toString());
 
             listenForAddClicked();
             listenForMinusClicked();
 
-            refreshCounter();
+            refreshCounter(startingValue);
+
+            Log.e("start value1", counterTextView.getText().toString());
 
 
         } finally {
@@ -70,10 +78,12 @@ public class Counter extends RelativeLayout {
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("dataName", dataName);
+                Log.e("add", "clicked");
+                Log.e("increment", increment + "");
+                Log.e("new value", Integer.toString(value + increment));
                 if (value + increment <= max) {
                     value += increment;
-                    refreshCounter();
+                    refreshCounter(value);
                     Log.e("add", "clicked");
                     Integer previousValue = value - 1;
                     makeArrayChanges(value, previousValue);
@@ -131,7 +141,7 @@ public class Counter extends RelativeLayout {
             public void onClick(View v) {
                 if (value - increment >= min) {
                     value -= increment;
-                    refreshCounter();
+                    refreshCounter(value);
                     Log.e("subtract", "clicked");
                     Integer previousValue = value + 1;
                     makeArrayChanges(value, previousValue);
@@ -141,10 +151,10 @@ public class Counter extends RelativeLayout {
     }
 
 
-    private void refreshCounter() {
-        Log.e("test2", counterTitleTextView.toString());
+    private void refreshCounter(int someValue) {
+        Log.e("test2", counterTitleTextView.getText().toString());
         counterTitleTextView.setText(dataName);
-        counterTextView.setText(value + "");
+        counterTextView.setText(someValue + "");
     }
 
     public String getDataName() {
