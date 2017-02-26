@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.Instabug;
+import com.instabug.library.invocation.InstabugInvocationEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -88,7 +89,7 @@ public class SuperScoutApplication extends Application implements Application.Ac
                 }
             });
         new Instabug.Builder(this, "f56c6f16e2c9965920019f8eb52e7b6e")
-                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
                 .build();
         }
     public void onActivityCreated(Activity activity, Bundle savedInstanceState){currentActivity = activity;}
