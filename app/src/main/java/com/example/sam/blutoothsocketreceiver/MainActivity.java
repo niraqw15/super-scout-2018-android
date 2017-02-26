@@ -102,7 +102,6 @@ public class MainActivity extends ActionBarActivity {
         updateUI();
         numberOfMatch.setText(matchNumber.toString());
         matchNumber = Integer.parseInt(numberOfMatch.getText().toString());
-
         disenableEditTextEditing();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         listView = (ListView) findViewById(R.id.view_files_received);

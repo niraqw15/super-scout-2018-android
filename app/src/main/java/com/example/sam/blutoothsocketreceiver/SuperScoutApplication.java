@@ -87,7 +87,7 @@ public class SuperScoutApplication extends Application implements Application.Ac
                     handleUncaughtException(thread, e);
                 }
             });
-        new Instabug.Builder(this, "8eab8e2db114c14290df21e21527f1a1")
+        new Instabug.Builder(this, "f56c6f16e2c9965920019f8eb52e7b6e")
                 .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
                 .build();
         }
