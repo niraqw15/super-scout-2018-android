@@ -63,7 +63,8 @@ public class ScoutingPage extends ActionBarActivity {
     ArrayList<String> teamTwoDataScore;
     ArrayList<String> teamThreeDataName;
     ArrayList<String> teamThreeDataScore;
-    Boolean rotorRP = false;
+    Integer rotorNumAuto = 0;
+    Integer rotorNumTele = 0;
     Boolean boilerRP = false;
     Boolean isMute;
     JSONObject object;
@@ -139,9 +140,11 @@ public class ScoutingPage extends ActionBarActivity {
                     Dialog d = (Dialog) dialog;
                     EditText scoreText = (EditText) d.findViewById(R.id.finalScoreEditText);
                     EditText foulText = (EditText) d.findViewById(R.id.finalFoulEditText);
-                    ToggleButton rotorsToggle = (ToggleButton) d.findViewById(R.id.rotorsToggleButton);
+                    EditText rotorsAutoText = (EditText) d.findViewById(R.id.rotorAutoText);
+                    EditText rotorsTeleText = (EditText) d.findViewById(R.id.rotorTeleText);
                     ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
-                    rotorRP = rotorsToggle.isChecked();
+                    rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
+                    rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
                     boilerRP = boilerToggle.isChecked();
                     allianceFoulData = foulText.getText().toString();
                     allianceScoreData = scoreText.getText().toString();
@@ -244,7 +247,8 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putExtra("dataBaseUrl", dataBaseUrl);
         intent.putExtra("allianceScore", allianceScoreData);
         intent.putExtra("allianceFoul", allianceFoulData);
-        intent.putExtra("scoutRotorRPGained", rotorRP);
+        intent.putExtra("scoutRotorsAutoNum", rotorNumAuto);
+        intent.putExtra("scoutRotorsTeleNum", rotorNumTele);
         intent.putExtra("scoutBoilerRPGained", boilerRP);
         intent.putExtra("mute", isMute);
         intent.putStringArrayListExtra("dataNameOne", teamOneDataName);

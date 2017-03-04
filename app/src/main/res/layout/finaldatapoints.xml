@@ -29,23 +29,13 @@
         android:id="@+id/allRotorsSpinningTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "All Rotors Spinning?"
+        android:text = "Number of Spinning Rotors"
         android:textStyle="bold"
         android:textSize="25sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="190dp"/>
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scale"
-        android:textSize="20sp"
-        android:layout_below="@id/allRotorsSpinningTextView"
-        android:layout_centerHorizontal="true"
-        android:checked="false"
-        android:id="@+id/rotorsToggleButton"
-        android:textOn="true"
-        android:textOff="false"/>
+
     <TextView
         android:id="@+id/KiloPascalsTextView"
         android:layout_width="wrap_content"
@@ -53,8 +43,8 @@
         android:text="40kPA Reached?"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="310dp"/>
+        android:layout_below="@+id/rotorTeleText"
+        android:layout_centerHorizontal="true" />
     <ToggleButton
         android:id="@+id/boilerToggleButton"
         android:layout_width="wrap_content"
@@ -77,5 +67,36 @@
         android:hint="Fouls"
         android:gravity="center"
         android:textSize="25sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rotorAutoText"
+        android:gravity="center"
+        android:hint="Auto"
+        android:textSize="25sp"
+        android:inputType="number"
+        android:layout_above="@+id/KiloPascalsTextView"
+        android:layout_toLeftOf="@+id/dummy"
+        android:layout_toStartOf="@+id/dummy"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rotorTeleText"
+        android:gravity="center"
+        android:hint="Tele"
+        android:textSize="25sp"
+        android:inputType="number"
+        android:layout_below="@+id/allRotorsSpinningTextView"
+        android:layout_toRightOf="@+id/dummy"
+        android:layout_toEndOf="@+id/dummy" />
+
+    <Space android:id="@+id/dummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/allRotorsSpinningTextView"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

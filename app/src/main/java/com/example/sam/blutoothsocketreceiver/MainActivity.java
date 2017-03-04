@@ -70,7 +70,9 @@ public class MainActivity extends ActionBarActivity {
     String keys;
     String scoutAlliance;
     String previousScore, previousFoul;
-    Boolean previous40kpa, previousRotorsSpinning;
+    Boolean previous40kpa;
+    Integer previousRotorNumAuto;
+    Integer previousRotorNumTele;
     final static String dataBaseUrl = Constants.dataBaseUrl;
     int matchNum;
     int stringIndex;
@@ -607,7 +609,8 @@ public class MainActivity extends ActionBarActivity {
                         Log.e("previous Score", previousScore);
                     }
                     previous40kpa = Boolean.valueOf((String) superData.get("boilerRPGained"));
-                    previousRotorsSpinning = Boolean.valueOf((String) superData.get("rotorRPGained"));
+                    previousRotorNumAuto = Integer.valueOf((String) superData.get("numRotorsSpinningAuto"));
+                    previousRotorNumTele = Integer.valueOf((String) superData.get("numRotorsSpinningTele"));
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
@@ -617,7 +620,8 @@ public class MainActivity extends ActionBarActivity {
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
                 ((ToggleButton) finalDataPtsView.findViewById(R.id.boilerToggleButton)).setChecked(previous40kpa);
-                ((ToggleButton) finalDataPtsView.findViewById(R.id.rotorsToggleButton)).setChecked(previousRotorsSpinning);
+                ((EditText) finalDataPtsView.findViewById(R.id.rotorAutoText)).setText(String.valueOf(previousRotorNumAuto));
+                ((EditText) finalDataPtsView.findViewById(R.id.rotorTeleText)).setText(String.valueOf(previousRotorNumTele));
                 builder.setView(finalDataPtsView);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -628,7 +632,8 @@ public class MainActivity extends ActionBarActivity {
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
                         previous40kpa = ((ToggleButton) d.findViewById(R.id.boilerToggleButton)).isChecked();
-                        previousRotorsSpinning = ((ToggleButton) d.findViewById(R.id.rotorsToggleButton)).isChecked();
+                        previousRotorNumAuto = Integer.parseInt(((EditText) d.findViewById(R.id.rotorAutoText)).getText().toString());
+                        previousRotorNumTele = Integer.parseInt(((EditText) d.findViewById(R.id.rotorTeleText)).getText().toString());
                         if (!previousScore.equals("") && !previousFoul.equals("")) {
                             try {
                                 JSONObject superScore = new JSONObject(content);
@@ -639,17 +644,20 @@ public class MainActivity extends ActionBarActivity {
                                     dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("redDidReach40KiloPascals").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("redDidStartAllRotors").setValue(previousRotorsSpinning);
+                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningRedAuto").setValue(previousRotorNumAuto);
+                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningRedTele").setValue(previousRotorNumTele);
                                 } else {
                                     superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
                                     superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("blueDidReach40KiloPascals").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidStartAllRotors").setValue(previousRotorsSpinning);
+                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningBlueAuto").setValue(previousRotorNumAuto);
+                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningBlueTele").setValue(previousRotorNumTele);
                                 }
                                 superScore.put("boilerRPGained", String.valueOf(previous40kpa));
-                                superScore.put("rotorRPGained", String.valueOf(previousRotorsSpinning));
+                                superScore.put("numRotorsSpinningAuto", String.valueOf(previousRotorNumAuto));
+                                superScore.put("numRotorsSpinningTele", String.valueOf(previousRotorNumTele));
 
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();

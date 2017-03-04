@@ -53,9 +53,11 @@ public class FinalDataPoints extends ActionBarActivity {
     ArrayList<String> teamTwoDataScore;
     ArrayList<String> teamThreeDataName;
     ArrayList<String> teamThreeDataScore;
-    ToggleButton rotorRP;
+    EditText rotorTextAuto;
+    EditText rotorTextTele;
     ToggleButton boilerRP;
-    Boolean rotorRPGained;
+    Integer rotorNumAuto;
+    Integer rotorNumTele;
     Boolean boilerRPGained;
     Boolean isMute;
     File dir;
@@ -72,11 +74,11 @@ public class FinalDataPoints extends ActionBarActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getExtrasForFinalData();
         firebaseRef = FirebaseDatabase.getInstance().getReference();
-
+        rotorTextAuto = (EditText) findViewById(R.id.rotorAutoText);
+        rotorTextTele = (EditText) findViewById(R.id.rotorTeleText);
         allianceScore = (EditText) findViewById(R.id.finalScoreEditText);
         allianceFoul = (EditText) findViewById(R.id.finalFoulEditText);
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
-        rotorRP = (ToggleButton) findViewById(R.id.rotorsToggleButton);
         boilerRP = (ToggleButton) findViewById(R.id.boilerToggleButton);
         superExternalData = new JSONObject();
         allianceScore.setCursorVisible(false);
@@ -86,10 +88,11 @@ public class FinalDataPoints extends ActionBarActivity {
         }else if(alliance.equals("Red Alliance")){
             finalScore.setTextColor(Color.RED);
         }
-        if(rotorRPGained){
-            rotorRP.setChecked(true);
-        }else{
-            rotorRP.setChecked(false);
+        if(rotorNumAuto != null){
+            rotorTextAuto.setText(String.valueOf(rotorNumAuto));
+        }
+        if(rotorNumTele != null){
+            rotorTextTele.setText(String.valueOf(rotorNumTele));
         }
         if(boilerRPGained){
             boilerRP.setChecked(true);
@@ -205,7 +208,8 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
                         JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
 
-                        superExternalData.put("rotorRPGained", rotorRP.getText().toString());
+                        superExternalData.put("numRotorsSpinningAuto", rotorTextAuto.getText().toString());
+                        superExternalData.put("numRotorsSpinningTele", rotorTextTele.getText().toString());
                         superExternalData.put("boilerRPGained", boilerRP.getText().toString());
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
@@ -277,20 +281,23 @@ public class FinalDataPoints extends ActionBarActivity {
         dataBaseUrl = intent.getExtras().getString("dataBaseUrl");
         allianceScoreData = intent.getExtras().getString("allianceScore");
         allianceFoulData = intent.getExtras().getString("allianceFoul");
-        rotorRPGained = intent.getExtras().getBoolean("scoutRotorRPGained");
+        rotorNumAuto = intent.getExtras().getInt("scoutRotorsAutoNum");
+        rotorNumTele = intent.getExtras().getInt("scoutRotorsTeleNum");
         boilerRPGained = intent.getExtras().getBoolean("scoutBoilerRPGained");
         isMute = intent.getExtras().getBoolean("mute");
     }
 
     public void sendAfterMatchData(){
         if (alliance.equals("Blue Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidStartAllRotors").setValue(rotorRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueAuto").setValue(Integer.parseInt(rotorTextAuto.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueTele").setValue(Integer.parseInt(rotorTextTele.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redDidStartAllRotors").setValue(rotorRP.isChecked());
+            firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedAuto").setValue(Integer.parseInt(rotorTextAuto.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedTele").setValue(Integer.parseInt(rotorTextTele.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
