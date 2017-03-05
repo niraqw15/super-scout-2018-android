@@ -609,8 +609,8 @@ public class MainActivity extends ActionBarActivity {
                         Log.e("previous Score", previousScore);
                     }
                     previous40kpa = Boolean.valueOf((String) superData.get("boilerRPGained"));
-                    previousRotorNumAuto = Integer.valueOf((String) superData.get("numRotorsSpinningAuto"));
-                    previousRotorNumTele = Integer.valueOf((String) superData.get("numRotorsSpinningTele"));
+                    previousRotorNumAuto = (Integer) superData.get("numRotorsSpinningAuto");
+                    previousRotorNumTele = (Integer) superData.get("numRotorsSpinningTele");
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
@@ -656,8 +656,8 @@ public class MainActivity extends ActionBarActivity {
                                     dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningBlueTele").setValue(previousRotorNumTele);
                                 }
                                 superScore.put("boilerRPGained", String.valueOf(previous40kpa));
-                                superScore.put("numRotorsSpinningAuto", String.valueOf(previousRotorNumAuto));
-                                superScore.put("numRotorsSpinningTele", String.valueOf(previousRotorNumTele));
+                                superScore.put("numRotorsSpinningAuto", previousRotorNumAuto);
+                                superScore.put("numRotorsSpinningTele", previousRotorNumTele);
 
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();
