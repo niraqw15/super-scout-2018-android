@@ -303,14 +303,14 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueTele").setValue(Integer.parseInt(rotorTextTele.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
 
         } else if (alliance.equals("Red Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedAuto").setValue(Integer.parseInt(rotorTextAuto.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedTele").setValue(Integer.parseInt(rotorTextTele.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP.isChecked());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
+            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
         }
     }
 }
