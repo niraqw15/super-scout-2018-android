@@ -89,10 +89,14 @@ public class FinalDataPoints extends ActionBarActivity {
             finalScore.setTextColor(Color.RED);
         }
         if(rotorNumAuto != null){
-            rotorTextAuto.setText(String.valueOf(rotorNumAuto));
+            if(rotorNumAuto > 0) {
+                rotorTextAuto.setText(String.valueOf(rotorNumAuto));
+            }
         }
         if(rotorNumTele != null){
-            rotorTextTele.setText(String.valueOf(rotorNumTele));
+            if(rotorNumTele > 0) {
+                rotorTextTele.setText(String.valueOf(rotorNumTele));
+            }
         }
         if(boilerRPGained){
             boilerRP.setChecked(true);
@@ -148,9 +152,13 @@ public class FinalDataPoints extends ActionBarActivity {
             final Activity context = this;
             int score;
             int foul;
+            int autoGears;
+            int teleGears;
             try {
                 score = Integer.parseInt(allianceScore.getText().toString());
                 foul = Integer.parseInt(allianceFoul.getText().toString());
+                autoGears = Integer.parseInt(rotorTextAuto.getText().toString());
+                teleGears = Integer.parseInt(rotorTextTele.getText().toString());
             } catch (NumberFormatException nfe) {
                 Toast.makeText(this, "Invalid inputs", Toast.LENGTH_LONG).show();
                 return false;
@@ -160,6 +168,8 @@ public class FinalDataPoints extends ActionBarActivity {
             }
             final int allianceScoreNum = score;
             final int allianceFoulNum = foul;
+            final int allianceAutoGearsNum = autoGears;
+            final int allianceTeleGearsNum = teleGears;
 
             //Send the data of the super scout on a separate thread
             new Thread() {
@@ -208,8 +218,8 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
                         JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
 
-                        superExternalData.put("numRotorsSpinningAuto", rotorTextAuto.getText().toString());
-                        superExternalData.put("numRotorsSpinningTele", rotorTextTele.getText().toString());
+                        superExternalData.put("numRotorsSpinningAuto", allianceAutoGearsNum);
+                        superExternalData.put("numRotorsSpinningTele", allianceTeleGearsNum);
                         superExternalData.put("boilerRPGained", boilerRP.getText().toString());
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);

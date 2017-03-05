@@ -143,8 +143,13 @@ public class ScoutingPage extends ActionBarActivity {
                     EditText rotorsAutoText = (EditText) d.findViewById(R.id.rotorAutoText);
                     EditText rotorsTeleText = (EditText) d.findViewById(R.id.rotorTeleText);
                     ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
-                    rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
-                    rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
+                    try {
+                        rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
+                        rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
+                    } catch(NumberFormatException nfe){
+                        rotorNumAuto = 0;
+                        rotorNumTele = 0;
+                    }
                     boilerRP = boilerToggle.isChecked();
                     allianceFoulData = foulText.getText().toString();
                     allianceScoreData = scoreText.getText().toString();
