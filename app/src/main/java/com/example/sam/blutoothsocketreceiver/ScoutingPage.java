@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class ScoutingPage extends ActionBarActivity {
+    Activity context;
     String numberOfMatch;
     String teamNumberOne;
     String teamNumberTwo;
@@ -71,6 +73,9 @@ public class ScoutingPage extends ActionBarActivity {
     Intent next;
     DatabaseReference dataBase;
     Boolean isRed;
+    String previousNotesOne;
+    String previousNotesTwo;
+    String previousNotesThree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,11 @@ public class ScoutingPage extends ActionBarActivity {
         dataBase = FirebaseDatabase.getInstance().getReference();
         setPanels();
         initializeTeamTextViews();
+        context = this;
 
+        previousNotesOne = "";
+        previousNotesTwo = "";
+        previousNotesThree = "";
     }
 
     //warns the user that going back will change data
@@ -124,7 +133,7 @@ public class ScoutingPage extends ActionBarActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.endDataShortcut){
+        if (id == R.id.endDataShortcut) {
             final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(this);
             endDataBuilder.setCancelable(false);
             endDataBuilder.setView(R.layout.finaldatapoints);
@@ -146,7 +155,7 @@ public class ScoutingPage extends ActionBarActivity {
                     try {
                         rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
                         rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
-                    } catch(NumberFormatException nfe){
+                    } catch (NumberFormatException nfe) {
                         rotorNumAuto = 0;
                         rotorNumTele = 0;
                     }
@@ -158,7 +167,7 @@ public class ScoutingPage extends ActionBarActivity {
             });
             AlertDialog endDataDialog = endDataBuilder.create();
             endDataDialog.show();
-            if(isRed) {
+            if (isRed) {
                 ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
             } else {
                 ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLUE);
@@ -303,17 +312,117 @@ public class ScoutingPage extends ActionBarActivity {
 
     }
 
-    public String reformatDataNames(String dataName){
+    public String reformatDataNames(String dataName) {
         return ("rank" + dataName.replace(" ", ""));
     }
 
-    public void initializeTeamTextViews(){
+    public void initializeTeamTextViews() {
         SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
         SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
         SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
-        teamNumberOneTextview = (TextView)panelOne.getView().findViewById(R.id.teamNumberTextView);
-        teamNumberTwoTextview = (TextView)panelTwo.getView().findViewById(R.id.teamNumberTextView);
-        teamNumberThreeTextview = (TextView)panelThree.getView().findViewById(R.id.teamNumberTextView);
+        teamNumberOneTextview = (TextView) panelOne.getView().findViewById(R.id.teamNumberTextView);
+        teamNumberTwoTextview = (TextView) panelTwo.getView().findViewById(R.id.teamNumberTextView);
+        teamNumberThreeTextview = (TextView) panelThree.getView().findViewById(R.id.teamNumberTextView);
+
+        teamNumberOneTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String teamNumber = teamNumberOneTextview.getText().toString();
+                final String qualNum = numberOfMatch.toString();
+
+                final EditText pilotNotesETOne = new EditText(context);
+
+                if(!previousNotesOne.equals("")) {
+                    pilotNotesETOne.setText(previousNotesOne);
+                }
+                pilotNotesETOne.setTextColor(Color.BLACK);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setTitle("SuperNotes for team "+teamNumber)
+                        .setView(pilotNotesETOne)
+                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Dialog d = (Dialog) dialog;
+                                Log.e("TEAMNUM",teamNumber);
+                                previousNotesOne = pilotNotesETOne.getText().toString();
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETOne.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        });
+        teamNumberTwoTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String teamNumber = teamNumberTwoTextview.getText().toString();
+                final String qualNum = numberOfMatch.toString();
+
+                final EditText pilotNotesETTwo = new EditText(context);
+
+                if(!previousNotesTwo.equals("")) {
+                    pilotNotesETTwo.setText(previousNotesTwo);
+                }
+                pilotNotesETTwo.setTextColor(Color.BLACK);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setTitle("Pilot Notes for "+teamNumber)
+                        .setView(pilotNotesETTwo)
+                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Dialog d = (Dialog) dialog;
+                                Log.e("TEAMNUM",teamNumber);
+                                previousNotesTwo = pilotNotesETTwo.getText().toString();
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETTwo.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        });
+        teamNumberThreeTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String teamNumber = teamNumberThreeTextview.getText().toString();
+                final String qualNum = numberOfMatch.toString();
+
+                final EditText pilotNotesETThree = new EditText(context);
+
+                if(!previousNotesThree.equals("")) {
+                    pilotNotesETThree.setText(previousNotesThree);
+                }
+                pilotNotesETThree.setTextColor(Color.BLACK);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setTitle("Pilot Notes for "+teamNumber)
+                        .setView(pilotNotesETThree)
+                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Dialog d = (Dialog) dialog;
+                                Log.e("TEAMNUM",teamNumber);
+                                previousNotesThree = pilotNotesETThree.getText().toString();
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETThree.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 }
 
