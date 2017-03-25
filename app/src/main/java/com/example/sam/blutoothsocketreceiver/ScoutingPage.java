@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jcodec.containers.mp4.boxes.Edit;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -67,6 +68,8 @@ public class ScoutingPage extends ActionBarActivity {
     ArrayList<String> teamThreeDataScore;
     Integer rotorNumAuto = 0;
     Integer rotorNumTele = 0;
+    Integer allianceScoreInt = 0;
+    Integer allianceFoulInt = 0;
     Boolean boilerRP = false;
     Boolean isMute;
     JSONObject object;
@@ -134,9 +137,17 @@ public class ScoutingPage extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.endDataShortcut) {
+//            LayoutInflater finalDataInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+//            View finalDataView = finalDataInflater.inflate(R.layout.finaldatapoints, null);
+//            ((EditText) finalDataView.findViewById(R.id.finalScoreEditText)).setText(allianceScoreInt);
+//            ((EditText) finalDataView.findViewById(R.id.finalFoulEditText)).setText(allianceFoulInt);
+//            ((EditText) finalDataView.findViewById(R.id.rotorAutoText)).setText(rotorNumAuto);
+//            ((EditText) finalDataView.findViewById(R.id.rotorTeleText)).setText(rotorNumTele);
+//            ((ToggleButton) finalDataView.findViewById(R.id.boilerToggleButton)).setChecked(boilerRP);
+            //TODO: Fix resource not found exception above
             final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(this);
             endDataBuilder.setCancelable(false);
-            endDataBuilder.setView(R.layout.finaldatapoints);
+            endDataBuilder.setView(R.layout.finaldatapoints); //TODO: change to finalDataView when exception fixed
             endDataBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -152,16 +163,43 @@ public class ScoutingPage extends ActionBarActivity {
                     EditText rotorsAutoText = (EditText) d.findViewById(R.id.rotorAutoText);
                     EditText rotorsTeleText = (EditText) d.findViewById(R.id.rotorTeleText);
                     ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
-                    try {
-                        rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
-                        rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
-                    } catch (NumberFormatException nfe) {
-                        rotorNumAuto = 0;
-                        rotorNumTele = 0;
-                    }
                     boilerRP = boilerToggle.isChecked();
                     allianceFoulData = foulText.getText().toString();
                     allianceScoreData = scoreText.getText().toString();
+                    try {
+                        rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
+                        rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
+                        allianceScoreInt = Integer.parseInt(allianceScoreData);
+                        allianceFoulInt = Integer.parseInt(allianceFoulData);
+                    } catch (NumberFormatException nfe) {
+                        Log.i("Exception", "Number Format");
+                        rotorNumAuto = 0;
+                        rotorNumTele = 0;
+                        allianceScoreInt = 0;
+                        allianceFoulInt = 0;
+                    } catch (NullPointerException npe) {
+                        Log.i("Exception", "Null Pointer");
+                        rotorNumAuto = 0;
+                        rotorNumTele = 0;
+                        allianceScoreInt = 0;
+                        allianceFoulInt = 0;
+                    }
+
+                    if (alliance.equals("Blue Alliance")) {
+                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueAuto").setValue(rotorNumAuto);
+                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueTele").setValue(rotorNumTele);
+                        dataBase.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP);
+                        dataBase.child("/Matches").child(numberOfMatch).child("blueScore").setValue(allianceScoreInt);
+                        dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(allianceFoulInt);
+
+                    } else if (alliance.equals("Red Alliance")) {
+                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedAuto").setValue(rotorNumAuto);
+                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedTele").setValue(rotorNumTele);
+                        dataBase.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP);
+                        dataBase.child("/Matches").child(numberOfMatch).child("redScore").setValue(allianceScoreInt);
+                        dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(allianceFoulInt);
+                    }
+
                     dialog.cancel();
                 }
             });

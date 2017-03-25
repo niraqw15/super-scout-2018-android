@@ -89,12 +89,12 @@ public class FinalDataPoints extends ActionBarActivity {
             finalScore.setTextColor(Color.RED);
         }
         if(rotorNumAuto != null){
-            if(rotorNumAuto > 0) {
+            if(rotorNumAuto >= 0) {
                 rotorTextAuto.setText(String.valueOf(rotorNumAuto));
             }
         }
         if(rotorNumTele != null){
-            if(rotorNumTele > 0) {
+            if(rotorNumTele >= 0) {
                 rotorTextTele.setText(String.valueOf(rotorNumTele));
             }
         }
