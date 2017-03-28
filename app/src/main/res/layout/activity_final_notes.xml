@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_final_notes"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.sam.blutoothsocketreceiver.finalNotes">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:id="@+id/teamNumberOneTextView" />
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:minLines="3"
+        android:maxLines="10"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:hint="Put Yo Notes Right Here..."
+        android:layout_below="@+id/teamNumberOneTextView"
+        android:layout_alignParentLeft="true"
+        android:textSize="17sp"
+        android:id="@+id/teamOneSuperNotesEditText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamOneSuperNotesEditText"
+        android:layout_alignParentLeft="true"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:id="@+id/teamNumberTwoTextView" />
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:minLines="3"
+        android:maxLines="10"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:hint="Put Yo Notes Right Here..."
+        android:layout_below="@+id/teamNumberTwoTextView"
+        android:layout_alignParentLeft="true"
+        android:textSize="17sp"
+        android:id="@+id/teamTwoSuperNotesEditText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamTwoSuperNotesEditText"
+        android:layout_alignParentLeft="true"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:id="@+id/teamNumberThreeTextView" />
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:minLines="3"
+        android:maxLines="10"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:hint="Put Yo Notes Right Here..."
+        android:layout_below="@+id/teamNumberThreeTextView"
+        android:layout_alignParentLeft="true"
+        android:textSize="17sp"
+        android:id="@+id/teamThreeSuperNotesEditText" />
+
+</RelativeLayout>

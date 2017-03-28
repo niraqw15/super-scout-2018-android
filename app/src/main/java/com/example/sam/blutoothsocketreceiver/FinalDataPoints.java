@@ -41,6 +41,9 @@ public class FinalDataPoints extends ActionBarActivity {
     String teamNumberOne;
     String teamNumberTwo;
     String teamNumberThree;
+    String teamOneFirstNotes;
+    String teamTwoFirstNotes;
+    String teamThreeFirstNotes;
     String alliance;
     String dataBaseUrl;
     String allianceScoreData, allianceFoulData;
@@ -138,15 +141,6 @@ public class FinalDataPoints extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id == R.id.forgotAllianceScore){
-            Toast.makeText(this, "Not Available right now.", Toast.LENGTH_LONG).show();
-            /*Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("https://www.thebluealliance.com/match/2016casj_qm" + numberOfMatch));
-            startActivity(intent);*/
-
-        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.Submit) {
             final Activity context = this;
@@ -231,6 +225,12 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
+                        superExternalData.put("teamOneFirstNotes", teamOneFirstNotes);
+                        superExternalData.put("teamTwoFirstNotes", teamTwoFirstNotes);
+                        superExternalData.put("teamThreeFirstNotes", teamThreeFirstNotes);
+                        superExternalData.put("teamOneFinalNotes", finalNotes.teamOneFinalNotes);
+                        superExternalData.put("teamTwoFinalNotes", finalNotes.teamTwoFinalNotes);
+                        superExternalData.put("teamThreeFinalNotes", finalNotes.teamThreeFinalNotes);
                         //ArrayList<String> rankNames = new ArrayList<>(Arrays.asList("numTimesBeached", "numTimesSlowed", "numTimesUnaffected"));
                     }catch(JSONException JE){
                         Log.e("JSON Error", "couldn't put keys and values in json object");
@@ -265,8 +265,16 @@ public class FinalDataPoints extends ActionBarActivity {
             backToHome.putExtra("number", numberOfMatch);
             backToHome.putExtra("mute", isMute);
             startActivity(backToHome);
-        } else if(id == R.id.finalNotes){
+        }
 
+        if(id == R.id.finalSuperNotes){
+            final Activity context = this;
+            Intent finalNotesIntent = new Intent(context, finalNotes.class);
+            finalNotesIntent.putExtra("teamNumOne", teamNumberOne);
+            finalNotesIntent.putExtra("teamNumTwo", teamNumberTwo);
+            finalNotesIntent.putExtra("teamNumThree", teamNumberThree);
+            finalNotesIntent.putExtra("qualNum", numberOfMatch);
+            startActivity(finalNotesIntent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -276,6 +284,10 @@ public class FinalDataPoints extends ActionBarActivity {
     }
 
     public void getExtrasForFinalData(){
+
+        teamOneFirstNotes = intent.getExtras().getString("teamOneFirstNotes");
+        teamTwoFirstNotes = intent.getExtras().getString("teamTwoFirstNotes");
+        teamThreeFirstNotes = intent.getExtras().getString("teamThreeFirstNotes");
 
         numberOfMatch = intent.getExtras().getString("matchNumber");
         teamNumberOne = intent.getExtras().getString("teamNumberOne");

@@ -98,5 +98,4 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/allRotorsSpinningTextView"
         android:visibility="invisible"/>
-
 </RelativeLayout>

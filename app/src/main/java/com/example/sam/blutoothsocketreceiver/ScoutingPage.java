@@ -79,6 +79,9 @@ public class ScoutingPage extends ActionBarActivity {
     String previousNotesOne;
     String previousNotesTwo;
     String previousNotesThree;
+    String teamOneFirstNotes;
+    String teamTwoFirstNotes;
+    String teamThreeFirstNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,6 +294,9 @@ public class ScoutingPage extends ActionBarActivity {
 
     public void sendExtras() {
         Intent intent = new Intent(this, FinalDataPoints.class);
+        intent.putExtra("teamOneFirstNotes", teamOneFirstNotes);
+        intent.putExtra("teamTwoFirstNotes", teamTwoFirstNotes);
+        intent.putExtra("teamThreeFirstNotes", teamThreeFirstNotes);
         intent.putExtra("matchNumber", numberOfMatch);
         intent.putExtra("teamNumberOne", teamNumberOne);
         intent.putExtra("teamNumberTwo", teamNumberTwo);
@@ -403,7 +409,8 @@ public class ScoutingPage extends ActionBarActivity {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
                                 previousNotesOne = pilotNotesETOne.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETOne.getText().toString());
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETOne.getText().toString());
+                                teamOneFirstNotes = pilotNotesETOne.getText().toString();
                             }
                         })
                         .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
@@ -436,7 +443,8 @@ public class ScoutingPage extends ActionBarActivity {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
                                 previousNotesTwo = pilotNotesETTwo.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETTwo.getText().toString());
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETTwo.getText().toString());
+                                teamTwoFirstNotes = pilotNotesETTwo.getText().toString();
                             }
                         })
                         .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
@@ -469,7 +477,8 @@ public class ScoutingPage extends ActionBarActivity {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
                                 previousNotesThree = pilotNotesETThree.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").setValue(pilotNotesETThree.getText().toString());
+                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETThree.getText().toString());
+                                teamThreeFirstNotes = pilotNotesETThree.getText().toString();
                             }
                         })
                         .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {

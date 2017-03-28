@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/endDataShortcut"
-        android:title="End Data"
-        app:showAsAction = "always"/>
-    <item
-        android:id="@+id/finalNext"
-        android:title="Next >>"
+        android:id="@+id/submitFinalNotes"
+        android:title="Submit"
         app:showAsAction = "always"/>
 </menu>

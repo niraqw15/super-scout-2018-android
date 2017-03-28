@@ -448,6 +448,14 @@ public class MainActivity extends ActionBarActivity {
                     try {
                         Log.e("Test 2", "assign file data to Json");
                         JSONObject superData = dataPoints.get(j);
+
+                        String teamOneFirstNotes = superData.getString("teamOneFirstNotes");
+                        String teamTwoFirstNotes = superData.getString("teamTwoFirstNotes");
+                        String teamThreeFirstNotes = superData.getString("teamThreeFirstNotes");
+                        String teamOneFinalNotes = superData.getString("teamOneFinalNotes");
+                        String teamTwoFinalNotes = superData.getString("teamTwoFinalNotes");
+                        String teamThreeFinalNotes = superData.getString("teamThreeFinalNotes");
+
                         String matchNum = superData.get("matchNumber").toString();
                         String matchAndTeamOne = superData.get("teamOne") + "Q" + matchNum;
                         String matchAndTeamTwo = superData.get("teamTwo") + "Q" + matchNum;
@@ -498,6 +506,13 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("Matches").child(matchNum).child("didReach40KiloPascalsRed").setValue(Boolean.valueOf((String) superData.get("boilerRPGained")));
                             dataBase.child("Matches").child(matchNum).child("didStartAllRotorsRed").setValue(Boolean.valueOf((String) superData.get("rotorRPGained")));
                         }
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("firstNotes").setValue(teamOneFirstNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("firstNotes").setValue(teamTwoFirstNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("firstNotes").setValue(teamThreeFirstNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("finalNotes").setValue(teamOneFinalNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("finalNotes").setValue(teamTwoFinalNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
+
 
                     } catch (JSONException JE) {
                         Log.e("json error", "failed to get super json");
