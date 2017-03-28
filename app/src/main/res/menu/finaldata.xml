@@ -10,6 +10,10 @@
         android:id="@+id/finalNext"
         android:title="Next >>"
         app:showAsAction = "always"/>
+    <item
+        android:id="@+id/finalNotes"
+        android:title="Notes"
+        app:showAsAction="always" />
 
 
 </menu>

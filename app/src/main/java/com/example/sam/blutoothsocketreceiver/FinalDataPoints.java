@@ -265,6 +265,8 @@ public class FinalDataPoints extends ActionBarActivity {
             backToHome.putExtra("number", numberOfMatch);
             backToHome.putExtra("mute", isMute);
             startActivity(backToHome);
+        } else if(id == R.id.finalNotes){
+
         }
         return super.onOptionsItemSelected(item);
     }

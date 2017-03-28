@@ -43,9 +43,9 @@ public class SuperScoutingPanel extends Fragment {
         // Inflate the layout for this fragment
         Speed = new ArrayList<>(Arrays.asList(0, 0, 3, 0, 0));
         GearControl = new ArrayList<>(Arrays.asList(0, 0, 3, 0, 0));
-        BallControl = new ArrayList<>(Arrays.asList(0, 0, 3, 0, 0));
+        BallControl = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
         Agility = new ArrayList<>(Arrays.asList(0, 0, 3, 0, 0));
-        Defense = new ArrayList<>(Arrays.asList(0, 0, 3, 0, 0));
+        Defense = new ArrayList<>(Arrays.asList(3, 0, 0, 0, 0));
 
         return inflater.inflate(R.layout.super_scouting_panel, container, false);
     }
