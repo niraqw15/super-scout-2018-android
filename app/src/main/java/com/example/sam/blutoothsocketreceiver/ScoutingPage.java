@@ -228,7 +228,6 @@ public class ScoutingPage extends ActionBarActivity {
                 final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
                 final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
                 listDataValues();
-                checkForSpecialZeros();
 
                 //new added code
                 new Thread() {
@@ -355,24 +354,6 @@ public class ScoutingPage extends ActionBarActivity {
         Log.e("teamThreeDataName", teamThreeDataName.toString());
         Log.e("teamThreeDataScore", teamThreeDataScore.toString());
 
-    }
-
-    public void checkForSpecialZeros(){
-        if(teamOneDataScore.get(0).equals("0") || teamOneDataScore.get(2).equals("0")){
-            for(int n = 0; n <= teamOneDataScore.size() - 1; n++){
-                teamOneDataScore.set(n, "0");
-            }
-        }
-        if(teamTwoDataScore.get(0).equals("0") || teamTwoDataScore.get(2).equals("0")){
-            for(int n = 0; n <= teamTwoDataScore.size() - 1; n++){
-                teamTwoDataScore.set(n, "0");
-            }
-        }
-        if(teamThreeDataScore.get(0).equals("0") || teamThreeDataScore.get(2).equals("0")){
-            for(int n = 0; n <= teamThreeDataScore.size() - 1; n++){
-                teamThreeDataScore.set(n, "0");
-            }
-        }
     }
 
     public String reformatDataNames(String dataName) {
