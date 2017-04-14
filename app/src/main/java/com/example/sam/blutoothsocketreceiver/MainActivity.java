@@ -225,10 +225,10 @@ public class MainActivity extends ActionBarActivity {
             updateUI();
         }
         if (id == R.id.scout) {
-//            if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString())){
-//                Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_LONG).show();
-//                disenableEditTextEditing();
-//            }else{
+            if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString())){
+                Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_LONG).show();
+                disenableEditTextEditing();
+            }else{
                 if (numberOfMatch.getText().toString().equals("")) {
                     Toast.makeText(context, "Input match name!", Toast.LENGTH_SHORT).show();
                 } else if (teamNumberOne.getText().toString().equals("")) {
@@ -254,7 +254,7 @@ public class MainActivity extends ActionBarActivity {
                     Log.e("start alliance", alliance.getText().toString());
                     startActivity(intent);
                 }
-//            }
+            }
 
         } else if (id == R.id.action_override) {
             if (item.getTitle().toString().equals("Override Match and Team Number")) {
