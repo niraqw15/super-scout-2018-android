@@ -41,9 +41,9 @@ public class FinalDataPoints extends ActionBarActivity {
     String teamNumberOne;
     String teamNumberTwo;
     String teamNumberThree;
-    String teamOneFirstNotes;
-    String teamTwoFirstNotes;
-    String teamThreeFirstNotes;
+    String teamOneNotes;
+    String teamTwoNotes;
+    String teamThreeNotes;
     String alliance;
     String dataBaseUrl;
     String allianceScoreData, allianceFoulData;
@@ -75,6 +75,7 @@ public class FinalDataPoints extends ActionBarActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         intent = getIntent();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        superExternalData = new JSONObject();
         getExtrasForFinalData();
         firebaseRef = FirebaseDatabase.getInstance().getReference();
         rotorTextAuto = (EditText) findViewById(R.id.rotorAutoText);
@@ -83,7 +84,6 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceFoul = (EditText) findViewById(R.id.finalFoulEditText);
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
         boilerRP = (ToggleButton) findViewById(R.id.boilerToggleButton);
-        superExternalData = new JSONObject();
         allianceScore.setCursorVisible(false);
 
         if(alliance.equals("Blue Alliance")){
@@ -225,12 +225,9 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
-                        superExternalData.put("teamOneFirstNotes", teamOneFirstNotes);
-                        superExternalData.put("teamTwoFirstNotes", teamTwoFirstNotes);
-                        superExternalData.put("teamThreeFirstNotes", teamThreeFirstNotes);
-                        superExternalData.put("teamOneFinalNotes", finalNotes.teamOneFinalNotes);
-                        superExternalData.put("teamTwoFinalNotes", finalNotes.teamTwoFinalNotes);
-                        superExternalData.put("teamThreeFinalNotes", finalNotes.teamThreeFinalNotes);
+                        superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
+                        superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
+                        superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
                         //ArrayList<String> rankNames = new ArrayList<>(Arrays.asList("numTimesBeached", "numTimesSlowed", "numTimesUnaffected"));
                     }catch(JSONException JE){
                         Log.e("JSON Error", "couldn't put keys and values in json object");
@@ -240,6 +237,9 @@ public class FinalDataPoints extends ActionBarActivity {
                     for (int i = 0; i < teamNumbers.size(); i++){
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
+                        firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamOneNoteHolder);
+                        firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamTwoNoteHolder);
+                        firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamThreeNoteHolder);
                     }
                     sendAfterMatchData();
 
@@ -273,6 +273,9 @@ public class FinalDataPoints extends ActionBarActivity {
             finalNotesIntent.putExtra("teamNumOne", teamNumberOne);
             finalNotesIntent.putExtra("teamNumTwo", teamNumberTwo);
             finalNotesIntent.putExtra("teamNumThree", teamNumberThree);
+            finalNotesIntent.putExtra("teamOneNotes", teamOneNotes);
+            finalNotesIntent.putExtra("teamTwoNotes", teamTwoNotes);
+            finalNotesIntent.putExtra("teamThreeNotes", teamThreeNotes);
             finalNotesIntent.putExtra("qualNum", numberOfMatch);
             startActivity(finalNotesIntent);
         }
@@ -285,9 +288,9 @@ public class FinalDataPoints extends ActionBarActivity {
 
     public void getExtrasForFinalData(){
 
-        teamOneFirstNotes = intent.getExtras().getString("teamOneFirstNotes");
-        teamTwoFirstNotes = intent.getExtras().getString("teamTwoFirstNotes");
-        teamThreeFirstNotes = intent.getExtras().getString("teamThreeFirstNotes");
+        teamOneNotes = intent.getExtras().getString("teamOneNotes");
+        teamTwoNotes = intent.getExtras().getString("teamTwoNotes");
+        teamThreeNotes = intent.getExtras().getString("teamThreeNotes");
 
         numberOfMatch = intent.getExtras().getString("matchNumber");
         teamNumberOne = intent.getExtras().getString("teamNumberOne");

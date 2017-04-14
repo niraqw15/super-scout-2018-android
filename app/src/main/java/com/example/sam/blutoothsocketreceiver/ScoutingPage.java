@@ -76,12 +76,9 @@ public class ScoutingPage extends ActionBarActivity {
     Intent next;
     DatabaseReference dataBase;
     Boolean isRed;
-    String previousNotesOne;
-    String previousNotesTwo;
-    String previousNotesThree;
-    String teamOneFirstNotes;
-    String teamTwoFirstNotes;
-    String teamThreeFirstNotes;
+    String teamOneNotes;
+    String teamTwoNotes;
+    String teamThreeNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +96,9 @@ public class ScoutingPage extends ActionBarActivity {
         initializeTeamTextViews();
         context = this;
 
-        previousNotesOne = "";
-        previousNotesTwo = "";
-        previousNotesThree = "";
+        teamOneNotes = "";
+        teamTwoNotes = "";
+        teamThreeNotes = "";
     }
 
     //warns the user that going back will change data
@@ -293,9 +290,9 @@ public class ScoutingPage extends ActionBarActivity {
 
     public void sendExtras() {
         Intent intent = new Intent(this, FinalDataPoints.class);
-        intent.putExtra("teamOneFirstNotes", teamOneFirstNotes);
-        intent.putExtra("teamTwoFirstNotes", teamTwoFirstNotes);
-        intent.putExtra("teamThreeFirstNotes", teamThreeFirstNotes);
+        intent.putExtra("teamOneNotes", teamOneNotes);
+        intent.putExtra("teamTwoNotes", teamTwoNotes);
+        intent.putExtra("teamThreeNotes", teamThreeNotes);
         intent.putExtra("matchNumber", numberOfMatch);
         intent.putExtra("teamNumberOne", teamNumberOne);
         intent.putExtra("teamNumberTwo", teamNumberTwo);
@@ -376,8 +373,8 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETOne = new EditText(context);
 
-                if(!previousNotesOne.equals("")) {
-                    pilotNotesETOne.setText(previousNotesOne);
+                if(!teamOneNotes.equals("")) {
+                    pilotNotesETOne.setText(teamOneNotes);
                 }
                 pilotNotesETOne.setTextColor(Color.BLACK);
 
@@ -385,16 +382,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 builder.setTitle("SuperNotes for team "+teamNumber)
                         .setView(pilotNotesETOne)
-                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
-                                previousNotesOne = pilotNotesETOne.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETOne.getText().toString());
-                                teamOneFirstNotes = pilotNotesETOne.getText().toString();
+                                teamOneNotes = pilotNotesETOne.getText().toString();
                             }
                         })
-                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
@@ -410,8 +405,8 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETTwo = new EditText(context);
 
-                if(!previousNotesTwo.equals("")) {
-                    pilotNotesETTwo.setText(previousNotesTwo);
+                if(!teamTwoNotes.equals("")) {
+                    pilotNotesETTwo.setText(teamTwoNotes);
                 }
                 pilotNotesETTwo.setTextColor(Color.BLACK);
 
@@ -419,16 +414,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 builder.setTitle("Pilot Notes for "+teamNumber)
                         .setView(pilotNotesETTwo)
-                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
-                                previousNotesTwo = pilotNotesETTwo.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETTwo.getText().toString());
-                                teamTwoFirstNotes = pilotNotesETTwo.getText().toString();
+                                teamTwoNotes = pilotNotesETTwo.getText().toString();
                             }
                         })
-                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
@@ -444,8 +437,8 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETThree = new EditText(context);
 
-                if(!previousNotesThree.equals("")) {
-                    pilotNotesETThree.setText(previousNotesThree);
+                if(!teamThreeNotes.equals("")) {
+                    pilotNotesETThree.setText(teamThreeNotes);
                 }
                 pilotNotesETThree.setTextColor(Color.BLACK);
 
@@ -453,16 +446,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 builder.setTitle("Pilot Notes for "+teamNumber)
                         .setView(pilotNotesETThree)
-                        .setPositiveButton("Yep", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Dialog d = (Dialog) dialog;
                                 Log.e("TEAMNUM",teamNumber);
-                                previousNotesThree = pilotNotesETThree.getText().toString();
-                                dataBase.child("TeamInMatchDatas").child(teamNumber + "Q" + qualNum).child("superNotes").child("firstNotes").setValue(pilotNotesETThree.getText().toString());
-                                teamThreeFirstNotes = pilotNotesETThree.getText().toString();
+                                teamThreeNotes = pilotNotesETThree.getText().toString();
                             }
                         })
-                        .setNegativeButton("Naw Bruh", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }

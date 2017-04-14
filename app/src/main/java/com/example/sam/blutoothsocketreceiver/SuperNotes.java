@@ -135,9 +135,9 @@ public class SuperNotes extends ActionBarActivity {
         teamOne = toNotes.getStringExtra("teamOne");
         teamTwo = toNotes.getStringExtra("teamTwo");
         teamThree = toNotes.getStringExtra("teamThree");
-        teamOneNote = toNotes.getStringExtra("teamOneNote");
-        teamTwoNote = toNotes.getStringExtra("teamTwoNote");
-        teamThreeNote = toNotes.getStringExtra("teamThreeNote");
+        teamOneNote = toNotes.getStringExtra("teamOneNotes");
+        teamTwoNote = toNotes.getStringExtra("teamTwoNotes");
+        teamThreeNote = toNotes.getStringExtra("teamThreeNotes");
         dataBaseUrl = toNotes.getExtras().getString("dataBaseUrl");
     }
 

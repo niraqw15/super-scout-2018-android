@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,16 +37,12 @@ public class finalNotes extends ActionBarActivity {
     String teamNumberOne;
     String teamNumberTwo;
     String teamNumberThree;
+    String teamOneNotes, teamTwoNotes, teamThreeNotes;
     String qualNum;
     EditText teamOneEditText;
     EditText teamTwoEditText;
     EditText teamThreeEditText;
-    public static String teamOneFinalNotes;
-    public static String teamTwoFinalNotes;
-    public static String teamThreeFinalNotes;
     DatabaseReference firebaseRef;
-    SharedPreferences.Editor editor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +58,9 @@ public class finalNotes extends ActionBarActivity {
         teamNumberOne = intent.getStringExtra("teamNumOne");
         teamNumberTwo = intent.getStringExtra("teamNumTwo");
         teamNumberThree = intent.getStringExtra("teamNumThree");
+        teamOneNotes = intent.getStringExtra("teamOneNotes");
+        teamTwoNotes = intent.getStringExtra("teamTwoNotes");
+        teamThreeNotes = intent.getStringExtra("teamThreeNotes");
 
         TextView teamOneTextView = (TextView) findViewById(R.id.teamNumberOneTextView);
         TextView teamTwoTextView = (TextView) findViewById(R.id.teamNumberTwoTextView);
@@ -70,16 +70,13 @@ public class finalNotes extends ActionBarActivity {
         setTextViewText(teamNumberTwo, teamTwoTextView);
         setTextViewText(teamNumberThree, teamThreeTextView);
 
-        editor = getSharedPreferences("SuperNotesPref", MODE_PRIVATE).edit();
-        SharedPreferences prefs = getSharedPreferences("SuperNotesPref", MODE_PRIVATE);
-
         teamOneEditText = (EditText) findViewById(R.id.teamOneSuperNotesEditText);
         teamTwoEditText = (EditText) findViewById(R.id.teamTwoSuperNotesEditText);
         teamThreeEditText = (EditText) findViewById(R.id.teamThreeSuperNotesEditText);
 
-        teamOneEditText.setText(prefs.getString("teamOneFinalNotes", ""));
-        teamTwoEditText.setText(prefs.getString("teamTwoFinalNotes", ""));
-        teamThreeEditText.setText(prefs.getString("teamThreeFinalNotes", ""));
+        teamOneEditText.setText(teamOneNotes);
+        teamTwoEditText.setText(teamTwoNotes);
+        teamThreeEditText.setText(teamThreeNotes);
     }
 
     @Override
@@ -90,18 +87,15 @@ public class finalNotes extends ActionBarActivity {
                 .setMessage("Send before leaving?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        teamOneFinalNotes = teamOneEditText.getText().toString();
-                        teamTwoFinalNotes = teamTwoEditText.getText().toString();
-                        teamThreeFinalNotes = teamThreeEditText.getText().toString();
-
-                        editor.putString("teamOneFinalNotes", teamOneFinalNotes);
-                        editor.putString("teamTwoFinalNotes", teamTwoFinalNotes);
-                        editor.putString("teamThreeFinalNotes", teamThreeFinalNotes);
-                        editor.commit();
-
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamOneEditText.getText().toString());
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamTwoEditText.getText().toString());
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamThreeEditText.getText().toString());
+                        try {
+                            Constants.teamOneNoteHolder = teamOneEditText.getText().toString();
+                            Constants.teamTwoNoteHolder = teamTwoEditText.getText().toString();
+                            Constants.teamThreeNoteHolder = teamThreeEditText.getText().toString();
+                        } catch (NullPointerException npe){
+                            Constants.teamOneNoteHolder = "";
+                            Constants.teamTwoNoteHolder = "";
+                            Constants.teamThreeNoteHolder = "";
+                        }
 
                         activity.finish();
                     }
@@ -124,19 +118,15 @@ public class finalNotes extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.submitFinalNotes){
-            teamOneFinalNotes = teamOneEditText.getText().toString();
-            teamTwoFinalNotes = teamTwoEditText.getText().toString();
-            teamThreeFinalNotes = teamThreeEditText.getText().toString();
-
-            editor.putString("teamOneFinalNotes", teamOneFinalNotes);
-            editor.putString("teamTwoFinalNotes", teamTwoFinalNotes);
-            editor.putString("teamThreeFinalNotes", teamThreeFinalNotes);
-            editor.commit();
-
-            firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamOneEditText.getText().toString());
-            firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamTwoEditText.getText().toString());
-            firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + qualNum).child("superNotes").child("finalNotes").setValue(teamThreeEditText.getText().toString());
-
+            try {
+                Constants.teamOneNoteHolder = teamOneEditText.getText().toString();
+                Constants.teamTwoNoteHolder = teamTwoEditText.getText().toString();
+                Constants.teamThreeNoteHolder = teamThreeEditText.getText().toString();
+            } catch (NullPointerException npe){
+                Constants.teamOneNoteHolder = "";
+                Constants.teamTwoNoteHolder = "";
+                Constants.teamThreeNoteHolder = "";
+            }
             finish();
         }
         return super.onOptionsItemSelected(item);

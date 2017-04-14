@@ -78,7 +78,7 @@ public class SuperScoutingPanel extends Fragment {
 
 
     public Map getData(){
-        Map<String, Integer> mapOfData = new HashMap<>();
+        Map<String, Integer> mapOfData = new HashMap<>();   //Make this a LinkedHashMap if you want to make everything 0's when speed is 0
         LinearLayout rootLayout = (LinearLayout)getView();
         Counter counter;
         for (int i = 0; i < ((LinearLayout)getView()).getChildCount() - 1; i++) {
