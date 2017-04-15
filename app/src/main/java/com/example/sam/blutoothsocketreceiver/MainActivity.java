@@ -237,9 +237,9 @@ public class MainActivity extends ActionBarActivity {
                     Toast.makeText(context, "Input team two number!", Toast.LENGTH_SHORT).show();
                 } else if (teamNumberThree.getText().toString().equals("")) {
                     Toast.makeText(context, "Input team three number!", Toast.LENGTH_SHORT).show();
-                } else if(teamNumberOne.getText().toString().equals("Not Available")){
-                    Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_SHORT).show();
-                }
+                } //else if(teamNumberOne.getText().toString().equals("Not Available")){
+//                    Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_SHORT).show();
+//                }
                 else {
                     commitSharedPreferences();
                     Intent intent = new Intent(context, ScoutingPage.class);
@@ -348,11 +348,14 @@ public class MainActivity extends ActionBarActivity {
                 teamNumberOne.setText(teamsOnAlliance.get(0).toString());
                 teamNumberTwo.setText(teamsOnAlliance.get(1).toString());
                 teamNumberThree.setText(teamsOnAlliance.get(2).toString());
+                teamNumberOne.setHint("");
+                teamNumberTwo.setHint("");
+                teamNumberThree.setHint("");
 
             } else {
-                teamNumberOne.setText("Not Available");
-                teamNumberTwo.setText("Not Available");
-                teamNumberThree.setText("Not Available");
+                teamNumberOne.setHint("Not Available");
+                teamNumberTwo.setHint("Not Available");
+                teamNumberThree.setHint("Not Available");
 
             }
         }catch(NullPointerException NPE){
