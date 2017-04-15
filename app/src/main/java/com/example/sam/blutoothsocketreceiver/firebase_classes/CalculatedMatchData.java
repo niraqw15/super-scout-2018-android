@@ -25,5 +25,34 @@ public class CalculatedMatchData extends Object {
     public Float fortykPAChanceBlue;
     public Float allRotorsTurningChanceRed;
     public Float allRotorsTurningChanceBlue;
+    public Float disfunctionalPercentage;
+    public Float gearAbility;
+    public Float allRotorsAbility;
+
+    //Last four match data
+    public Float lfmDisabledPercentage;
+    public Float lfmIncapacitatedPercentage;
+    public Float lmfAvgGearsPlacedAuto;
+    public Float lfmAvgHighShotsAuto;
+    public Float lfmAvgLowShotsAuto;
+    public Float lfmBaselineReachedPercentage;
+
+    public Float lfmAvgGearsPlacedTele;
+    public Float lfmAvgGearLoaderIntakesTele;
+    public Float lfmAvgHighShotsTele;
+    public Float lfmAvgLowShotsTele;
+    public Float lfmAvgKeyShotTime;
+    public Float lfmAvgLiftoffTime;
+
+    public Float lfmLiftoffPercentage;
+    public Float lfmFirstPickAbility;
+    public Float lfmSecondPickAbility;
+    public Float lfmThirdPickAbility;
+    public Float lfmGearAbility;
+    public Float lfmAvgAgility;
+    public Float lfmAvgSpeed;
+    public Float lfmAvgBallControl;
+    public Float lfmAvgGearControl;
+    public Float lfmAvgDefense;
 
 }
