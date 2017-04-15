@@ -356,6 +356,9 @@ public class MainActivity extends ActionBarActivity {
                 teamNumberOne.setHint("Not Available");
                 teamNumberTwo.setHint("Not Available");
                 teamNumberThree.setHint("Not Available");
+                teamNumberOne.setText("");
+                teamNumberTwo.setText("");
+                teamNumberThree.setText("");
 
             }
         }catch(NullPointerException NPE){
