@@ -82,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<String> checkNumKeys;
     ArrayList<String> checkStringKeys;
     boolean isMute = false;
+    boolean isOverriden;
     ToggleButton mute;
     ArrayAdapter<String> adapter;
 
@@ -92,6 +93,7 @@ public class MainActivity extends ActionBarActivity {
         Log.e("test", "Logcat is up and running!");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
+        isOverriden = false;
 
         Constants.teamOneNoteHolder = "";
         Constants.teamTwoNoteHolder = "";
@@ -225,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
             updateUI();
         }
         if (id == R.id.scout) {
-            if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString())){
+            if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString()) && !isOverriden){
                 Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_LONG).show();
                 disenableEditTextEditing();
             }else{
@@ -399,6 +401,7 @@ public class MainActivity extends ActionBarActivity {
         teamNumberOne.setFocusableInTouchMode(true);
         teamNumberTwo.setFocusableInTouchMode(true);
         teamNumberThree.setFocusableInTouchMode(true);
+        isOverriden = true;
     }
 
     public void disenableEditTextEditing() {
@@ -407,6 +410,7 @@ public class MainActivity extends ActionBarActivity {
         teamNumberOne.setFocusable(false);
         teamNumberTwo.setFocusable(false);
         teamNumberThree.setFocusable(false);
+        isOverriden = false;
     }
 //reads the data of the clicked file
     public String readFile(String name) {

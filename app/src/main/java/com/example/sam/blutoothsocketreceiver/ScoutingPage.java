@@ -137,79 +137,7 @@ public class ScoutingPage extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.endDataShortcut) {
-//            LayoutInflater finalDataInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-//            View finalDataView = finalDataInflater.inflate(R.layout.finaldatapoints, null);
-//            ((EditText) finalDataView.findViewById(R.id.finalScoreEditText)).setText(allianceScoreInt);
-//            ((EditText) finalDataView.findViewById(R.id.finalFoulEditText)).setText(allianceFoulInt);
-//            ((EditText) finalDataView.findViewById(R.id.rotorAutoText)).setText(rotorNumAuto);
-//            ((EditText) finalDataView.findViewById(R.id.rotorTeleText)).setText(rotorNumTele);
-//            ((ToggleButton) finalDataView.findViewById(R.id.boilerToggleButton)).setChecked(boilerRP);
-            //TODO: Fix resource not found exception above
-            final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(this);
-            endDataBuilder.setCancelable(false);
-            endDataBuilder.setView(R.layout.finaldatapoints); //TODO: change to finalDataView when exception fixed
-            endDataBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            endDataBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Dialog d = (Dialog) dialog;
-                    EditText scoreText = (EditText) d.findViewById(R.id.finalScoreEditText);
-                    EditText foulText = (EditText) d.findViewById(R.id.finalFoulEditText);
-                    EditText rotorsAutoText = (EditText) d.findViewById(R.id.rotorAutoText);
-                    EditText rotorsTeleText = (EditText) d.findViewById(R.id.rotorTeleText);
-                    ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
-                    boilerRP = boilerToggle.isChecked();
-                    allianceFoulData = foulText.getText().toString();
-                    allianceScoreData = scoreText.getText().toString();
-                    try {
-                        rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
-                        rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
-                        allianceScoreInt = Integer.parseInt(allianceScoreData);
-                        allianceFoulInt = Integer.parseInt(allianceFoulData);
-                    } catch (NumberFormatException nfe) {
-                        Log.i("Exception", "Number Format");
-                        rotorNumAuto = 0;
-                        rotorNumTele = 0;
-                        allianceScoreInt = 0;
-                        allianceFoulInt = 0;
-                    } catch (NullPointerException npe) {
-                        Log.i("Exception", "Null Pointer");
-                        rotorNumAuto = 0;
-                        rotorNumTele = 0;
-                        allianceScoreInt = 0;
-                        allianceFoulInt = 0;
-                    }
-
-                    if (alliance.equals("Blue Alliance")) {
-                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueAuto").setValue(rotorNumAuto);
-                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueTele").setValue(rotorNumTele);
-                        dataBase.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP);
-                        dataBase.child("/Matches").child(numberOfMatch).child("blueScore").setValue(allianceScoreInt);
-                        dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(allianceFoulInt);
-
-                    } else if (alliance.equals("Red Alliance")) {
-                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedAuto").setValue(rotorNumAuto);
-                        dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedTele").setValue(rotorNumTele);
-                        dataBase.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP);
-                        dataBase.child("/Matches").child(numberOfMatch).child("redScore").setValue(allianceScoreInt);
-                        dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(allianceFoulInt);
-                    }
-
-                    dialog.cancel();
-                }
-            });
-            AlertDialog endDataDialog = endDataBuilder.create();
-            endDataDialog.show();
-            if (isRed) {
-                ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
-            } else {
-                ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLUE);
-            }
+            inflateFinalDataMenu();
         }
 
         if (id == R.id.finalNext) {
@@ -261,6 +189,89 @@ public class ScoutingPage extends ActionBarActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void inflateFinalDataMenu(){
+        final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(context);
+        endDataBuilder.setCancelable(false);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View finalDataView = inflater.inflate(R.layout.finaldatapoints, null);
+        if(allianceScoreInt != null && allianceScoreInt != 0) {
+            ((EditText) finalDataView.findViewById(R.id.finalScoreEditText)).setText(String.valueOf(allianceScoreInt));
+        }
+        if(allianceFoulInt != null && allianceFoulInt != 0) {
+            ((EditText) finalDataView.findViewById(R.id.finalFoulEditText)).setText(String.valueOf(allianceFoulInt));
+        }
+        if(rotorNumAuto != null && rotorNumAuto != 0) {
+            ((EditText) finalDataView.findViewById(R.id.rotorAutoText)).setText(String.valueOf(rotorNumAuto));
+        }
+        if(rotorNumTele != null && rotorNumTele != 0) {
+            ((EditText) finalDataView.findViewById(R.id.rotorTeleText)).setText(String.valueOf(rotorNumTele));
+        }
+        ((ToggleButton) finalDataView.findViewById(R.id.boilerToggleButton)).setChecked(boilerRP);
+        endDataBuilder.setView(finalDataView);
+        endDataBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        endDataBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Dialog d = (Dialog) dialog;
+                EditText scoreText = (EditText) d.findViewById(R.id.finalScoreEditText);
+                EditText foulText = (EditText) d.findViewById(R.id.finalFoulEditText);
+                EditText rotorsAutoText = (EditText) d.findViewById(R.id.rotorAutoText);
+                EditText rotorsTeleText = (EditText) d.findViewById(R.id.rotorTeleText);
+                ToggleButton boilerToggle = (ToggleButton) d.findViewById(R.id.boilerToggleButton);
+                boilerRP = boilerToggle.isChecked();
+                allianceFoulData = foulText.getText().toString();
+                allianceScoreData = scoreText.getText().toString();
+                try {
+                    rotorNumAuto = Integer.parseInt(rotorsAutoText.getText().toString());
+                    rotorNumTele = Integer.parseInt(rotorsTeleText.getText().toString());
+                    allianceScoreInt = Integer.parseInt(allianceScoreData);
+                    allianceFoulInt = Integer.parseInt(allianceFoulData);
+                } catch (NumberFormatException nfe) {
+                    Log.i("Exception", "Number Format");
+                    rotorNumAuto = 0;
+                    rotorNumTele = 0;
+                    allianceScoreInt = 0;
+                    allianceFoulInt = 0;
+                } catch (NullPointerException npe) {
+                    Log.i("Exception", "Null Pointer");
+                    rotorNumAuto = 0;
+                    rotorNumTele = 0;
+                    allianceScoreInt = 0;
+                    allianceFoulInt = 0;
+                }
+
+                if (alliance.equals("Blue Alliance")) {
+                    dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueAuto").setValue(rotorNumAuto);
+                    dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningBlueTele").setValue(rotorNumTele);
+                    dataBase.child("/Matches").child(numberOfMatch).child("blueDidReachFortyKilopascals").setValue(boilerRP);
+                    dataBase.child("/Matches").child(numberOfMatch).child("blueScore").setValue(allianceScoreInt);
+                    dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(allianceFoulInt);
+
+                } else if (alliance.equals("Red Alliance")) {
+                    dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedAuto").setValue(rotorNumAuto);
+                    dataBase.child("/Matches").child(numberOfMatch).child("numRotorsSpinningRedTele").setValue(rotorNumTele);
+                    dataBase.child("/Matches").child(numberOfMatch).child("redDidReachFortyKilopascals").setValue(boilerRP);
+                    dataBase.child("/Matches").child(numberOfMatch).child("redScore").setValue(allianceScoreInt);
+                    dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(allianceFoulInt);
+                }
+
+                dialog.cancel();
+            }
+        });
+        AlertDialog endDataDialog = endDataBuilder.create();
+        endDataDialog.show();
+        if (isRed) {
+            ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
+        } else {
+            ((TextView) endDataDialog.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLUE);
+        }
     }
 
 
