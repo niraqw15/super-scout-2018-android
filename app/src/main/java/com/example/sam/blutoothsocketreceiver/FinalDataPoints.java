@@ -312,6 +312,13 @@ public class FinalDataPoints extends ActionBarActivity {
         rotorNumTele = intent.getExtras().getInt("scoutRotorsTeleNum");
         boilerRPGained = intent.getExtras().getBoolean("scoutBoilerRPGained");
         isMute = intent.getExtras().getBoolean("mute");
+
+        if(rotorNumAuto == 0) {
+            rotorNumAuto = null;
+        }
+        if(rotorNumTele == 0) {
+            rotorNumTele = null;
+        }
     }
 
     public void sendAfterMatchData(){
