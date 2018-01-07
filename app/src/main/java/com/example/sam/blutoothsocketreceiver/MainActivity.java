@@ -66,21 +66,8 @@ public class MainActivity extends ActionBarActivity {
     Boolean isRed = false;
     Integer matchNumber = 0;
     DatabaseReference dataBase;
-    String firstKey;
-    String keys;
-    String scoutAlliance;
     String previousScore, previousFoul;
-    Boolean previous40kpa;
-    Integer previousRotorNumAuto;
-    Integer previousRotorNumTele;
     final static String dataBaseUrl = Constants.dataBaseUrl;
-    int matchNum;
-    int stringIndex;
-    int intIndex;
-    ArrayList<String> keysInKey;
-    ArrayList<String> valueOfKeys;
-    ArrayList<String> checkNumKeys;
-    ArrayList<String> checkStringKeys;
     boolean isMute = false;
     boolean isOverriden;
     ToggleButton mute;
@@ -90,7 +77,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("test", "Logcat is up and running!");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
         isOverriden = false;
@@ -186,8 +172,6 @@ public class MainActivity extends ActionBarActivity {
             isMute = false;
             int randNum = (int) (Math.random() * 3);
             playSound(randNum);
-            Log.e("number", randNum + "");
-            Log.e("cat", "sound");
         }
     }
     public void playSound(int playTrak){
@@ -253,7 +237,6 @@ public class MainActivity extends ActionBarActivity {
                     intent.putExtra("dataBaseUrl", dataBaseUrl);
                     intent.putExtra("mute", isMute);
                     intent.putExtra("allianceColor", isRed);
-                    Log.e("start alliance", alliance.getText().toString());
                     startActivity(intent);
                 }
             }
@@ -419,7 +402,6 @@ public class MainActivity extends ActionBarActivity {
             file = new BufferedReader(new InputStreamReader(new FileInputStream(
                     new File(name))));
         } catch (IOException ioe) {
-            Log.e("File Error", "Failed To Open File");
             Toast.makeText(context, "Failed To Open File", Toast.LENGTH_LONG).show();
             return null;
         }
@@ -430,26 +412,11 @@ public class MainActivity extends ActionBarActivity {
                 dataOfFile = dataOfFile.concat(buf + "\n");
             }
         } catch (IOException ioe) {
-            Log.e("File Error", "Failed To Read From File");
             Toast.makeText(context, "Failed To Read From File", Toast.LENGTH_LONG).show();
             return null;
         }
-        Log.i("fileData", dataOfFile);
         return dataOfFile;
     }
-
-//converts jsonArrays to arrays
-//    public List<Object> jsonArrayToArray(JSONArray array) {
-//        List<Object> os = new ArrayList<>();
-//        for (int i = 0; i < array.length(); i++) {
-//            try {
-//                os.add(array.get(i));
-//            } catch (Exception e) {
-//                //do nothing
-//            }
-//        }
-//        return os;
-//    }
 
     public void resendSuperData(final List<JSONObject> dataPoints) {
         new Thread() {
@@ -458,10 +425,7 @@ public class MainActivity extends ActionBarActivity {
                 //read data from file
                 for (int j = 0; j < dataPoints.size(); j++) {
 
-                    Log.e("Beginning", "Test here");
-                    Log.e("Test 1", "super file is not null!");
                     try {
-                        Log.e("Test 2", "assign file data to Json");
                         JSONObject superData = dataPoints.get(j);
 
                         String teamOneFirstNotes = superData.getString("teamOneFirstNotes");
@@ -512,14 +476,10 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
                             dataBase.child("Matches").child(matchNum).child("blueAllianceTeamNumbers").setValue(teamNumbers);
                             dataBase.child("Matches").child(matchNum).child("blueScore").setValue(Integer.parseInt(superData.get("Blue Alliance Score").toString()));
-                            dataBase.child("Matches").child(matchNum).child("didReach40KiloPascalsBlue").setValue(Boolean.valueOf((String) superData.get("boilerRPGained")));
-                            dataBase.child("Matches").child(matchNum).child("didStartAllRotorsBlue").setValue(Boolean.valueOf((String) superData.get("rotorRPGained")));
                         }else{
                             dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
                             dataBase.child("Matches").child(matchNum).child("redAllianceTeamNumbers").setValue(teamNumbers);
                             dataBase.child("Matches").child(matchNum).child("redScore").setValue(Integer.parseInt(superData.get("Red Alliance Score").toString()));
-                            dataBase.child("Matches").child(matchNum).child("didReach40KiloPascalsRed").setValue(Boolean.valueOf((String) superData.get("boilerRPGained")));
-                            dataBase.child("Matches").child(matchNum).child("didStartAllRotorsRed").setValue(Boolean.valueOf((String) superData.get("rotorRPGained")));
                         }
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("firstNotes").setValue(teamOneFirstNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("firstNotes").setValue(teamTwoFirstNotes);
@@ -532,7 +492,6 @@ public class MainActivity extends ActionBarActivity {
                     } catch (JSONException JE) {
                         Log.e("json error", "failed to get super json");
                     }
-                    // new ConnectThread(context, superName, uuid, name, text).start();
                 }
                 toasts("Resent Super data!", false);
             }
@@ -602,7 +561,6 @@ public class MainActivity extends ActionBarActivity {
                                 try {
                                     superData = new JSONObject(content);
                                 } catch (JSONException jsone) {
-                                    Log.e("File Error", "no valid JSON in the file");
                                     Toast.makeText(context, "Not a valid JSON", Toast.LENGTH_LONG).show();
                                     return;
                                 }
@@ -623,7 +581,6 @@ public class MainActivity extends ActionBarActivity {
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
-                Log.e("matchNameChange", editMatchNumber);
                 String filePath = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name;
                 final String content = readFile(filePath);
                 final JSONObject superData;
@@ -632,15 +589,10 @@ public class MainActivity extends ActionBarActivity {
                     if (isRed) {
                         previousScore = superData.get("Red Alliance Score").toString();
                         previousFoul = superData.get("Red Alliance Foul").toString();
-                        Log.e("previous Score", previousScore);
                     } else {
                         previousScore = superData.get("Blue Alliance Score").toString();
                         previousFoul = superData.get("Blue Alliance Foul").toString();
-                        Log.e("previous Score", previousScore);
                     }
-                    previous40kpa = Boolean.valueOf((String) superData.get("boilerRPGained"));
-                    previousRotorNumAuto = (Integer) superData.get("numRotorsSpinningAuto");
-                    previousRotorNumTele = (Integer) superData.get("numRotorsSpinningTele");
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
@@ -649,9 +601,6 @@ public class MainActivity extends ActionBarActivity {
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
-                ((ToggleButton) finalDataPtsView.findViewById(R.id.boilerToggleButton)).setChecked(previous40kpa);
-                ((EditText) finalDataPtsView.findViewById(R.id.rotorAutoText)).setText(String.valueOf(previousRotorNumAuto));
-                ((EditText) finalDataPtsView.findViewById(R.id.rotorTeleText)).setText(String.valueOf(previousRotorNumTele));
                 builder.setView(finalDataPtsView);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -661,9 +610,6 @@ public class MainActivity extends ActionBarActivity {
                         dir.mkdir();
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
-                        previous40kpa = ((ToggleButton) d.findViewById(R.id.boilerToggleButton)).isChecked();
-                        previousRotorNumAuto = Integer.parseInt(((EditText) d.findViewById(R.id.rotorAutoText)).getText().toString());
-                        previousRotorNumTele = Integer.parseInt(((EditText) d.findViewById(R.id.rotorTeleText)).getText().toString());
                         if (!previousScore.equals("") && !previousFoul.equals("")) {
                             try {
                                 JSONObject superScore = new JSONObject(content);
@@ -673,22 +619,12 @@ public class MainActivity extends ActionBarActivity {
                                     superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("redDidReach40KiloPascals").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningRedAuto").setValue(previousRotorNumAuto);
-                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningRedTele").setValue(previousRotorNumTele);
                                 } else {
                                     superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
                                     superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidReach40KiloPascals").setValue(previous40kpa);
-                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningBlueAuto").setValue(previousRotorNumAuto);
-                                    dataBase.child("Matches").child(editMatchNumber).child("numRotorsSpinningBlueTele").setValue(previousRotorNumTele);
                                 }
-                                superScore.put("boilerRPGained", String.valueOf(previous40kpa));
-                                superScore.put("numRotorsSpinningAuto", previousRotorNumAuto);
-                                superScore.put("numRotorsSpinningTele", previousRotorNumTele);
-
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();
                                 toasts("Score Updated.", false);
@@ -718,6 +654,3 @@ public class MainActivity extends ActionBarActivity {
     }
 
 }
-
-
-

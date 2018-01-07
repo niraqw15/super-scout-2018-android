@@ -20,13 +20,9 @@ public class FirebaseList<T> {
 
     public FirebaseList(String url, FirebaseUpdatedCallback firebaseUpdatedCallback, Class<T> firebaseClass) {
         setupFirebaseListening(url, firebaseClass, firebaseUpdatedCallback);
-        Log.i("FIREBASELIST URL", url);
-        Log.i("FIREBASELIST CLASS", String.valueOf(firebaseClass));
-        Log.i("FIREBASELIST", "CONSTRUCTOR");
     }
 
     public void setupFirebaseListening(String url, final Class<T> firebaseClass, final FirebaseUpdatedCallback firebaseUpdatedCallback) {
-        Log.i("FIREBASELIST", "SETUPFIREBASELISTENING");
         String childString = "";
         if(url.contains("Matches")){
             childString = "Matches";
@@ -35,13 +31,10 @@ public class FirebaseList<T> {
         } else if(url.contains("Teams")){
             childString = "Teams";
         }
-        Log.i("FIREBASELIST", childString);
         DatabaseReference firebase = FirebaseDatabase.getInstance().getReference().getRef().child(childString);
         firebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i("FIREBASELIST", "ONCHILDADDED");
-                Log.i("FIREBASELIST", dataSnapshot.getKey());
                 T model = dataSnapshot.getValue(firebaseClass);
                 String key = dataSnapshot.getKey();
 
@@ -65,7 +58,6 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.i("FIREBASELIST", "ONCHILDCHANGED");
                 String key = dataSnapshot.getKey();
                 T newModel = dataSnapshot.getValue(firebaseClass);
                 int index = keys.indexOf(key);
@@ -77,7 +69,6 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.i("FIREBASELIST", "ONCHILDREMOVED");
                 String key = dataSnapshot.getKey();
                 int index = keys.indexOf(key);
 
@@ -89,7 +80,6 @@ public class FirebaseList<T> {
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.i("FIREBASELIST", "ONCHILDMOVED");
                 String key = dataSnapshot.getKey();
                 T newModel = dataSnapshot.getValue(firebaseClass);
                 int index = keys.indexOf(key);

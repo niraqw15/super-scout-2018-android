@@ -16,15 +16,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @IgnoreExtraProperties
 public class Match extends Object {
+	//TODO : Keep up with schema changes
 	public CalculatedMatchData calculatedMatchData;
 	@PropertyName("number")
 	public Integer number;
-	public Boolean didStartAllRotorsRed;
-	public Boolean didStartAllRotorsBlue;
-	public Boolean didReach40KiloPascalsRed;
-	public Boolean didReach40KiloPascalsBlue;
-	public Integer redScore;
-	public Integer blueScore;
 	@PropertyName("redAllianceTeamNumbers")
 	public List<Integer> redAllianceTeamNumbers;
 	@PropertyName("blueAllianceTeamNumbers")

@@ -58,7 +58,6 @@ public class SuperScoutApplication extends Application implements Application.Ac
         registerActivityLifecycleCallbacks(this);
         super.onCreate();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (dataBaseList.containsKey(url)) {

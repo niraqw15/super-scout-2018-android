@@ -26,10 +26,6 @@ public class Counter extends RelativeLayout {
     Button addButton;
     Button subtractButton;
     SuperScoutingPanel superScoutingPanel;
-    Boolean oneApplied;
-    Boolean twoApplied;
-    Boolean threeApplied;
-    Boolean fourApplied;
 
     public Counter(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,15 +55,10 @@ public class Counter extends RelativeLayout {
 
             this.value = this.startingValue;
 
-            Log.e("start value", counterTextView.getText().toString());
-
             listenForAddClicked();
             listenForMinusClicked();
 
             refreshCounter(startingValue);
-
-            Log.e("start value1", counterTextView.getText().toString());
-
 
         } finally {
             a.recycle();
@@ -78,61 +69,12 @@ public class Counter extends RelativeLayout {
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("add", "clicked");
-                Log.e("increment", increment + "");
-                Log.e("new value", Integer.toString(value + increment));
                 if (value + increment <= max) {
                     value += increment;
                     refreshCounter(value);
-                    Log.e("add", "clicked");
-                    Integer previousValue = value - 1;
-                    makeArrayChanges(value, previousValue);
                 }
             }
         });
-    }
-
-    public void makeArrayChanges(Integer currentValue, Integer previousValue){
-        Log.i("HATRED DATANAME", dataName);
-        switch(dataName){
-            case "Defense" : {
-                Log.i("HATRED", "DEFENSE");
-                SuperScoutingPanel.Defense.set(currentValue, SuperScoutingPanel.Defense.get(currentValue) + 1);
-                SuperScoutingPanel.Defense.set(previousValue, SuperScoutingPanel.Defense.get(previousValue) - 1);
-                break;
-            }
-            case "Agility" : {
-                Log.i("HATRED", "AGILITY");
-                SuperScoutingPanel.Agility.set(currentValue, SuperScoutingPanel.Agility.get(currentValue) + 1);
-                SuperScoutingPanel.Agility.set(previousValue, SuperScoutingPanel.Agility.get(previousValue) - 1);
-                break;
-            }
-            case "Ball Control" : {
-                Log.i("HATRED", "BALL CTRL");
-                SuperScoutingPanel.BallControl.set(currentValue, SuperScoutingPanel.BallControl.get(currentValue) + 1);
-                SuperScoutingPanel.BallControl.set(previousValue, SuperScoutingPanel.BallControl.get(previousValue) - 1);
-                break;
-            }
-            case "Gear Control" : {
-                Log.i("HATRED", "GEAR CTRL");
-                SuperScoutingPanel.GearControl.set(currentValue, SuperScoutingPanel.GearControl.get(currentValue) + 1);
-                SuperScoutingPanel.GearControl.set(previousValue, SuperScoutingPanel.GearControl.get(previousValue) - 1);
-                break;
-            }
-            case "Speed" : {
-                Log.i("HATRED", "SPEED");
-                SuperScoutingPanel.Speed.set(currentValue, SuperScoutingPanel.Speed.get(currentValue) + 1);
-                SuperScoutingPanel.Speed.set(previousValue, SuperScoutingPanel.Speed.get(previousValue) - 1);
-                break;
-            }
-        }
-        for(int a = 0; a <= 4; a++){
-            Log.i("ARRAYSINFO SPEED" + a, String.valueOf(SuperScoutingPanel.Speed.get(a)));
-            Log.i("ARRAYSINFO DEFENSE" + a, String.valueOf(SuperScoutingPanel.Defense.get(a)));
-            Log.i("ARRAYSINFO BALL CTRL" + a, String.valueOf(SuperScoutingPanel.BallControl.get(a)));
-            Log.i("ARRAYSINFO GEAR CTRL" + a, String.valueOf(SuperScoutingPanel.GearControl.get(a)));
-            Log.i("ARRAYSINFO AGILITY" + a, String.valueOf(SuperScoutingPanel.Agility.get(a)));
-        }
     }
 
     private void listenForMinusClicked(){
@@ -142,9 +84,6 @@ public class Counter extends RelativeLayout {
                 if (value - increment >= min) {
                     value -= increment;
                     refreshCounter(value);
-                    Log.e("subtract", "clicked");
-                    Integer previousValue = value + 1;
-                    makeArrayChanges(value, previousValue);
                 }
             }
         });
@@ -152,7 +91,6 @@ public class Counter extends RelativeLayout {
 
 
     private void refreshCounter(int someValue) {
-        Log.e("test2", counterTitleTextView.getText().toString());
         counterTitleTextView.setText(dataName);
         counterTextView.setText(someValue + "");
     }
