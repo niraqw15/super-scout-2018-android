@@ -274,7 +274,8 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceFoulData = intent.getExtras().getString("allianceFoul");
         isMute = intent.getExtras().getBoolean("mute");
 
-        }
+    }
+
 
     public void sendAfterMatchData(){
         if (alliance.equals("Blue Alliance")) {

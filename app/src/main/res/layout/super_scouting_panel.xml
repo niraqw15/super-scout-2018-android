@@ -16,15 +16,58 @@
 
     <!--Make as many of these counters as you need-->
     <com.example.sam.blutoothsocketreceiver.Counter
-        android:id="@+id/DataName"
+        android:id="@+id/Speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
+        android:paddingTop="3dp"
         custom:dataName="Speed"
         custom:startingValue="2"
         custom:max="4"
-        custom:min="0"
+        custom:min="1"
         custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/Agility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        custom:dataName="Agility"
+        custom:startingValue="2"
+        custom:max="4"
+        custom:min="1"
+        custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/Defense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        custom:dataName="Defense"
+        custom:startingValue="2"
+        custom:max="4"
+        custom:min="1"
+        custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/GoodDecision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        custom:dataName="Good Decision"
+        custom:startingValue="0"
+        custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/BadDecision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        custom:dataName="Bad Decision"
+        custom:startingValue="0"
+        custom:increment="1"/>
+
+
+
 
 
 </LinearLayout>

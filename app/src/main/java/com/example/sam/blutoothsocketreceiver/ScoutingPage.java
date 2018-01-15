@@ -17,8 +17,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static com.example.sam.blutoothsocketreceiver.R.id.panelOne;
+import static com.example.sam.blutoothsocketreceiver.R.id.panelTwo;
 
 public class ScoutingPage extends ActionBarActivity {
     Activity context;
@@ -37,6 +44,7 @@ public class ScoutingPage extends ActionBarActivity {
     String alliance;
     String dataBaseUrl;
     String allianceScoreData, allianceFoulData;
+    String NextString;
     TextView teamNumberOneTextview;
     TextView teamNumberTwoTextview;
     TextView teamNumberThreeTextview;
@@ -56,6 +64,7 @@ public class ScoutingPage extends ActionBarActivity {
     String teamOneNotes;
     String teamTwoNotes;
     String teamThreeNotes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +115,28 @@ public class ScoutingPage extends ActionBarActivity {
         return true;
     }
 
+    // work these two below
+    public Boolean canProceed() {
+        Boolean canProceed = true;
+        ArrayList<String> dataNames = new ArrayList<>(Arrays.asList("Speed", "Agility", "Defense"));
+        SuperScoutingPanel panelone = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelOne);
+        SuperScoutingPanel paneltwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelTwo);
+        SuperScoutingPanel panelthree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
+        for (int i = 0; i < 3; i++) {
+            if (panelone.getData().get(dataNames.get(i)) == paneltwo.getData().get(dataNames.get(i)) || (panelone.getData().get(dataNames.get(i))) == (panelthree.getData().get(dataNames.get(i))) || (paneltwo.getData().get(dataNames.get(i)) == panelthree.getData().get(dataNames.get(i))) ){
+            canProceed = false;
+            return canProceed;}
+           /* if (panelone.getData().get(dataNames.get(i)) == paneltwo.getData().get(dataNames.get(i))){
+            }*/
+        }
+        return canProceed;
+    }
+
+    //The next Button, to see if boolean r valid
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
+
+
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -117,45 +146,56 @@ public class ScoutingPage extends ActionBarActivity {
         }
 
         if (id == R.id.finalNext) {
-
-            final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
-            final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
-            final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
-            listDataValues();
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        for (int i = 0; i < panelOne.getDataNameCount() - 1; i++) {
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(reformatDataNames(teamOneDataName.get(i))).setValue(Integer.parseInt(teamOneDataScore.get(i)));
+            if (canProceed()) {
+                final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
+                final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
+                final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
+                listDataValues();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            for (int i = 0; i < panelOne.getDataNameCount() - 1; i++) {
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child(reformatDataNames(teamOneDataName.get(i))).setValue(Integer.parseInt(teamOneDataScore.get(i)));
+                            }
+                            for (int i = 0; i < panelTwo.getDataNameCount() - 1; i++) {
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(reformatDataNames(teamTwoDataName.get(i))).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
+                            }
+                            for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
+                                dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
+                            }
+                        } catch (DatabaseException FBE) {
+                            Log.e("firebase", "scoutingPage");
+                        } catch (IndexOutOfBoundsException IOB) {
+                            Log.e("ScoutingPage", "Index");
                         }
-                        for (int i = 0; i < panelTwo.getDataNameCount() - 1; i++) {
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child(reformatDataNames(teamTwoDataName.get(i))).setValue(Integer.parseInt(teamTwoDataScore.get(i)));
-                        }
-                        for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
-                            dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
-                        }
-                    } catch (DatabaseException FBE) {
-                        Log.e("firebase", "scoutingPage");
-                    } catch (IndexOutOfBoundsException IOB) {
-                        Log.e("ScoutingPage", "Index");
                     }
-                }
-            }.start();
-            sendExtras();
+                }.start();
+                sendExtras();
+            } else {
+                //toast
+                final String NextString = "Teams cannot have the same ranking values!";
+
+                Toast.makeText(getApplicationContext(), NextString, Toast.LENGTH_LONG).show();
+
+
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void inflateFinalDataMenu(){
+
+
+    public void inflateFinalDataMenu() {
         final AlertDialog.Builder endDataBuilder = new AlertDialog.Builder(context);
         endDataBuilder.setCancelable(false);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View finalDataView = inflater.inflate(R.layout.finaldatapoints, null);
-        if(allianceScoreInt != null && allianceScoreInt != 0) {
+        if (allianceScoreInt != null && allianceScoreInt != 0) {
             ((EditText) finalDataView.findViewById(R.id.finalScoreEditText)).setText(String.valueOf(allianceScoreInt));
         }
-        if(allianceFoulInt != null && allianceFoulInt != 0) {
+        if (allianceFoulInt != null && allianceFoulInt != 0) {
             ((EditText) finalDataView.findViewById(R.id.finalFoulEditText)).setText(String.valueOf(allianceFoulInt));
         }
         endDataBuilder.setView(finalDataView);
@@ -295,14 +335,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETOne = new EditText(context);
 
-                if(!teamOneNotes.equals("")) {
+                if (!teamOneNotes.equals("")) {
                     pilotNotesETOne.setText(teamOneNotes);
                 }
                 pilotNotesETOne.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("SuperNotes for team "+teamNumber)
+                builder.setTitle("SuperNotes for team " + teamNumber)
                         .setView(pilotNotesETOne)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -324,14 +364,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETTwo = new EditText(context);
 
-                if(!teamTwoNotes.equals("")) {
+                if (!teamTwoNotes.equals("")) {
                     pilotNotesETTwo.setText(teamTwoNotes);
                 }
                 pilotNotesETTwo.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("Pilot Notes for "+teamNumber)
+                builder.setTitle("Pilot Notes for " + teamNumber)
                         .setView(pilotNotesETTwo)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -353,14 +393,14 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText pilotNotesETThree = new EditText(context);
 
-                if(!teamThreeNotes.equals("")) {
+                if (!teamThreeNotes.equals("")) {
                     pilotNotesETThree.setText(teamThreeNotes);
                 }
                 pilotNotesETThree.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("Pilot Notes for "+teamNumber)
+                builder.setTitle("Pilot Notes for " + teamNumber)
                         .setView(pilotNotesETThree)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -376,7 +416,60 @@ public class ScoutingPage extends ActionBarActivity {
             }
         });
     }
-}
 
+
+    public void ForceDialogs(View view) {
+        Button ForceButton;
+        ForceButton = (Button)findViewById(R.id.Force);
+        final Dialog forceDialog = new Dialog(context); // Context, this, etc.
+        forceDialog.setContentView(R.layout.force_dialog);
+        forceDialog.setTitle("Force");
+        forceDialog.show();
+    }
+
+    public void BoostDialogs(View view) {
+        Button BoostButton;
+        BoostButton = (Button)findViewById(R.id.Force);
+        final Dialog forceDialog = new Dialog(context); // Context, this, etc.
+        forceDialog.setContentView(R.layout.boost_dialog);
+        forceDialog.setTitle("Boost");
+        forceDialog.show();
+    }
+
+    public void Lev(View view) {
+        final ToggleButton Levtoggle = (ToggleButton) findViewById(R.id.Lev);
+        Levtoggle.setChecked(true);
+    }
+
+    public void forceone(View view){
+        final ToggleButton forceonetoggle = (ToggleButton) findViewById(R.id.forceone);
+        forceonetoggle.setChecked(true);
+    }
+
+    public void forcetwo(View view) {
+        final ToggleButton forcetwotoggle = (ToggleButton) findViewById(R.id.forcetwo);
+        forcetwotoggle.setChecked(true);
+    }
+
+    public void forcethree(View view) {
+        final ToggleButton forcethreetoggle = (ToggleButton) findViewById(R.id.forcethree);
+        forcethreetoggle.setChecked(true);
+    }
+
+    public void boostone(View view) {
+        final ToggleButton boostonetoggle = (ToggleButton) findViewById(R.id.boostone);
+        boostonetoggle.setChecked(true);
+    }
+
+    public void boosttwo(View view) {
+        final ToggleButton boosttwotoggle = (ToggleButton) findViewById(R.id.boosttwo);
+        boosttwotoggle.setChecked(true);
+    }
+
+    public void boostthree(View view) {
+        final ToggleButton boostthreetoggle = (ToggleButton) findViewById(R.id.boostthree);
+        boostthreetoggle.setChecked(true);
+    }
+}
 
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/BoostInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Boost" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/boostone"
+        android:gravity="center_horizontal"
+        android:textOff="1"
+        android:textOn="1"
+        android:checked="false"
+        android:layout_below="@+id/ForceInfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32.5dp" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/boosttwo"
+        android:gravity="center_horizontal"
+        android:textOff="2"
+        android:textOn="2"
+        android:checked="false"
+        android:layout_below="@+id/ForceInfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="77.5dp" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/boostthree"
+        android:gravity="center_horizontal"
+        android:textOff="3"
+        android:textOn="3"
+        android:checked="false"
+        android:layout_below="@+id/ForceInfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="122.5dp"
+        android:layout_marginBottom="30dp"
+        />
+
+
+
+
+
+
+
+</RelativeLayout>

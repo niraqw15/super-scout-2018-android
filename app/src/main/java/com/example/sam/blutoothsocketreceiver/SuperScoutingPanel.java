@@ -18,42 +18,48 @@ import java.util.Map;
  * Created by sam on 5/12/16.
  */
 public class SuperScoutingPanel extends Fragment {
+    public static ArrayList<Integer> Speed;
+    public static ArrayList<Integer> Agility;
+    public static ArrayList<Integer> Defense;
+    public static ArrayList<Integer> Stacking;
+
+
+
     Boolean isRed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.super_scouting_panel, container, false);
     }
 
     public void setAllianceColor(boolean allianceColor) {
-        TextView teamNumberTextView = (TextView)getView().findViewById(R.id.teamNumberTextView);
+        TextView teamNumberTextView = (TextView) getView().findViewById(R.id.teamNumberTextView);
         this.isRed = allianceColor;
-        if (isRed){
+        if (isRed) {
             teamNumberTextView.setTextColor(Color.RED);
-        }else {
+        } else {
             teamNumberTextView.setTextColor(Color.BLUE);
         }
     }
 
     public void setTeamNumber(String teamNumber) {
-        TextView teamNumberTextView = (TextView)getView().findViewById(R.id.teamNumberTextView);
+        TextView teamNumberTextView = (TextView) getView().findViewById(R.id.teamNumberTextView);
         teamNumberTextView.setText(teamNumber);
     }
 
-    public int getDataNameCount(){
-        int numOfDataName = ((LinearLayout)getView()).getChildCount();
+    public int getDataNameCount() {
+        int numOfDataName = ((LinearLayout) getView()).getChildCount();
         return numOfDataName;
     }
 
 
-    public Map getData(){
+    public Map<String, Integer> getData() {
         Map<String, Integer> mapOfData = new HashMap<>();   //Make this a LinkedHashMap if you want to make everything 0's when speed is 0
-        LinearLayout rootLayout = (LinearLayout)getView();
+        LinearLayout rootLayout = (LinearLayout) getView();
         Counter counter;
-        for (int i = 0; i < ((LinearLayout)getView()).getChildCount() - 1; i++) {
-            counter = (Counter)rootLayout.getChildAt(i + 1);
+        for (int i = 0; i < ((LinearLayout) getView()).getChildCount() - 1; i++) {
+            counter = (Counter) rootLayout.getChildAt(i + 1);
             String dataName = counter.getDataName();
             Integer dataScore = counter.getDataValue();
             mapOfData.put(dataName, dataScore);
@@ -61,5 +67,7 @@ public class SuperScoutingPanel extends Fragment {
 
         return mapOfData;
     }
+
+
 }
 

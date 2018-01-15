@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\jadem\Desktop\SuperScout\super-scout-2018-android\app\app.iml" filepath="C:\Users\jadem\Desktop\SuperScout\super-scout-2018-android\app\app.iml" />
       <module fileurl="file://C:\Users\jadem\Desktop\SuperScout\super-scout-2018-android\super-scout-2017-android.iml" filepath="C:\Users\jadem\Desktop\SuperScout\super-scout-2018-android\super-scout-2017-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/super-scout-2018-android.iml" filepath="$PROJECT_DIR$/super-scout-2018-android.iml" />
     </modules>
   </component>
