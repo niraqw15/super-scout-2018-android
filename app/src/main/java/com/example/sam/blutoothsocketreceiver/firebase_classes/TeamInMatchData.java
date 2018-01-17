@@ -19,6 +19,8 @@ public class TeamInMatchData extends Object {
 	public Integer rankAgility;
 	public Integer rankDefense;
 	public Integer rankSpeed;
+	public Integer numGoodDecisions;
+	public Integer numBadDecisions;
 
 
 

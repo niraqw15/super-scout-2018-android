@@ -28,7 +28,6 @@ public class CalculatedMatchData extends Object {
     public Float lfmAvgDefense;
     public Float lfmAvgAgility;
     public Float lfmAvgDrivingAbility;
-    public Float lfmAvgStacking;
 
     //TODO: Update other LFMDs when they are sent out
 }

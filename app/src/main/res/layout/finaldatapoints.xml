@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/finalScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "Final Alliance Score"
+        android:text = "Final Alliance Data"
         android:textStyle="bold"
         android:textColor="#0000FF"
         android:textSize="30sp"
         android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/finalScoreTextView"
+    android:layout_toLeftOf="@id/centerShim">
+
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/finalScoreTextView"
         android:layout_centerHorizontal="true"
         android:hint="Score"
         android:inputType="number"
         android:textSize="25sp"
         android:id="@+id/finalScoreEditText"
         android:gravity="center"
-        android:clickable="false" />
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,6 +51,110 @@
         android:inputType="number"
         android:hint="Fouls"
         android:gravity="center"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/didFaceBoss"
+        android:clickable="false"
+        android:text="Faced the Boss"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/finalFoulEditText"
+        />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/didFaceBossBoolean"
+        android:layout_below="@+id/didFaceBoss"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/didAutoQuest"
+        android:clickable="false"
+        android:text="Did Auto Quest"
+        android:layout_below="@+id/didFaceBossBoolean"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        />
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/didAutoQuestBoolean"
+        android:layout_below="@+id/didAutoQuest"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/finalScoreTextView"
+    android:layout_toRightOf="@+id/centerShim"
+    >
+    <TextView
+        android:id="@+id/powerUpCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:textSize="25sp"
+        android:text="Cubes in Vault"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/BoostCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/powerUpCount"
+        android:layout_centerHorizontal="true"
+        custom:dataName="Boost"
+        custom:startingValue="0"
+        custom:max="3"
+        custom:min="0"
+        custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/LevitateCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BoostCounter"
+        android:layout_centerHorizontal="true"
+        custom:dataName="Levitate"
+        custom:startingValue="0"
+        custom:max="3"
+        custom:min="0"
+        custom:increment="1"/>
+
+    <com.example.sam.blutoothsocketreceiver.Counter
+        android:id="@+id/ForceCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LevitateCounter"
+        android:layout_centerHorizontal="true"
+        custom:dataName="Force"
+        custom:startingValue="0"
+        custom:max="3"
+        custom:min="0"
+        custom:increment="1"/>
+
+
+</RelativeLayout>
+</RelativeLayout>
+
+
+
+
+
+
