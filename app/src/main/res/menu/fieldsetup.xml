@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id ="@+id/fieldsetup"
+        android:title="Field Setup"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="always"
+        android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/action_override"
+                android:title="Override Match and Team Number"
+                app:showAsAction = "always"/>
+            <item
+                android:id="@+id/changeAlliance"
+                android:title="Change Alliance"
+                app:showAsAction = "always"/>
+
+        </menu>
+    </item>
+</menu>

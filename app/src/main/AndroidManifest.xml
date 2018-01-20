@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FieldSetUp"></activity>
+        <activity android:name=".FieldSetupPage"></activity>
         <activity android:name=".ScoutingPage"></activity>
         <activity android:name=".FinalDataPoints"></activity>
         <activity

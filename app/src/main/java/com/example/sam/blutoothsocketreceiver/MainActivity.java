@@ -16,7 +16,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +48,6 @@ import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -230,7 +228,7 @@ public class MainActivity extends ActionBarActivity {
 //                }
                 else {
                     commitSharedPreferences();
-                    Intent intent = new Intent(context, ScoutingPage.class);
+                    Intent intent = new Intent(context, FieldSetupPage.class);
                     intent.putExtra("matchNumber", numberOfMatch.getText().toString());
                     intent.putExtra("teamNumberOne", teamNumberOne.getText().toString());
                     intent.putExtra("teamNumberTwo", teamNumberTwo.getText().toString());
@@ -489,6 +487,16 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("finalNotes").setValue(teamOneFinalNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("finalNotes").setValue(teamTwoFinalNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
+
+                        //TODO: Nathan: Finish and add check against current Firebase
+                        /*
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(configMap.get(R.id.blueTopPlateButton));
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("right").setValue(configMap.get(R.id.blueBottomPlateButton));
+                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(configMap.get(R.id.scaleTopPlateButton));
+                        dataBase.child("Matches").child(matchNum).child("scale").child("right").setValue(configMap.get(R.id.scaleBottomPlateButton));
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(configMap.get(R.id.redTopPlateButton));
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("right").setValue(configMap.get(R.id.redBottomPlateButton));
+                        */
 
 
                     } catch (JSONException JE) {

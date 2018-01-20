@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/centerView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true" />
+
+    <View
+        android:id="@+id/blueAllianceColorView"
+        android:background="#aa0000ff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/centerView" />
+
+    <View
+        android:id="@+id/redAllianceColorView"
+        android:background="#aaff0000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/centerView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="start|center_vertical"
+            android:id="@+id/blueSwitch">
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/switch_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/blueTopPlateButton"/>
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/switch_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/blueBottomPlateButton"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/scale">
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/scale_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/scaleTopPlateButton"/>
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/scale_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/scaleBottomPlateButton"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:orientation="vertical"
+            android:id="@+id/redSwitch">
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/switch_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/redTopPlateButton"/>
+
+            <Button
+                android:layout_width="@dimen/plate_button"
+                android:layout_height="@dimen/plate_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/switch_separation"
+                android:onClick="plateButtonPress"
+                android:id="@+id/redBottomPlateButton"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
