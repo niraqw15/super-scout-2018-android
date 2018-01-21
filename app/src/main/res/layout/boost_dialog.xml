@@ -2,12 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/BoostInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Boost" />
 
     <ToggleButton
         android:layout_width="wrap_content"
@@ -17,7 +11,6 @@
         android:textOff="1"
         android:textOn="1"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32.5dp" />
 
@@ -29,7 +22,6 @@
         android:textOff="2"
         android:textOn="2"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="77.5dp" />
 
@@ -41,11 +33,11 @@
         android:textOff="3"
         android:textOn="3"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="122.5dp"
         android:layout_marginBottom="30dp"
         />
+
 
 
 

@@ -2,6 +2,8 @@ package com.example.sam.blutoothsocketreceiver.firebase_classes;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.jcodec.common.DictionaryCompressor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
