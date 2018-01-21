@@ -96,7 +96,6 @@ public class FieldSetupPage extends AppCompatActivity{
                 toast.setGravity(Gravity.CENTER, 0, 65);
                 toast.show();
             } else {
-                //TODO: Nathan: Add extras from this activity -& save config to local- (saved locally in FinalDataPoints.java).
                 //TODO: Nathan: Add data check against other scout if extra time (check if what is currently in the switches and plates conflicts with what this has, notify).
 
                 dataBase.child("Matches").child(numberOfMatch).child("blueSwitch").child("left").setValue(configMap.get(R.id.blueTopPlateButton));
@@ -108,6 +107,14 @@ public class FieldSetupPage extends AppCompatActivity{
 
                 next = new Intent(context, ScoutingPage.class);
                 next.putExtras(previous);
+
+                next.putExtra("blueSwitchLeft", configMap.get(R.id.blueTopPlateButton));
+                next.putExtra("blueSwitchRight", configMap.get(R.id.blueBottomPlateButton));
+                next.putExtra("scaleLeft", configMap.get(R.id.scaleTopPlateButton));
+                next.putExtra("scaleRight", configMap.get(R.id.scaleBottomPlateButton));
+                next.putExtra("redSwitchLeft", configMap.get(R.id.redTopPlateButton));
+                next.putExtra("redSwitchRight", configMap.get(R.id.redBottomPlateButton));
+
                 startActivity(next);
             }
 
