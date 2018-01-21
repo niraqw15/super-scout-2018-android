@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
@@ -34,7 +35,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.example.sam.blutoothsocketreceiver.R.id.Boost;
+import static com.example.sam.blutoothsocketreceiver.R.id.Force;
+import static com.example.sam.blutoothsocketreceiver.R.id.boostone;
 import static com.example.sam.blutoothsocketreceiver.R.id.panelOne;
 import static com.example.sam.blutoothsocketreceiver.R.id.panelTwo;
 
@@ -56,6 +62,7 @@ public class ScoutingPage extends ActionBarActivity {
     ArrayList<String> teamTwoDataScore;
     ArrayList<String> teamThreeDataName;
     ArrayList<String> teamThreeDataScore;
+    Map<String, Integer> allianceCubesForPowerup = new HashMap<>();
     Integer allianceScoreInt = 0;
     Integer allianceFoulInt = 0;
     Boolean facedTheBoss = false;
@@ -71,6 +78,10 @@ public class ScoutingPage extends ActionBarActivity {
     String teamOneNotes;
     String teamTwoNotes;
     String teamThreeNotes;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    ToggleButton levitate;
+    int levitateNum;
     Counter boostCounterView;
     Counter levitateCounterView;
     Counter forceCounterView;
@@ -78,17 +89,19 @@ public class ScoutingPage extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.super_scouting);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //allianceCubesForPowerup = new HashMap<>();
         next = getIntent();
         object = new JSONObject();
         getExtrasForScouting();
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.super_scouting_panel, null);
         dataBase = FirebaseDatabase.getInstance().getReference();
         setPanels();
         initializeTeamTextViews();
         context = this;
+        levitate = (ToggleButton) findViewById(R.id.Lev);
 
         teamOneNotes = "";
         teamTwoNotes = "";
@@ -143,24 +156,39 @@ public class ScoutingPage extends ActionBarActivity {
         return canProceed;
     }
 
+
     //The next Button, to see if boolean r valid
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
+
+
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
+
         if (id == R.id.endDataShortcut) {
             inflateFinalDataMenu();
         }
+
 
         if (id == R.id.finalNext) {
             if (canProceed()) {
                 final SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
                 final SuperScoutingPanel panelTwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelTwo);
                 final SuperScoutingPanel panelThree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
+
+                levitateNum = 0;
+
+                if(levitate.isChecked()) {
+                    levitateNum = 3;
+                }
+
+
+
+
                 listDataValues();
                 new Thread() {
                     @Override
@@ -174,6 +202,23 @@ public class ScoutingPage extends ActionBarActivity {
                             }
                             for (int i = 0; i < panelThree.getDataNameCount() - 1; i++) {
                                 dataBase.child("/TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child(reformatDataNames(teamThreeDataName.get(i))).setValue(Integer.parseInt(teamThreeDataScore.get(i)));
+                            }
+                            if(alliance.equals("Blue Alliance")){
+                                for (int i = 0; i < allianceCubesForPowerup.size(); i++){
+                                    dataBase.child("/Matches").child(numberOfMatch).child("blueCubesForPowerup").child(allianceCubesForPowerup.keySet().toArray()[i].toString()).setValue(allianceCubesForPowerup.get(allianceCubesForPowerup.keySet().toArray()[i]));
+                                }
+
+                            }else{
+                                for (int i = 0; i < allianceCubesForPowerup.size(); i++){
+                                    dataBase.child("/Matches").child(numberOfMatch).child("redCubesForPowerup").child(allianceCubesForPowerup.keySet().toArray()[i].toString()).setValue(allianceCubesForPowerup.get(allianceCubesForPowerup.keySet().toArray()[i]));
+                                }
+                            }
+
+                            if(alliance.equals("Blue Alliance")){
+                                dataBase.child("/Matches").child(numberOfMatch).child("blueCubesForPowerup").child("Levitate").setValue(levitateNum);
+                            }
+                            else{
+                                dataBase.child("/Matches").child(numberOfMatch).child("redCubesForPowerup").child("Levitate").setValue(levitateNum);
                             }
                         } catch (DatabaseException FBE) {
                             Log.e("firebase", "scoutingPage");
@@ -193,8 +238,13 @@ public class ScoutingPage extends ActionBarActivity {
             }
 
         }
+
+
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
 
 
@@ -261,6 +311,7 @@ public class ScoutingPage extends ActionBarActivity {
                 if (alliance.equals("Blue Alliance")) {
                     dataBase.child("/Matches").child(numberOfMatch).child("blueScore").setValue(allianceScoreInt);
                     dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(allianceFoulInt);
+
                     dataBase.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss);
                     dataBase.child("/Matches").child(numberOfMatch).child("blueDidAutoQuest").setValue(didAutoQuest);
                     dataBase.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Boost").setValue(boostC);
@@ -274,6 +325,7 @@ public class ScoutingPage extends ActionBarActivity {
                     dataBase.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Boost").setValue(boostC);
                     dataBase.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Levitate").setValue(levitateC);
                     dataBase.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Force").setValue(forceC);
+
                 }
 
                 dialog.cancel();
@@ -300,6 +352,7 @@ public class ScoutingPage extends ActionBarActivity {
         isMute = next.getExtras().getBoolean("mute");
         isRed = next.getExtras().getBoolean("allianceColor");
     }
+
 
     public void setPanels() {
         SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
@@ -366,8 +419,19 @@ public class ScoutingPage extends ActionBarActivity {
     }
 
     public String reformatDataNames(String dataName) {
-        return ("rank" + dataName.replace(" ", ""));
+        String reformattedDataName = "";
+        //Log.d("dataname", dataName);
+
+        if(!dataName.equals("Good Decisions") && !dataName.equals("Bad Decisions")){
+            reformattedDataName = "rank" + dataName.replace(" ", "");
+        }else if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
+            reformattedDataName = "num" + dataName.replace(" ", "");
+        }
+        return reformattedDataName;
     }
+
+
+
 
     public void initializeTeamTextViews() {
         SuperScoutingPanel panelOne = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelOne);
@@ -466,59 +530,77 @@ public class ScoutingPage extends ActionBarActivity {
         });
     }
 
+    public void ForceDialogs(View view){
+        AlertDialog.Builder forceDialog = new AlertDialog.Builder(context);
+        forceDialog.setMessage("Force");
+        forceDialog.setCancelable(false);
+        forceDialog.setView(R.layout.force_dialog);
+        forceDialog.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Dialog d = (Dialog) dialog;
+                        ToggleButton f1 = (ToggleButton)d.findViewById(R.id.forceone);
+                        ToggleButton f2 = (ToggleButton)d.findViewById(R.id.forcetwo);
+                        ToggleButton f3 = (ToggleButton)d.findViewById(R.id.forcethree);
+                        ArrayList<ToggleButton> forceToggles = new ArrayList<>(Arrays.asList(f1, f2, f3));
+                        for (int i = 0; i < forceToggles.size(); i++){
+                            if(forceToggles.get(i).isChecked()){
+                                allianceCubesForPowerup.put("Force", Integer.parseInt(forceToggles.get(i).getText().toString()));
+                                Log.e("MAP", allianceCubesForPowerup.toString());
+                            }
+                        }
+                    }
+                });
 
-    public void ForceDialogs(View view) {
-        Button ForceButton;
-        ForceButton = (Button)findViewById(R.id.Force);
-        final Dialog forceDialog = new Dialog(context); // Context, this, etc.
-        forceDialog.setContentView(R.layout.force_dialog);
-        forceDialog.setTitle("Force");
-        forceDialog.show();
+        forceDialog.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = forceDialog.create();
+        alert11.show();
+
+
     }
-
     public void BoostDialogs(View view) {
-        Button BoostButton;
-        BoostButton = (Button)findViewById(R.id.Force);
-        final Dialog forceDialog = new Dialog(context); // Context, this, etc.
-        forceDialog.setContentView(R.layout.boost_dialog);
-        forceDialog.setTitle("Boost");
-        forceDialog.show();
+        AlertDialog.Builder boostDialog = new AlertDialog.Builder(context);
+        boostDialog.setMessage("Boost");
+        boostDialog.setCancelable(false);
+        boostDialog.setView(R.layout.boost_dialog);
+        boostDialog.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Dialog d = (Dialog) dialog;
+                        ToggleButton b1 = (ToggleButton)d.findViewById(R.id.boostone);
+                        ToggleButton b2 = (ToggleButton)d.findViewById(R.id.boosttwo);
+                        ToggleButton b3 = (ToggleButton)d.findViewById(R.id.boostthree);
+                        ArrayList<ToggleButton> boostToggles = new ArrayList<>(Arrays.asList(b1, b2, b3));
+                        for (int i = 0; i < boostToggles.size(); i++){
+                            if(boostToggles.get(i).isChecked()){
+                                allianceCubesForPowerup.put("Boost", Integer.parseInt(boostToggles.get(i).getText().toString()));
+                                Log.e("MAP", allianceCubesForPowerup.toString());
+                            }
+                        }
+                    }
+                });
+
+        boostDialog.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = boostDialog.create();
+        alert11.show();
     }
 
-    public void levitate(View view) {
-        final ToggleButton Levtoggle = (ToggleButton) findViewById(R.id.Lev);
-        Levtoggle.setChecked(true);
-    }
-
-    public void forceOne(View view){
-        final ToggleButton forceonetoggle = (ToggleButton) findViewById(R.id.forceone);
-        forceonetoggle.setChecked(true);
-    }
-
-    public void forceTwo(View view) {
-        final ToggleButton forcetwotoggle = (ToggleButton) findViewById(R.id.forcetwo);
-        forcetwotoggle.setChecked(true);
-    }
-
-    public void forceThree(View view) {
-        final ToggleButton forcethreetoggle = (ToggleButton) findViewById(R.id.forcethree);
-        forcethreetoggle.setChecked(true);
-    }
-
-    public void boostOne(View view) {
-        final ToggleButton boostonetoggle = (ToggleButton) findViewById(R.id.boostone);
-        boostonetoggle.setChecked(true);
-    }
-
-    public void boostTwo(View view) {
-        final ToggleButton boosttwotoggle = (ToggleButton) findViewById(R.id.boosttwo);
-        boosttwotoggle.setChecked(true);
-    }
-
-    public void boostThree(View view) {
-        final ToggleButton boostthreetoggle = (ToggleButton) findViewById(R.id.boostthree);
-        boostthreetoggle.setChecked(true);
-    }
 }
 
 

@@ -3,12 +3,6 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/ForceInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Force" />
 
     <ToggleButton
         android:layout_width="wrap_content"
@@ -18,7 +12,6 @@
         android:textOff="1"
         android:textOn="1"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
 
@@ -30,7 +23,6 @@
         android:textOff="2"
         android:textOn="2"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp" />
 
@@ -42,7 +34,6 @@
         android:textOff="3"
         android:textOn="3"
         android:checked="false"
-        android:layout_below="@+id/ForceInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="105dp"
         android:layout_marginBottom="30dp"
