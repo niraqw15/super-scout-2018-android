@@ -90,7 +90,8 @@ public class Counter extends RelativeLayout {
     }
 
 
-    private void refreshCounter(int someValue) {
+    /*private*/ public void refreshCounter(int someValue) {
+        value = someValue;
         counterTitleTextView.setText(dataName);
         counterTextView.setText(someValue + "");
     }
