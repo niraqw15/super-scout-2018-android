@@ -548,7 +548,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void listenForResendClick(){
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //TODO: Nathan: add ability to view and changefield setup (?)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = parent.getItemAtPosition(position).toString();
