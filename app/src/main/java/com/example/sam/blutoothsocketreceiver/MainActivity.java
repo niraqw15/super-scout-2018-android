@@ -443,12 +443,9 @@ public class MainActivity extends ActionBarActivity {
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
 
-                        String blueSwitchLeft = superData.getString("blueSwitchLeft");
-                        String blueSwitchRight = superData.getString("blueSwitchRight");
-                        String scaleLeft = superData.getString("scaleLeft");
-                        String scaleRight = superData.getString("scaleRight");
-                        String redSwitchLeft = superData.getString("redSwitchLeft");
-                        String redSwitchRight = superData.getString("redSwitchRight");
+                        String blueSwitch = superData.getString("blueSwitch");
+                        String scale = superData.getString("scale");
+                        String redSwitch = superData.getString("redSwitch");
 
                         JSONObject teamOneData = superData.getJSONObject(teamOneNumber);
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
@@ -497,12 +494,9 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
 
                         //TODO: Nathan: Add check against current Firebase
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(blueSwitchLeft);
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("right").setValue(blueSwitchRight);
-                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(scaleLeft);
-                        dataBase.child("Matches").child(matchNum).child("scale").child("right").setValue(scaleRight);
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(redSwitchLeft);
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("right").setValue(redSwitchRight);
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(blueSwitch);
+                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(scale);
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(redSwitch);
 
 
                     } catch (JSONException JE) {
@@ -612,7 +606,7 @@ public class MainActivity extends ActionBarActivity {
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Nathan: Add an edit alertdialog for fieldsetup and notes (maybe-check)
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
