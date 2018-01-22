@@ -418,7 +418,7 @@ public class MainActivity extends ActionBarActivity {
         return dataOfFile;
     }
 
-    public void resendSuperData(final List<JSONObject> dataPoints) { //TODO: Nathan: add ability to view and changefield setup (?) & include everything else from finaldatapoints
+    public void resendSuperData(final List<JSONObject> dataPoints) { //TODO: Nathan: Reformat & add ability to view and changefield setup (?) & include everything else from finaldatapoints
         new Thread() {
             @Override
             public void run() {
