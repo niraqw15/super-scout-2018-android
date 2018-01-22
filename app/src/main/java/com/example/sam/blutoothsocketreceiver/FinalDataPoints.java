@@ -42,6 +42,9 @@ public class FinalDataPoints extends ActionBarActivity {
     String alliance;
     String dataBaseUrl;
     String allianceScoreData, allianceFoulData;
+    String blueSwitch;
+    String redSwitch;
+    String scale;
     TextView finalScore;
     EditText allianceScore, allianceFoul;
     Switch facedTheBoss;
@@ -166,18 +169,25 @@ public class FinalDataPoints extends ActionBarActivity {
                     } catch (IOException IOE) {
                         return;
                     }
+                    teamOneDataName.add("superNotes");
+                    teamOneDataScore.add(teamOneNotes);
+                    teamTwoDataName.add("superNotes");
+                    teamTwoDataScore.add(teamTwoNotes);
+                    teamThreeDataName.add("superNotes");
+                    teamThreeDataScore.add(teamThreeNotes);
                     try {
                         String JsonStringTeamOne = "{";
                         String JsonStringTeamTwo = "{";
                         String JsonStringTeamThree = "{";
-                        for(int a = 0; a <= teamOneDataScore.size() - 1; a++){
+                        for(int a = 0; a <= teamOneDataScore.size() - 1; a++) {
                             JsonStringTeamOne = JsonStringTeamOne + ("\"" + reformatDataNames(teamOneDataName.get(a)) + "\": " + teamOneDataScore.get(a));
-                            if(a != teamOneDataScore.size() - 1){
+                            if (a != teamOneDataScore.size() - 1) {
                                 JsonStringTeamOne = JsonStringTeamOne + ",";
                             } else {
                                 JsonStringTeamOne = JsonStringTeamOne + "}";
                             }
                         }
+
                         for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
                             JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + reformatDataNames(teamTwoDataName.get(a)) + "\": " + teamTwoDataScore.get(a));
                             if(a != teamTwoDataScore.size() - 1){
@@ -211,6 +221,9 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
                         superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
+                        superExternalData.put("blueSwitch", blueSwitch);
+                        superExternalData.put("redSwitch", redSwitch);
+                        superExternalData.put("scale", scale);
                     }catch(JSONException JE){
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
@@ -264,7 +277,13 @@ public class FinalDataPoints extends ActionBarActivity {
     }
 
     public String reformatDataNames(String dataName){
-        return ("rank" + dataName.replace(" ", ""));
+        String reformattedDataName = "";
+        if(!dataName.equals("Good Decisions") && !dataName.equals("Bad Decisions")){
+            reformattedDataName = "rank" + dataName.replace(" ", "");
+        }else if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
+            reformattedDataName = "num" + dataName.replace(" ", "");
+        }
+        return reformattedDataName;
     }
 
     public void getExtrasForFinalData(){
@@ -291,6 +310,9 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceFoulData = intent.getExtras().getString("allianceFoul");
         isMute = intent.getExtras().getBoolean("mute");
 
+        blueSwitch = intent.getExtras().getString("blueSwitch");
+        redSwitch = intent.getExtras().getString("redSwitch");
+        scale = intent.getExtras().getString("scale");
     }
 
     public void sendAfterMatchData(){

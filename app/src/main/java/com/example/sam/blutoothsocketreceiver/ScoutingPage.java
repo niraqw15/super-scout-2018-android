@@ -420,8 +420,6 @@ public class ScoutingPage extends ActionBarActivity {
 
     public String reformatDataNames(String dataName) {
         String reformattedDataName = "";
-        //Log.d("dataname", dataName);
-
         if(!dataName.equals("Good Decisions") && !dataName.equals("Bad Decisions")){
             reformattedDataName = "rank" + dataName.replace(" ", "");
         }else if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
