@@ -391,6 +391,7 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putStringArrayListExtra("ranksOfTwo", teamTwoDataScore);
         intent.putStringArrayListExtra("dataNameThree", teamThreeDataName);
         intent.putStringArrayListExtra("ranksOfThree", teamThreeDataScore);
+        intent.putExtras(next);
         startActivity(intent);
     }
 

@@ -142,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
                                 try {
                                     JSONObject data = new JSONObject(content);
                                     dataPoints.add(data);
-                                } catch (JSONException jsone) {
+                                } catch (JSONException json) {
                                     Log.i("JSON info", "Failed to parse JSON for resend all. unimportant");
                                 }
                             }
@@ -418,7 +418,7 @@ public class MainActivity extends ActionBarActivity {
         return dataOfFile;
     }
 
-    public void resendSuperData(final List<JSONObject> dataPoints) {
+    public void resendSuperData(final List<JSONObject> dataPoints) { //TODO: Nathan: Reformat & add ability to view and changefield setup (?) & include everything else from finaldatapoints
         new Thread() {
             @Override
             public void run() {
@@ -442,6 +442,11 @@ public class MainActivity extends ActionBarActivity {
                         String teamOneNumber = superData.getString("teamOne");
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
+
+                        String blueSwitch = superData.getString("blueSwitch");
+                        String scale = superData.getString("scale");
+                        String redSwitch = superData.getString("redSwitch");
+
                         JSONObject teamOneData = superData.getJSONObject(teamOneNumber);
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
                         JSONObject teamThreeData = superData.getJSONObject(teamThreeNumber);
@@ -488,15 +493,10 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("finalNotes").setValue(teamTwoFinalNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
 
-                        //TODO: Nathan: Finish and add check against current Firebase
-                        /*
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(configMap.get(R.id.blueTopPlateButton));
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("right").setValue(configMap.get(R.id.blueBottomPlateButton));
-                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(configMap.get(R.id.scaleTopPlateButton));
-                        dataBase.child("Matches").child(matchNum).child("scale").child("right").setValue(configMap.get(R.id.scaleBottomPlateButton));
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(configMap.get(R.id.redTopPlateButton));
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("right").setValue(configMap.get(R.id.redBottomPlateButton));
-                        */
+                        //TODO: Nathan: Add check against current Firebase
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(blueSwitch);
+                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(scale);
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(redSwitch);
 
 
                     } catch (JSONException JE) {
@@ -606,7 +606,7 @@ public class MainActivity extends ActionBarActivity {
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Nathan: Add an edit alertdialog for fieldsetup and notes (maybe-check)
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);

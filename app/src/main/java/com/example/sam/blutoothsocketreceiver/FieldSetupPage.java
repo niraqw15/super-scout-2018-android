@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -96,9 +98,8 @@ public class FieldSetupPage extends AppCompatActivity{
                 toast.setGravity(Gravity.CENTER, 0, 65);
                 toast.show();
             } else {
-                next = new Intent(context, ScoutingPage.class);
-                next.putExtras(previous);
-                //TODO: Nathan: Add extras from this activity & save config to local.
+                //TODO: Nathan: Add data check against other scout if extra time (check if what is currently in the switches and plates conflicts with what this has, notify).
+                //TODO: Nathan: setValue using a gson object instead.
 
                 dataBase.child("Matches").child(numberOfMatch).child("blueSwitch").child("left").setValue(configMap.get(R.id.blueTopPlateButton));
                 dataBase.child("Matches").child(numberOfMatch).child("blueSwitch").child("right").setValue(configMap.get(R.id.blueBottomPlateButton));
@@ -107,7 +108,15 @@ public class FieldSetupPage extends AppCompatActivity{
                 dataBase.child("Matches").child(numberOfMatch).child("redSwitch").child("left").setValue(configMap.get(R.id.redTopPlateButton));
                 dataBase.child("Matches").child(numberOfMatch).child("redSwitch").child("right").setValue(configMap.get(R.id.redBottomPlateButton));
 
-                //TODO: Nathan: Check data against other scout (check if what is currently in the switches and plates conflicts with what this has, notify).
+                next = new Intent(context, ScoutingPage.class);
+                next.putExtras(previous);
+
+                String blueSwitch = formatPlateData("blueSwitch", configMap.get(R.id.blueTopPlateButton), configMap.get(R.id.blueBottomPlateButton));
+                String scale = formatPlateData("scale", configMap.get(R.id.scaleTopPlateButton), configMap.get(R.id.scaleBottomPlateButton));
+                String redSwitch = formatPlateData("redSwitch", configMap.get(R.id.redTopPlateButton), configMap.get(R.id.redBottomPlateButton));
+                next.putExtra("blueSwitch", blueSwitch);
+                next.putExtra("scale", scale);
+                next.putExtra("redSwitch", redSwitch);
                 startActivity(next);
             }
 
@@ -126,5 +135,10 @@ public class FieldSetupPage extends AppCompatActivity{
 
         numberOfMatch = previous.getExtras().getString("matchNumber");
         isRed = previous.getExtras().getBoolean("allianceColor");
+    }
+
+    public String formatPlateData(String name, String left, String right) {
+        String JsonStringPlates = "\"" + name + "\":{\"left\": \"" + left + "\",\"right\": \"" + right + "\"}";
+        return JsonStringPlates;
     }
 }
