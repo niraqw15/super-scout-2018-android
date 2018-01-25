@@ -208,6 +208,13 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
                         JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
 
+                        //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss)
+
+                        superExternalData.put(alliance + "DidAutoQuest", completedAutoQuest);
+                        superExternalData.put(alliance + "DidFaceTheBoss", facedTheBoss);
+                        superExternalData.put(""); //TODO: Nathan: Reformat these three later (for counters)
+                        superExternalData.put("");
+                        superExternalData.put("");
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);

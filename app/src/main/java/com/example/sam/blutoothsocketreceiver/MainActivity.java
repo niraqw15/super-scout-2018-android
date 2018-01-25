@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -65,6 +66,8 @@ public class MainActivity extends ActionBarActivity {
     Integer matchNumber = 0;
     DatabaseReference dataBase;
     String previousScore, previousFoul;
+    Boolean facedTheBoss = false, didAutoQuest = false;
+    Integer boostC = 0, levitateC = 0, forceC = 0;
     final static String dataBaseUrl = Constants.dataBaseUrl;
     boolean isMute = false;
     boolean isOverriden;
@@ -596,13 +599,17 @@ public class MainActivity extends ActionBarActivity {
                 final JSONObject superData;
                 try {
                     superData = new JSONObject(content);
-                    if (isRed) {
-                        previousScore = superData.get("Red Alliance Score").toString();
-                        previousFoul = superData.get("Red Alliance Foul").toString();
-                    } else {
-                        previousScore = superData.get("Blue Alliance Score").toString();
-                        previousFoul = superData.get("Blue Alliance Foul").toString();
-                    }
+                    //TODO: Nathan: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
+                    String allianceString = "";
+                    if (isRed) allianceString = "red";
+                    else allianceString = "blue";
+                        previousScore = superData.get(allianceString + "").toString();
+                        previousFoul = superData.get(allianceString + "").toString();
+                        boostC = superData.get(allianceString + "");
+                        levitateC = superData.get(allianceString + "");
+                        forceC = superData.get(allianceString + "");
+                        facedTheBoss = superData.getBoolean(allianceString + "DidFaceTheBoss");
+                        didAutoQuest = superData.getBoolean(allianceString + "DidAutoQuest");
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
@@ -611,6 +618,12 @@ public class MainActivity extends ActionBarActivity {
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
+                ((Counter) finalDataPtsView.findViewById(R.id.BoostCounter)).refreshCounter(boostC);
+                ((Counter) finalDataPtsView.findViewById(R.id.LevitateCounter)).refreshCounter(levitateC);
+                ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(forceC);
+                ((Switch) finalDataPtsView.findViewById(R.id.didFaceBossBoolean)).setChecked(facedTheBoss);
+                ((Switch) finalDataPtsView.findViewById(R.id.didAutoQuestBoolean)).setChecked(didAutoQuest);
+
                 builder.setView(finalDataPtsView);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -620,6 +633,12 @@ public class MainActivity extends ActionBarActivity {
                         dir.mkdir();
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
+                        boostC = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
+                        levitateC = ((Counter) d.findViewById(R.id.LevitateCounter)).getDataValue();
+                        forceC = ((Counter) d.findViewById(R.id.ForceCounter)).getDataValue();
+                        facedTheBoss = ((Switch) d.findViewById(R.id.didFaceBossBoolean)).isChecked();
+                        didAutoQuest = ((Switch) d.findViewById(R.id.didAutoQuestBoolean)).isChecked();
+
                         if (!previousScore.equals("") && !previousFoul.equals("")) {
                             try {
                                 JSONObject superScore = new JSONObject(content);
