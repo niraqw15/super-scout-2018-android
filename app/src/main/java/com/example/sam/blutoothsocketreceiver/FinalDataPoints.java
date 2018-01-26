@@ -215,7 +215,8 @@ public class FinalDataPoints extends ActionBarActivity {
                         String JsonCubesForPowerupString = "{ \"Temp\": \"This is temporary!\" }";//TODO: Nathan: Finish this (need to add and get extras from scoutingpage)
                         JSONObject JsonCubesForPowerup = new JSONObject(JsonCubesForPowerupString);
 
-                        //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss)
+                        //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
+                        //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
 
                         superExternalData.put(alliance + "DidAutoQuest", completedAutoQuest);
                         superExternalData.put(alliance + "DidFaceTheBoss", facedTheBoss);
@@ -225,7 +226,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);
                         superExternalData.put(alliance + " Foul", allianceFoulNum);
-                        superExternalData.put(teamNumberOne, JsonTeamOne);
+                        superExternalData.put(teamNumberOne, JsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be.
                         superExternalData.put(teamNumberTwo, JsonTeamTwo);
                         superExternalData.put(teamNumberThree, JsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);

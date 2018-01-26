@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
     DatabaseReference dataBase;
     String previousScore, previousFoul;
     Boolean facedTheBoss = false, didAutoQuest = false;
-    Integer boostC = 0, levitateC = 0, forceC = 0;
+    Integer boost = 0, levitate = 0, force = 0;
     final static String dataBaseUrl = Constants.dataBaseUrl;
     boolean isMute = false;
     boolean isOverriden;
@@ -600,16 +600,18 @@ public class MainActivity extends ActionBarActivity {
                 try {
                     superData = new JSONObject(content);
                     //TODO: Nathan: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
+                    //TODO: Nathan: Make sure all external data is received
                     String allianceString = "";
                     if (isRed) allianceString = "red";
                     else allianceString = "blue";
                         previousScore = superData.get(allianceString + "").toString();
                         previousFoul = superData.get(allianceString + "").toString();
-                        boostC = superData.get(allianceString + ""); //TODO: Nathan: Check these for correct format.
-                        levitateC = superData.get(allianceString + "");
-                        forceC = superData.get(allianceString + "");
+                        boost = superData.get(allianceString + ""); //TODO: Nathan: Check these for correct format.
+                        levitate = superData.get(allianceString + "");
+                        force = superData.get(allianceString + "");
                         facedTheBoss = superData.getBoolean(allianceString + "DidFaceTheBoss");
                         didAutoQuest = superData.getBoolean(allianceString + "DidAutoQuest");
+                        
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
@@ -618,9 +620,9 @@ public class MainActivity extends ActionBarActivity {
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
-                ((Counter) finalDataPtsView.findViewById(R.id.BoostCounter)).refreshCounter(boostC);
-                ((Counter) finalDataPtsView.findViewById(R.id.LevitateCounter)).refreshCounter(levitateC);
-                ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(forceC);
+                ((Counter) finalDataPtsView.findViewById(R.id.BoostCounter)).refreshCounter(boost);
+                ((Counter) finalDataPtsView.findViewById(R.id.LevitateCounter)).refreshCounter(levitate);
+                ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(force);
                 ((Switch) finalDataPtsView.findViewById(R.id.didFaceBossBoolean)).setChecked(facedTheBoss);
                 ((Switch) finalDataPtsView.findViewById(R.id.didAutoQuestBoolean)).setChecked(didAutoQuest);
 
@@ -631,19 +633,20 @@ public class MainActivity extends ActionBarActivity {
                         Dialog d = (Dialog) dialog;
                         File dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name);
                         dir.mkdir();
+                        //TODO: Nathan: Get all values here and send to firebase.
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
-                        boostC = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
-                        levitateC = ((Counter) d.findViewById(R.id.LevitateCounter)).getDataValue();
-                        forceC = ((Counter) d.findViewById(R.id.ForceCounter)).getDataValue();
+                        boost = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
+                        levitate = ((Counter) d.findViewById(R.id.LevitateCounter)).getDataValue();
+                        force = ((Counter) d.findViewById(R.id.ForceCounter)).getDataValue();
                         facedTheBoss = ((Switch) d.findViewById(R.id.didFaceBossBoolean)).isChecked();
                         didAutoQuest = ((Switch) d.findViewById(R.id.didAutoQuestBoolean)).isChecked();
 
-                        if (!previousScore.equals("") && !previousFoul.equals("")) {
+                        if(!previousScore.equals("") && !previousFoul.equals("")) {
                             try {
                                 JSONObject superScore = new JSONObject(content);
                                 PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
-                                if (isRed) {
+                                if(isRed) {
                                     superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
                                     superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
