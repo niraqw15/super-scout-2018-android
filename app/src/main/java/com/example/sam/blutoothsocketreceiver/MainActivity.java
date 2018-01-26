@@ -605,7 +605,7 @@ public class MainActivity extends ActionBarActivity {
                     else allianceString = "blue";
                         previousScore = superData.get(allianceString + "").toString();
                         previousFoul = superData.get(allianceString + "").toString();
-                        boostC = superData.get(allianceString + "");
+                        boostC = superData.get(allianceString + ""); //TODO: Nathan: Check these for correct format.
                         levitateC = superData.get(allianceString + "");
                         forceC = superData.get(allianceString + "");
                         facedTheBoss = superData.getBoolean(allianceString + "DidFaceTheBoss");

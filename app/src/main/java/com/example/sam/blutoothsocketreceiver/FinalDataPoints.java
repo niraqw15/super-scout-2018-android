@@ -187,7 +187,6 @@ public class FinalDataPoints extends ActionBarActivity {
                                 JsonStringTeamOne = JsonStringTeamOne + "}";
                             }
                         }
-
                         for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
                             JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + reformatDataNames(teamTwoDataName.get(a)) + "\": " + teamTwoDataScore.get(a));
                             if(a != teamTwoDataScore.size() - 1){
@@ -208,13 +207,16 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
                         JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
 
+                        String JsonVaultFinalString = "{ \"Boost\": " + boostCounterView.getDataValue().toString()
+                                + ", \"Levitate\": " + levitateCounterView.getDataValue().toString()
+                                + ", \"Force\": " + forceCounterView.getDataValue().toString() + "}";
+                        JSONObject JsonCubesInVaultFinal = new JSONObject(JsonVaultFinalString);
+
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss)
 
                         superExternalData.put(alliance + "DidAutoQuest", completedAutoQuest);
                         superExternalData.put(alliance + "DidFaceTheBoss", facedTheBoss);
-                        superExternalData.put(""); //TODO: Nathan: Reformat these three later (for counters)
-                        superExternalData.put("");
-                        superExternalData.put("");
+                        superExternalData.put(alliance + "CubesInVaultFinal", JsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);
