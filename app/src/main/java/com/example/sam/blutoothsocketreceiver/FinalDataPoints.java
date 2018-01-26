@@ -212,11 +212,15 @@ public class FinalDataPoints extends ActionBarActivity {
                                 + ", \"Force\": " + forceCounterView.getDataValue().toString() + "}";
                         JSONObject JsonCubesInVaultFinal = new JSONObject(JsonVaultFinalString);
 
+                        String JsonCubesForPowerupString = "{ \"Temp\": \"This is temporary!\" }";//TODO: Nathan: Finish this (need to add and get extras from scoutingpage)
+                        JSONObject JsonCubesForPowerup = new JSONObject(JsonCubesForPowerupString);
+
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss)
 
                         superExternalData.put(alliance + "DidAutoQuest", completedAutoQuest);
                         superExternalData.put(alliance + "DidFaceTheBoss", facedTheBoss);
                         superExternalData.put(alliance + "CubesInVaultFinal", JsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
+                        superExternalData.put(alliance + "CubesForPowerup", JsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(alliance + " Score", allianceScoreNum);
@@ -324,7 +328,7 @@ public class FinalDataPoints extends ActionBarActivity {
         scale = intent.getExtras().getString("scale");
     }
 
-    public void sendAfterMatchData(){
+    public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
