@@ -207,25 +207,35 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
                         JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
 
-                        String JsonVaultFinalString = "{ \"Boost\": " + boostCounterView.getDataValue().toString()
+                        String jsonVaultFinalString = "{ \"Boost\": " + boostCounterView.getDataValue().toString()
                                 + ", \"Levitate\": " + levitateCounterView.getDataValue().toString()
                                 + ", \"Force\": " + forceCounterView.getDataValue().toString() + "}";
-                        JSONObject JsonCubesInVaultFinal = new JSONObject(JsonVaultFinalString);
+                        JSONObject jsonCubesInVaultFinal = new JSONObject(jsonVaultFinalString);
 
-                        String JsonCubesForPowerupString = "{ \"Temp\": \"This is temporary!\" }";//TODO: Nathan: Finish this (need to add and get extras from scoutingpage)
-                        JSONObject JsonCubesForPowerup = new JSONObject(JsonCubesForPowerupString);
+                        String jsonCubesForPowerupString = "{ \"Temp\": \"This is temporary!\" }";//TODO: Nathan: Finish this (need to add and get extras from scoutingpage)
+                        JSONObject jsonCubesForPowerup = new JSONObject(jsonCubesForPowerupString);
 
+                        JSONObject jsonBlueSwitch = new JSONObject(blueSwitch);
+                        JSONObject jsonRedSwitch = new JSONObject(redSwitch);
+                        JSONObject jsonScale = new JSONObject(scale);
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
 
-                        superExternalData.put(alliance + "DidAutoQuest", completedAutoQuest);
-                        superExternalData.put(alliance + "DidFaceTheBoss", facedTheBoss);
-                        superExternalData.put(alliance + "CubesInVaultFinal", JsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
-                        superExternalData.put(alliance + "CubesForPowerup", JsonCubesForPowerup);
+                        String allianceSimple = "";
+                        if(alliance.equals("Blue Alliance")){
+                            allianceSimple = "blue";
+                        }else if(alliance.equals("Red Alliance")){
+                            allianceSimple = "red";
+                        }
+
+                        superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest);
+                        superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss);
+                        superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
+                        superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
-                        superExternalData.put(alliance + " Score", allianceScoreNum);
-                        superExternalData.put(alliance + " Foul", allianceFoulNum);
+                        superExternalData.put(allianceSimple + "Score", allianceScoreNum);
+                        superExternalData.put(allianceSimple + "FoulPintsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
                         superExternalData.put(teamNumberOne, JsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be.
                         superExternalData.put(teamNumberTwo, JsonTeamTwo);
                         superExternalData.put(teamNumberThree, JsonTeamThree);
@@ -235,9 +245,9 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
                         superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
-                        superExternalData.put("blueSwitch", blueSwitch);
-                        superExternalData.put("redSwitch", redSwitch);
-                        superExternalData.put("scale", scale);
+                        superExternalData.put("blueSwitch", jsonBlueSwitch);
+                        superExternalData.put("redSwitch", jsonRedSwitch);
+                        superExternalData.put("scale", jsonScale);
                     }catch(JSONException JE){
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }

@@ -91,7 +91,7 @@ public class Counter extends RelativeLayout {
     }
 
 
-    /*private*/ public void refreshCounter(int someValue) {
+    /*private*/ public void refreshCounter(int someValue) { //TODO: Make this private and make a new setCounter method.
         value = someValue;
         counterTitleTextView.setText(dataName);
         counterTextView.setText(someValue + "");

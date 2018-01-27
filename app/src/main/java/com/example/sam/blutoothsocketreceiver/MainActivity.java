@@ -49,6 +49,7 @@ import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -129,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-//resends all data on the currently viewed list of data
+    //resends all data on the currently viewed list of data
     public void resendAllClicked(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("RESEND ALL?")
@@ -169,7 +170,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void catClicked(View view){
         if(mute.isChecked()){
-           //Don't Do anything
+            //Don't Do anything
             isMute = true;
         }else {
             isMute = false;
@@ -259,7 +260,7 @@ public class MainActivity extends ActionBarActivity {
             }
 
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     public void updateListView() {
@@ -322,7 +323,7 @@ public class MainActivity extends ActionBarActivity {
         });
         adapter.notifyDataSetChanged();
     }
-//updates the team numbers in the front screen according to the match number and the alliance;
+    //updates the team numbers in the front screen according to the match number and the alliance;
     private void updateUI() {
         try {
             if (FirebaseLists.matchesList.getKeys().contains(matchNumber.toString())) {
@@ -398,7 +399,7 @@ public class MainActivity extends ActionBarActivity {
         teamNumberThree.setFocusable(false);
         isOverriden = false;
     }
-//reads the data of the clicked file
+    //reads the data of the clicked file
     public String readFile(String name) {
         BufferedReader file;
         try {
@@ -428,27 +429,40 @@ public class MainActivity extends ActionBarActivity {
                 //read data from file
                 for (int j = 0; j < dataPoints.size(); j++) {
 
-                    try {
+                    try { //TODO: Nathan: Make sure that this has all datapoints & is written to firebase
                         JSONObject superData = dataPoints.get(j);
 
-                        String teamOneFirstNotes = superData.getString("teamOneFirstNotes");
-                        String teamTwoFirstNotes = superData.getString("teamTwoFirstNotes");
-                        String teamThreeFirstNotes = superData.getString("teamThreeFirstNotes");
-                        String teamOneFinalNotes = superData.getString("teamOneFinalNotes");
-                        String teamTwoFinalNotes = superData.getString("teamTwoFinalNotes");
-                        String teamThreeFinalNotes = superData.getString("teamThreeFinalNotes");
+                        String allianceString = superData.getString("alliance");
+                        String allianceSimple = "";
+                        if(allianceString.equals("Blue Alliance")) {
+                            allianceSimple = "blue";
+                        }else if(allianceString.equals("Red Alliance")) {
+                            allianceSimple = "red";
+                        }
+                        String teamOneNotes = superData.getString("teamOneNotes");
+                        String teamTwoNotes = superData.getString("teamTwoNotes");
+                        String teamThreeNotes = superData.getString("teamThreeNotes");
 
                         String matchNum = superData.get("matchNumber").toString();
                         String matchAndTeamOne = superData.get("teamOne") + "Q" + matchNum;
                         String matchAndTeamTwo = superData.get("teamTwo") + "Q" + matchNum;
                         String matchAndTeamThree = superData.get("teamThree") + "Q" + matchNum;
-                        String teamOneNumber = superData.getString("teamOne");
+                        String teamOneNumber = superData.getString("teamOne"); //TODO: Nathan: Convert this to a jsonObject before storing or store cube data individually?
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
 
-                        String blueSwitch = superData.getString("blueSwitch");
-                        String scale = superData.getString("scale");
-                        String redSwitch = superData.getString("redSwitch");
+                        Boolean didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
+                        Boolean didFaceBoss = superData.getBoolean(allianceSimple + "DidFaceBoss");
+
+                        Integer foulPointsGained = superData.getInt(allianceSimple + "FoulPointsGained");
+                        Integer score = superData.getInt(allianceSimple + "Score");
+
+                        JSONObject blueSwitch = superData.getJSONObject("blueSwitch");
+                        JSONObject redSwitch = superData.getJSONObject("redSwitch");
+                        JSONObject scale = superData.getJSONObject("scale");
+
+                        JSONObject cubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
+                        JSONObject cubesForPowerup = superData.getJSONObject(allianceSimple + "CubesForPowerup");
 
                         JSONObject teamOneData = superData.getJSONObject(teamOneNumber);
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
@@ -463,7 +477,7 @@ public class MainActivity extends ActionBarActivity {
                         Iterator getTeamThreeKeys = teamThreeKeyNames.keys();
                         ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
-                        for (int i = 0; i < teamNumbers.size(); i++){
+                        for(int i = 0; i < teamNumbers.size(); i++) {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("teamNumber").setValue(teamNumbers.get(i));
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
                         }
@@ -480,26 +494,30 @@ public class MainActivity extends ActionBarActivity {
                             String teamThreeKeys = (String) getTeamThreeKeys.next();
                             dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
                         }
-                        if (!isRed){
-                            dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
-                            dataBase.child("Matches").child(matchNum).child("blueAllianceTeamNumbers").setValue(teamNumbers);
-                            dataBase.child("Matches").child(matchNum).child("blueScore").setValue(Integer.parseInt(superData.get("Blue Alliance Score").toString()));
-                        }else{
-                            dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
-                            dataBase.child("Matches").child(matchNum).child("redAllianceTeamNumbers").setValue(teamNumbers);
-                            dataBase.child("Matches").child(matchNum).child("redScore").setValue(Integer.parseInt(superData.get("Red Alliance Score").toString()));
-                        }
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
+                        dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
+                        dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
+                        /* TODO: Check if this should be here.
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("firstNotes").setValue(teamOneFirstNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("firstNotes").setValue(teamTwoFirstNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("firstNotes").setValue(teamThreeFirstNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("finalNotes").setValue(teamOneFinalNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("finalNotes").setValue(teamTwoFinalNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
+                        */
 
-                        //TODO: Nathan: Add check against current Firebase
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").child("left").setValue(blueSwitch);
-                        dataBase.child("Matches").child(matchNum).child("scale").child("left").setValue(scale);
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").child("left").setValue(redSwitch);
+                        //TODO: Nathan: Add check against current Firebase (low priority)
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);
+                        dataBase.child("Matches").child(matchNum).child("scale").setValue(scale);
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitch);
 
 
                     } catch (JSONException JE) {
@@ -601,17 +619,23 @@ public class MainActivity extends ActionBarActivity {
                     superData = new JSONObject(content);
                     //TODO: Nathan: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
                     //TODO: Nathan: Make sure all external data is received
-                    String allianceString = "";
-                    if (isRed) allianceString = "red";
-                    else allianceString = "blue";
-                        previousScore = superData.get(allianceString + "").toString();
-                        previousFoul = superData.get(allianceString + "").toString();
-                        boost = superData.get(allianceString + ""); //TODO: Nathan: Check these for correct format.
-                        levitate = superData.get(allianceString + "");
-                        force = superData.get(allianceString + "");
-                        facedTheBoss = superData.getBoolean(allianceString + "DidFaceTheBoss");
-                        didAutoQuest = superData.getBoolean(allianceString + "DidAutoQuest");
-                        
+                    String allianceString = superData.getString("alliance");
+                    String allianceSimple = "";
+                    if(allianceString.equals("Blue Alliance")){
+                        allianceSimple = "blue";
+                    }else if(allianceString.equals("Red Alliance")){
+                        allianceSimple = "red";
+                    }
+                    previousScore = superData.get(allianceSimple + "").toString();
+                    previousFoul = superData.get(allianceSimple + "").toString();
+                    facedTheBoss = superData.getBoolean(allianceSimple + "DidFaceTheBoss");
+                    didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
+
+                    JSONObject jsonCubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
+                    boost = jsonCubesInVaultFinal.getInt("Boost");
+                    force = jsonCubesInVaultFinal.getInt("Force");
+                    levitate = jsonCubesInVaultFinal.getInt("Levitate");
+
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                 }
