@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jcodec.common.DictionaryCompressor;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -93,7 +94,6 @@ public class ScoutingPage extends ActionBarActivity {
 
         setContentView(R.layout.super_scouting);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        //allianceCubesForPowerup = new HashMap<>();
         next = getIntent();
         object = new JSONObject();
         getExtrasForScouting();
@@ -365,7 +365,7 @@ public class ScoutingPage extends ActionBarActivity {
         panelThree.setAllianceColor(isRed);
         panelThree.setTeamNumber(teamNumberThree);
     }
-
+    // TODO: Fix the above error.
     public void sendExtras() {
         Intent intent = new Intent(this, FinalDataPoints.class);
         intent.putExtra("teamOneNotes", teamOneNotes);
@@ -384,6 +384,8 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putExtra("boostCount", boostC);
         intent.putExtra("completedAutoQuest", didAutoQuest);
         intent.putExtra("facedTheBoss", facedTheBoss);
+        intent.putExtra("forceForPowerup", allianceCubesForPowerup.get("Force"));
+        intent.putExtra("boostForPowerup", allianceCubesForPowerup.get("Boost"));
         intent.putExtra("mute", isMute);
         intent.putStringArrayListExtra("dataNameOne", teamOneDataName);
         intent.putStringArrayListExtra("ranksOfOne", teamOneDataScore);
@@ -453,7 +455,7 @@ public class ScoutingPage extends ActionBarActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("SuperNotes for team " + teamNumber)
+                builder.setTitle("Super Notes for team " + teamNumber)
                         .setView(pilotNotesETOne)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -482,7 +484,7 @@ public class ScoutingPage extends ActionBarActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("Pilot Notes for " + teamNumber)
+                builder.setTitle("Super Notes for " + teamNumber)
                         .setView(pilotNotesETTwo)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -511,7 +513,7 @@ public class ScoutingPage extends ActionBarActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("Pilot Notes for " + teamNumber)
+                builder.setTitle("Super Notes for " + teamNumber)
                         .setView(pilotNotesETThree)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
