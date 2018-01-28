@@ -180,8 +180,22 @@ public class FinalDataPoints extends ActionBarActivity {
                     teamTwoDataScore.add(teamTwoNotes);
                     teamThreeDataName.add("superNotes");
                     teamThreeDataScore.add(teamThreeNotes);
-                    try {
-                        String JsonStringTeamOne = "{";
+
+                    try { //TODO: Figure out why this is failing. (Looks like I need to use primitive datatypes (boolean instead of Boolean) & just put data into subJSONObjects instead of making a string or use .put("Key", jsonObj.toMap())
+
+                        JSONObject jsonTeamOne = new JSONObject();
+                        JSONObject jsonTeamTwo = new JSONObject();
+                        JSONObject jsonTeamThree= new JSONObject();
+                        JSONObject jsonCubesForPowerup = new JSONObject();
+                        JSONObject jsonCubesInVaultFinal = new JSONObject();
+                        JSONObject jsonBlueSwitch = new JSONObject();
+                        JSONObject jsonRedSwitch = new JSONObject();
+                        JSONObject jsonScale = new JSONObject();
+
+
+
+                        /* TODO: Delete ONLY ONCE REPLACEMENT CODE IS FINISHED AND WORKS!
+                        String JsonStringTeamOne = "{"; //TODO: Redo these as JSONObjects with put
                         String JsonStringTeamTwo = "{";
                         String JsonStringTeamThree = "{";
                         for(int a = 0; a <= teamOneDataScore.size() - 1; a++) {
@@ -208,9 +222,9 @@ public class FinalDataPoints extends ActionBarActivity {
                                 JsonStringTeamThree = JsonStringTeamThree + "}";
                             }
                         }
-                        JSONObject JsonTeamOne = new JSONObject(JsonStringTeamOne);
-                        JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
-                        JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
+                        JSONObject jsonTeamOne = new JSONObject(JsonStringTeamOne);
+                        JSONObject jsonTeamTwo = new JSONObject(JsonStringTeamTwo);
+                        JSONObject jsonTeamThree = new JSONObject(JsonStringTeamThree);
 
                         String jsonVaultFinalString = "{ \"Boost\": " + boostCounterView.getDataValue().toString()
                                 + ", \"Levitate\": " + levitateCounterView.getDataValue().toString()
@@ -225,25 +239,27 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonScale = new JSONObject(scale);
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
+                        */
 
                         String allianceSimple = "";
                         if(alliance.equals("Blue Alliance")){
                             allianceSimple = "blue";
                         }else if(alliance.equals("Red Alliance")){
+                        }else if(alliance.equals("Red Alliance")){
                             allianceSimple = "red";
                         }
-
-                        superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest);
-                        superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss);
+                        /* TODO: Uncomment:
+                        superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
+                        superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
                         superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
                         superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(allianceSimple + "Score", allianceScoreNum);
-                        superExternalData.put(allianceSimple + "FoulPintsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
-                        superExternalData.put(teamNumberOne, JsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be.
-                        superExternalData.put(teamNumberTwo, JsonTeamTwo);
-                        superExternalData.put(teamNumberThree, JsonTeamThree);
+                        superExternalData.put(allianceSimple + "FoulPointsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
+                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be.
+                        superExternalData.put(teamNumberTwo, jsonTeamTwo);
+                        superExternalData.put(teamNumberThree, jsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
@@ -252,22 +268,33 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
                         superExternalData.put("blueSwitch", jsonBlueSwitch);
                         superExternalData.put("redSwitch", jsonRedSwitch);
-                        superExternalData.put("scale", jsonScale);
-                    }catch(JSONException JE){
+                        superExternalData.put("scale", jsonScale);*/
+                        Log.d("SuperExternal", "ThisRan");
+                    } catch(JSONException JE) {
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
                     ArrayList<String> teamNumbers = new ArrayList<>(Arrays.asList(teamNumberOne, teamNumberTwo, teamNumberThree));
 
-                    for (int i = 0; i < teamNumbers.size(); i++){
+                    /* TODO: Uncomment:
+                    for (int i = 0; i < teamNumbers.size(); i++){ //TODO: Fix this
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamOneNoteHolder);
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamTwoNoteHolder);
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamThreeNoteHolder);
                     }
+                    */
                     sendAfterMatchData();
 
-                    System.out.println(superExternalData.toString());
+                    /*TODO: Temporary test. Remove when done!
+                    try {
+                        superExternalData.put("TestKey", "TestValue");
+                    } catch(JSONException JE) {
+                        Log.e("JSONException", "JSON Test Failed!");
+                    }
+                    */
+
+                    System.out.println("SuperExternalData: " + superExternalData.toString());
 
                     file.println(superExternalData.toString());
                     file.close();
