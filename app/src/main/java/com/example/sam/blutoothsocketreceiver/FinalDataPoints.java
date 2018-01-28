@@ -203,11 +203,13 @@ public class FinalDataPoints extends ActionBarActivity {
                             jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
                         }
 
-                        jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue()); //TODO: Nathan: Does this need to be converted to string or int (from Integer)?
+                        jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
 
-                        jsonCubesForPowerup.put("TempKey", "TempValue"); //TODO: Finish this!
+                        jsonCubesInVaultFinal.put("Boost", 0); //TODO: Finish this!
+                        jsonCubesInVaultFinal.put("Levitate", 0);
+                        jsonCubesInVaultFinal.put("Force", 0);
 
                         jsonBlueSwitch = new JSONObject(blueSwitch);
                         jsonRedSwitch = new JSONObject(redSwitch);
