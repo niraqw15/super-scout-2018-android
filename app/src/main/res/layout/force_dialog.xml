@@ -3,40 +3,48 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     >
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:text="Force Cubes"
+    android:paddingTop= "15dp"
+    android:textSize = "20sp"
+    android:paddingBottom = "20dp"
+    android:id= "@+id/ForceCubesForPowerup"/>
 
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/forceone"
+        android:layout_below="@+id/ForceCubesForPowerup"
         android:gravity="center_horizontal"
         android:textOff="1"
         android:textOn="1"
         android:checked="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_centerHorizontal="true" />
 
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/forceone"
         android:id="@+id/forcetwo"
         android:gravity="center_horizontal"
         android:textOff="2"
         android:textOn="2"
         android:checked="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
+        android:layout_centerHorizontal="true" />
 
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/forcetwo"
         android:id="@+id/forcethree"
         android:gravity="center_horizontal"
         android:textOff="3"
         android:textOn="3"
         android:checked="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="105dp"
-        android:layout_marginBottom="30dp"
         />
 
 

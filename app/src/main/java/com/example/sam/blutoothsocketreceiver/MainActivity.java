@@ -269,9 +269,15 @@ public class MainActivity extends ActionBarActivity {
         }
         final File[] files = dir.listFiles();
         adapter.clear();
-        for (File tmpFile : files) {
-            adapter.add(tmpFile.getName());
+        try {
+            for (File tmpFile : files) {
+                adapter.add(tmpFile.getName());
+            }
+        } catch(Exception JE) {
+            Log.e("json error", "failed to add tempfile to adapter");
+            toasts("Failed to show past matches.", true);
         }
+
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence Register, int start, int count, int after) {}
@@ -305,18 +311,19 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }
                 }
+                adapter.sort(new Comparator<String>() {
+                    @Override
+                    public int compare(String lhs, String rhs) {
+                        File lhsFile = new File(dir, lhs);
+                        File rhsFile = new File(dir, rhs);
+                        Date lhsDate = new Date(lhsFile.lastModified());
+                        Date rhsDate = new Date(rhsFile.lastModified());
+                        return rhsDate.compareTo(lhsDate);
+                    }
+                });
             }
         });
-        adapter.sort(new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                File lhsFile = new File(dir, lhs);
-                File rhsFile = new File(dir, rhs);
-                Date lhsDate = new Date(lhsFile.lastModified());
-                Date rhsDate = new Date(rhsFile.lastModified());
-                return rhsDate.compareTo(lhsDate);
-            }
-        });
+
         adapter.notifyDataSetChanged();
     }
 //updates the team numbers in the front screen according to the match number and the alliance;
