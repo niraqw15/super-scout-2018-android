@@ -311,7 +311,6 @@ public class ScoutingPage extends ActionBarActivity {
                 if (alliance.equals("Blue Alliance")) {
                     dataBase.child("/Matches").child(numberOfMatch).child("blueScore").setValue(allianceScoreInt);
                     dataBase.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(allianceFoulInt);
-
                     dataBase.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss);
                     dataBase.child("/Matches").child(numberOfMatch).child("blueDidAutoQuest").setValue(didAutoQuest);
                     dataBase.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Boost").setValue(boostC);
@@ -532,7 +531,6 @@ public class ScoutingPage extends ActionBarActivity {
 
     public void ForceDialogs(View view){
         AlertDialog.Builder forceDialog = new AlertDialog.Builder(context);
-        forceDialog.setMessage("Force");
         forceDialog.setCancelable(false);
         forceDialog.setView(R.layout.force_dialog);
         forceDialog.setPositiveButton(
@@ -568,7 +566,6 @@ public class ScoutingPage extends ActionBarActivity {
     }
     public void BoostDialogs(View view) {
         AlertDialog.Builder boostDialog = new AlertDialog.Builder(context);
-        boostDialog.setMessage("Boost");
         boostDialog.setCancelable(false);
         boostDialog.setView(R.layout.boost_dialog);
         boostDialog.setPositiveButton(
