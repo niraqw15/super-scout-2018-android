@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jcodec.common.DictionaryCompressor;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
@@ -192,6 +193,25 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonRedSwitch = new JSONObject();
                         JSONObject jsonScale = new JSONObject();
 
+                        for(int position = 0; position < teamOneDataScore.size(); position++) {
+                            jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                        }
+                        for(int position = 0; position < teamTwoDataScore.size(); position++){
+                            jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                        }
+                        for(int position = 0; position < teamThreeDataScore.size(); position++){
+                            jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                        }
+
+                        jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue()); //TODO: Nathan: Does this need to be converted to string or int (from Integer)?
+                        jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
+                        jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
+
+                        jsonCubesForPowerup.put("TempKey", "TempValue"); //TODO: Finish this!
+
+                        jsonBlueSwitch = new JSONObject(blueSwitch);
+                        jsonRedSwitch = new JSONObject(redSwitch);
+                        jsonScale = new JSONObject(scale);
 
 
                         /* TODO: Delete ONLY ONCE REPLACEMENT CODE IS FINISHED AND WORKS!
@@ -237,9 +257,9 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonBlueSwitch = new JSONObject(blueSwitch);
                         JSONObject jsonRedSwitch = new JSONObject(redSwitch);
                         JSONObject jsonScale = new JSONObject(scale);
+                        */
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
-                        */
 
                         String allianceSimple = "";
                         if(alliance.equals("Blue Alliance")){
@@ -248,7 +268,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         }else if(alliance.equals("Red Alliance")){
                             allianceSimple = "red";
                         }
-                        /* TODO: Uncomment:
+
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
                         superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
                         superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
@@ -268,8 +288,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
                         superExternalData.put("blueSwitch", jsonBlueSwitch);
                         superExternalData.put("redSwitch", jsonRedSwitch);
-                        superExternalData.put("scale", jsonScale);*/
-                        Log.d("SuperExternal", "ThisRan");
+                        superExternalData.put("scale", jsonScale);
                     } catch(JSONException JE) {
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
