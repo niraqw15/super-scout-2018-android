@@ -58,6 +58,7 @@ public class FinalDataPoints extends ActionBarActivity {
     Counter forceCounterView;
     Integer forceForPowerup;
     Integer boostForPowerup;
+    Integer levitateForPowerup;
     JSONObject superExternalData;
     ArrayList<String> teamOneDataName;
     ArrayList<String> teamOneDataScore;
@@ -189,9 +190,10 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonTeamThree= new JSONObject();
                         JSONObject jsonCubesForPowerup = new JSONObject();
                         JSONObject jsonCubesInVaultFinal = new JSONObject();
-                        JSONObject jsonBlueSwitch = new JSONObject();
-                        JSONObject jsonRedSwitch = new JSONObject();
-                        JSONObject jsonScale = new JSONObject();
+
+                        JSONObject jsonBlueSwitch = new JSONObject(blueSwitch);
+                        JSONObject jsonRedSwitch = new JSONObject(redSwitch);
+                        JSONObject jsonScale = new JSONObject(scale);
 
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
                             jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
@@ -207,59 +209,10 @@ public class FinalDataPoints extends ActionBarActivity {
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
 
-                        jsonCubesInVaultFinal.put("Boost", 0); //TODO: Finish this!
-                        jsonCubesInVaultFinal.put("Levitate", 0);
-                        jsonCubesInVaultFinal.put("Force", 0);
+                        jsonCubesInVaultFinal.put("Boost", boostForPowerup); //TODO: Finish this!
+                        jsonCubesInVaultFinal.put("Levitate", levitateForPowerup);
+                        jsonCubesInVaultFinal.put("Force", forceForPowerup);
 
-                        jsonBlueSwitch = new JSONObject(blueSwitch);
-                        jsonRedSwitch = new JSONObject(redSwitch);
-                        jsonScale = new JSONObject(scale);
-
-
-                        /* TODO: Delete ONLY ONCE REPLACEMENT CODE IS FINISHED AND WORKS!
-                        String JsonStringTeamOne = "{"; //TODO: Redo these as JSONObjects with put
-                        String JsonStringTeamTwo = "{";
-                        String JsonStringTeamThree = "{";
-                        for(int a = 0; a <= teamOneDataScore.size() - 1; a++) {
-                            JsonStringTeamOne = JsonStringTeamOne + ("\"" + reformatDataNames(teamOneDataName.get(a)) + "\": " + teamOneDataScore.get(a));
-                            if (a != teamOneDataScore.size() - 1) {
-                                JsonStringTeamOne = JsonStringTeamOne + ",";
-                            } else {
-                                JsonStringTeamOne = JsonStringTeamOne + "}";
-                            }
-                        }
-                        for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
-                            JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + reformatDataNames(teamTwoDataName.get(a)) + "\": " + teamTwoDataScore.get(a));
-                            if(a != teamTwoDataScore.size() - 1){
-                                JsonStringTeamTwo = JsonStringTeamTwo + ",";
-                            } else {
-                                JsonStringTeamTwo = JsonStringTeamTwo + "}";
-                            }
-                        }
-                        for(int a = 0; a <= teamThreeDataScore.size() - 1; a++){
-                            JsonStringTeamThree = JsonStringTeamThree + ("\"" + reformatDataNames(teamThreeDataName.get(a)) + "\": " + teamThreeDataScore.get(a));
-                            if(a != teamThreeDataScore.size() - 1){
-                                JsonStringTeamThree = JsonStringTeamThree + ",";
-                            } else {
-                                JsonStringTeamThree = JsonStringTeamThree + "}";
-                            }
-                        }
-                        JSONObject jsonTeamOne = new JSONObject(JsonStringTeamOne);
-                        JSONObject jsonTeamTwo = new JSONObject(JsonStringTeamTwo);
-                        JSONObject jsonTeamThree = new JSONObject(JsonStringTeamThree);
-
-                        String jsonVaultFinalString = "{ \"Boost\": " + boostCounterView.getDataValue().toString()
-                                + ", \"Levitate\": " + levitateCounterView.getDataValue().toString()
-                                + ", \"Force\": " + forceCounterView.getDataValue().toString() + "}";
-                        JSONObject jsonCubesInVaultFinal = new JSONObject(jsonVaultFinalString);
-
-                        String jsonCubesForPowerupString = "{ \"Temp\": \"This is temporary!\" }";//TODO: Nathan: Finish this (need to add and get extras from scoutingpage)
-                        JSONObject jsonCubesForPowerup = new JSONObject(jsonCubesForPowerupString);
-
-                        JSONObject jsonBlueSwitch = new JSONObject(blueSwitch);
-                        JSONObject jsonRedSwitch = new JSONObject(redSwitch);
-                        JSONObject jsonScale = new JSONObject(scale);
-                        */
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
 

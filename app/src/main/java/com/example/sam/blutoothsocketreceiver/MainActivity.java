@@ -440,12 +440,13 @@ public class MainActivity extends ActionBarActivity {
                         JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
-                        String allianceSimple = "";
+                        String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring();
                         if(allianceString.equals("Blue Alliance")) {
                             allianceSimple = "blue";
                         }else if(allianceString.equals("Red Alliance")) {
                             allianceSimple = "red";
                         }
+
                         String teamOneNotes = superData.getString("teamOneNotes");
                         String teamTwoNotes = superData.getString("teamTwoNotes");
                         String teamThreeNotes = superData.getString("teamThreeNotes");
@@ -615,7 +616,7 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {  //TODO: Incomplete. Add ability to change all data and autofill with previous data.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
