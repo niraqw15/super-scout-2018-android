@@ -288,8 +288,13 @@ public class MainActivity extends ActionBarActivity {
                 if (searchBar.getText().toString().equals("")){
                     adapter.clear();
                     searchBar.setFocusable(false);
-                    for (File tmpFile : files) {
-                        adapter.add(tmpFile.getName());
+                    try {
+                        for (File tmpFile : files) {
+                            adapter.add(tmpFile.getName());
+                        }
+                    } catch(Exception JE) {
+                        Log.e("json error", "failed to add tempfile to adapter");
+                        toasts("Failed to show past matches.", true);
                     }
                     searchBar.setFocusableInTouchMode(true);
                     adapter.sort(new Comparator<String>() {

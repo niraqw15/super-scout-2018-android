@@ -82,7 +82,7 @@ public class ScoutingPage extends ActionBarActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     ToggleButton levitate;
-    int levitateNum;
+    Integer levitateNum = 0;
     Counter boostCounterView;
     Counter levitateCounterView;
     Counter forceCounterView;
@@ -385,6 +385,7 @@ public class ScoutingPage extends ActionBarActivity {
         intent.putExtra("facedTheBoss", facedTheBoss);
         intent.putExtra("forceForPowerup", allianceCubesForPowerup.get("Force"));
         intent.putExtra("boostForPowerup", allianceCubesForPowerup.get("Boost"));
+        intent.putExtra("levitateForPowerup", levitateNum);
         intent.putExtra("mute", isMute);
         intent.putStringArrayListExtra("dataNameOne", teamOneDataName);
         intent.putStringArrayListExtra("ranksOfOne", teamOneDataScore);

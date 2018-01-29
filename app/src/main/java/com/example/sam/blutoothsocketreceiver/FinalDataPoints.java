@@ -2,7 +2,6 @@ package com.example.sam.blutoothsocketreceiver;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.jcodec.common.DictionaryCompressor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
@@ -32,7 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 
 public class FinalDataPoints extends ActionBarActivity {
     String numberOfMatch;
@@ -57,6 +54,7 @@ public class FinalDataPoints extends ActionBarActivity {
     Counter forceCounterView;
     Integer forceForPowerup;
     Integer boostForPowerup;
+    Integer levitateForPowerup;
     JSONObject superExternalData;
     ArrayList<String> teamOneDataName;
     ArrayList<String> teamOneDataScore;
@@ -321,6 +319,7 @@ public class FinalDataPoints extends ActionBarActivity {
 
         forceForPowerup = intent.getExtras().getInt("forceForPowerup");
         boostForPowerup = intent.getExtras().getInt("boostForPowerup");
+        levitateForPowerup = intent.getExtras().getInt("levitateForPowerup");
     }
 
     public void sendAfterMatchData(){
