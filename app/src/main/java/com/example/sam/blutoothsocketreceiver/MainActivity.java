@@ -440,12 +440,7 @@ public class MainActivity extends ActionBarActivity {
                         JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
-                        String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring();
-                        if(allianceString.equals("Blue Alliance")) {
-                            allianceSimple = "blue";
-                        }else if(allianceString.equals("Red Alliance")) {
-                            allianceSimple = "red";
-                        }
+                        String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring(1,allianceString.indexOf(" "));
 
                         String teamOneNotes = superData.getString("teamOneNotes");
                         String teamTwoNotes = superData.getString("teamTwoNotes");

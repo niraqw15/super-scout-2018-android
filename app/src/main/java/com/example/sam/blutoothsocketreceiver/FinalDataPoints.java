@@ -216,13 +216,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
 
-                        String allianceSimple = "";
-                        if(alliance.equals("Blue Alliance")){
-                            allianceSimple = "blue";
-                        }else if(alliance.equals("Red Alliance")){
-                        }else if(alliance.equals("Red Alliance")){
-                            allianceSimple = "red";
-                        }
+                        String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
                         superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
