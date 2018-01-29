@@ -2,7 +2,6 @@ package com.example.sam.blutoothsocketreceiver;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -33,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 
 public class FinalDataPoints extends ActionBarActivity {
     String numberOfMatch;
@@ -340,6 +338,7 @@ public class FinalDataPoints extends ActionBarActivity {
 
         forceForPowerup = intent.getExtras().getInt("forceForPowerup");
         boostForPowerup = intent.getExtras().getInt("boostForPowerup");
+        levitateForPowerup = intent.getExtras().getInt("levitateForPowerup");
     }
 
     public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
