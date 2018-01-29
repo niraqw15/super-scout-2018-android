@@ -207,9 +207,9 @@ public class FinalDataPoints extends ActionBarActivity {
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
 
-                        jsonCubesInVaultFinal.put("Boost", boostForPowerup); //TODO: Finish this!
-                        jsonCubesInVaultFinal.put("Levitate", levitateForPowerup);
-                        jsonCubesInVaultFinal.put("Force", forceForPowerup);
+                        jsonCubesForPowerup.put("Boost", boostForPowerup); //TODO: Finish this!
+                        jsonCubesForPowerup.put("Levitate", levitateForPowerup);
+                        jsonCubesForPowerup.put("Force", forceForPowerup);
 
                         //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
                         //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
