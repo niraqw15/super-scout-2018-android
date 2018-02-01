@@ -194,14 +194,25 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonScale = new JSONObject(scale);
 
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
-                            jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                            if(teamOneDataName.get(position).equals("superNotes")) {
+                                Log.d("DataName " + position, "ran");
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), Constants.teamOneNoteHolder);
+                            } else {
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                            }
                         }
                         for(int position = 0; position < teamTwoDataScore.size(); position++){
-                            jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
-                        }
+                            if(teamTwoDataName.get(position).equals("superNotes")) {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), Constants.teamTwoNoteHolder);
+                            } else {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                            }                        }
                         for(int position = 0; position < teamThreeDataScore.size(); position++){
-                            jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
-                        }
+                            if(teamThreeDataName.get(position).equals("superNotes")) {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), Constants.teamThreeNoteHolder);
+                            } else {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                            }                        }
 
                         jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
@@ -230,9 +241,11 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
+                        /*
                         superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
                         superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
+                        */
                         superExternalData.put("blueSwitch", jsonBlueSwitch);
                         superExternalData.put("redSwitch", jsonRedSwitch);
                         superExternalData.put("scale", jsonScale);
@@ -298,12 +311,14 @@ public class FinalDataPoints extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String reformatDataNames(String dataName){
+    public String reformatDataNames(String dataName) {
         String reformattedDataName = "";
-        if(!dataName.equals("Good Decisions") && !dataName.equals("Bad Decisions")){
-            reformattedDataName = "rank" + dataName.replace(" ", "");
-        }else if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
+        if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
             reformattedDataName = "num" + dataName.replace(" ", "");
+        } else if(dataName.equals("superNotes")) {
+            reformattedDataName = dataName;
+        } else {
+            reformattedDataName = "rank" + dataName.replace(" ", "");
         }
         return reformattedDataName;
     }
