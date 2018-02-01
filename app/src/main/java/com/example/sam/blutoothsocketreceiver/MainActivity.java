@@ -447,9 +447,11 @@ public class MainActivity extends ActionBarActivity {
                         String allianceString = superData.getString("alliance");
                         String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring(1,allianceString.indexOf(" "));
 
+                        /*
                         String teamOneNotes = superData.getString("teamOneNotes");
                         String teamTwoNotes = superData.getString("teamTwoNotes");
                         String teamThreeNotes = superData.getString("teamThreeNotes");
+                        */
 
                         String matchNum = superData.get("matchNumber").toString();
                         String matchAndTeamOne = superData.get("teamOne") + "Q" + matchNum;
@@ -506,21 +508,18 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
+                        /*
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
+                        */
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
-                        /* TODO: Check if this should be here.
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("firstNotes").setValue(teamOneFirstNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("firstNotes").setValue(teamTwoFirstNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("firstNotes").setValue(teamThreeFirstNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").child("finalNotes").setValue(teamOneFinalNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").child("finalNotes").setValue(teamTwoFinalNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").child("finalNotes").setValue(teamThreeFinalNotes);
-                        */
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
                         dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);
