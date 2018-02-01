@@ -224,7 +224,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(allianceSimple + "Score", allianceScoreNum);
                         superExternalData.put(allianceSimple + "FoulPointsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
-                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be.
+                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be & delete teamOneNotes etc. and make sure notes actually go into notes in teamdata & remove the rank part of the dataname(check why notes are stored as 'ranksuperNotes' and why are notes both under team and match).
                         superExternalData.put(teamNumberTwo, jsonTeamTwo);
                         superExternalData.put(teamNumberThree, jsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);
