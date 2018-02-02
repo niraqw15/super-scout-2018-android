@@ -517,9 +517,11 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
+                        /* TODO: Implement this
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
+                        */
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
                         dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);
