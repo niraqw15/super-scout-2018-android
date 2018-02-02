@@ -24,13 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FieldSetupPage"></activity>
-        <activity android:name=".ScoutingPage"></activity>
-        <activity android:name=".FinalDataPoints"></activity>
-        <activity
-            android:name=".SuperNotes"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".finalNotes"></activity>
+        <activity android:name=".FieldSetupPage"/>
+        <activity android:name=".ScoutingPage"/>
+        <activity android:name=".FinalDataPoints"/>
+        <activity android:name=".finalNotes"/>
     </application>
 
 </manifest>

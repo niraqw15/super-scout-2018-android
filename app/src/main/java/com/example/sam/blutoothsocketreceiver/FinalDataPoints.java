@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jcodec.common.DictionaryCompressor;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
@@ -178,70 +180,100 @@ public class FinalDataPoints extends ActionBarActivity {
                     teamTwoDataScore.add(teamTwoNotes);
                     teamThreeDataName.add("superNotes");
                     teamThreeDataScore.add(teamThreeNotes);
-                    try {
-                        String JsonStringTeamOne = "{";
-                        String JsonStringTeamTwo = "{";
-                        String JsonStringTeamThree = "{";
-                        for(int a = 0; a <= teamOneDataScore.size() - 1; a++) {
-                            JsonStringTeamOne = JsonStringTeamOne + ("\"" + reformatDataNames(teamOneDataName.get(a)) + "\": " + teamOneDataScore.get(a));
-                            if (a != teamOneDataScore.size() - 1) {
-                                JsonStringTeamOne = JsonStringTeamOne + ",";
-                            } else {
-                                JsonStringTeamOne = JsonStringTeamOne + "}";
-                            }
-                        }
 
-                        for(int a = 0; a <= teamTwoDataScore.size() - 1; a++){
-                            JsonStringTeamTwo = JsonStringTeamTwo + ("\"" + reformatDataNames(teamTwoDataName.get(a)) + "\": " + teamTwoDataScore.get(a));
-                            if(a != teamTwoDataScore.size() - 1){
-                                JsonStringTeamTwo = JsonStringTeamTwo + ",";
-                            } else {
-                                JsonStringTeamTwo = JsonStringTeamTwo + "}";
-                            }
-                        }
-                        for(int a = 0; a <= teamThreeDataScore.size() - 1; a++){
-                            JsonStringTeamThree = JsonStringTeamThree + ("\"" + reformatDataNames(teamThreeDataName.get(a)) + "\": " + teamThreeDataScore.get(a));
-                            if(a != teamThreeDataScore.size() - 1){
-                                JsonStringTeamThree = JsonStringTeamThree + ",";
-                            } else {
-                                JsonStringTeamThree = JsonStringTeamThree + "}";
-                            }
-                        }
-                        JSONObject JsonTeamOne = new JSONObject(JsonStringTeamOne);
-                        JSONObject JsonTeamTwo = new JSONObject(JsonStringTeamTwo);
-                        JSONObject JsonTeamThree = new JSONObject(JsonStringTeamThree);
+                    try { //TODO: Figure out why this is failing. (Looks like I need to use primitive datatypes (boolean instead of Boolean) & just put data into subJSONObjects instead of making a string or use .put("Key", jsonObj.toMap())
 
+                        JSONObject jsonTeamOne = new JSONObject();
+                        JSONObject jsonTeamTwo = new JSONObject();
+                        JSONObject jsonTeamThree= new JSONObject();
+                        JSONObject jsonCubesForPowerup = new JSONObject();
+                        JSONObject jsonCubesInVaultFinal = new JSONObject();
+
+                        JSONObject jsonBlueSwitch = new JSONObject(blueSwitch);
+                        JSONObject jsonRedSwitch = new JSONObject(redSwitch);
+                        JSONObject jsonScale = new JSONObject(scale);
+
+                        for(int position = 0; position < teamOneDataScore.size(); position++) {
+                            if(teamOneDataName.get(position).equals("superNotes")) {
+                                Log.d("DataName " + position, "ran");
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), Constants.teamOneNoteHolder);
+                            } else {
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                            }
+                        }
+                        for(int position = 0; position < teamTwoDataScore.size(); position++){
+                            if(teamTwoDataName.get(position).equals("superNotes")) {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), Constants.teamTwoNoteHolder);
+                            } else {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                            }                        }
+                        for(int position = 0; position < teamThreeDataScore.size(); position++){
+                            if(teamThreeDataName.get(position).equals("superNotes")) {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), Constants.teamThreeNoteHolder);
+                            } else {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                            }                        }
+
+                        jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
+                        jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
+                        jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
+
+                        jsonCubesForPowerup.put("Boost", boostForPowerup); //TODO: Finish this!
+                        jsonCubesForPowerup.put("Levitate", levitateForPowerup);
+                        jsonCubesForPowerup.put("Force", forceForPowerup);
+
+                        //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
+                        //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
+
+                        String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
+
+                        superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
+                        superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
+                        superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
+                        superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
-                        superExternalData.put(alliance + " Score", allianceScoreNum);
-                        superExternalData.put(alliance + " Foul", allianceFoulNum);
-                        superExternalData.put(teamNumberOne, JsonTeamOne);
-                        superExternalData.put(teamNumberTwo, JsonTeamTwo);
-                        superExternalData.put(teamNumberThree, JsonTeamThree);
+                        superExternalData.put(allianceSimple + "Score", allianceScoreNum);
+                        superExternalData.put(allianceSimple + "FoulPointsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
+                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be & delete teamOneNotes etc. and make sure notes actually go into notes in teamdata & remove the rank part of the dataname(check why notes are stored as 'ranksuperNotes' and why are notes both under team and match).
+                        superExternalData.put(teamNumberTwo, jsonTeamTwo);
+                        superExternalData.put(teamNumberThree, jsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
+                        /*
                         superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
                         superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
                         superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
-                        superExternalData.put("blueSwitch", blueSwitch);
-                        superExternalData.put("redSwitch", redSwitch);
-                        superExternalData.put("scale", scale);
-                    }catch(JSONException JE){
+                        */
+                        superExternalData.put("blueSwitch", jsonBlueSwitch);
+                        superExternalData.put("redSwitch", jsonRedSwitch);
+                        superExternalData.put("scale", jsonScale);
+                    } catch(JSONException JE) {
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
                     ArrayList<String> teamNumbers = new ArrayList<>(Arrays.asList(teamNumberOne, teamNumberTwo, teamNumberThree));
 
-                    for (int i = 0; i < teamNumbers.size(); i++){
+                    /* TODO: Uncomment:
+                    for (int i = 0; i < teamNumbers.size(); i++){ //TODO: Fix this
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamOneNoteHolder);
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamTwoNoteHolder);
                         firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamThreeNoteHolder);
                     }
+                    */
                     sendAfterMatchData();
 
-                    System.out.println(superExternalData.toString());
+                    /*TODO: Temporary test. Remove when done!
+                    try {
+                        superExternalData.put("TestKey", "TestValue");
+                    } catch(JSONException JE) {
+                        Log.e("JSONException", "JSON Test Failed!");
+                    }
+                    */
+
+                    System.out.println("SuperExternalData: " + superExternalData.toString());
 
                     file.println(superExternalData.toString());
                     file.close();
@@ -279,12 +311,14 @@ public class FinalDataPoints extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String reformatDataNames(String dataName){
+    public String reformatDataNames(String dataName) {
         String reformattedDataName = "";
-        if(!dataName.equals("Good Decisions") && !dataName.equals("Bad Decisions")){
-            reformattedDataName = "rank" + dataName.replace(" ", "");
-        }else if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
+        if(dataName.equals("Good Decisions") || dataName.equals("Bad Decisions")){
             reformattedDataName = "num" + dataName.replace(" ", "");
+        } else if(dataName.equals("superNotes")) {
+            reformattedDataName = dataName;
+        } else {
+            reformattedDataName = "rank" + dataName.replace(" ", "");
         }
         return reformattedDataName;
     }
@@ -322,7 +356,7 @@ public class FinalDataPoints extends ActionBarActivity {
         levitateForPowerup = intent.getExtras().getInt("levitateForPowerup");
     }
 
-    public void sendAfterMatchData(){
+    public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));

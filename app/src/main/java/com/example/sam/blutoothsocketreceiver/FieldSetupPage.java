@@ -20,8 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -111,9 +113,9 @@ public class FieldSetupPage extends AppCompatActivity{
                 next = new Intent(context, ScoutingPage.class);
                 next.putExtras(previous);
 
-                String blueSwitch = formatPlateData("blueSwitch", configMap.get(R.id.blueTopPlateButton), configMap.get(R.id.blueBottomPlateButton));
-                String scale = formatPlateData("scale", configMap.get(R.id.scaleTopPlateButton), configMap.get(R.id.scaleBottomPlateButton));
-                String redSwitch = formatPlateData("redSwitch", configMap.get(R.id.redTopPlateButton), configMap.get(R.id.redBottomPlateButton));
+                String blueSwitch = formatPlateData(configMap.get(R.id.blueTopPlateButton), configMap.get(R.id.blueBottomPlateButton));
+                String scale = formatPlateData(configMap.get(R.id.scaleTopPlateButton), configMap.get(R.id.scaleBottomPlateButton));
+                String redSwitch = formatPlateData(configMap.get(R.id.redTopPlateButton), configMap.get(R.id.redBottomPlateButton));
                 next.putExtra("blueSwitch", blueSwitch);
                 next.putExtra("scale", scale);
                 next.putExtra("redSwitch", redSwitch);
@@ -137,8 +139,8 @@ public class FieldSetupPage extends AppCompatActivity{
         isRed = previous.getExtras().getBoolean("allianceColor");
     }
 
-    public String formatPlateData(String name, String left, String right) {
-        String JsonStringPlates = "\"" + name + "\":{\"left\": \"" + left + "\",\"right\": \"" + right + "\"}";
+    public String formatPlateData(String left, String right) {
+        String JsonStringPlates = "{\"left\": \"" + left + "\",\"right\": \"" + right + "\"}";
         return JsonStringPlates;
     }
 }
