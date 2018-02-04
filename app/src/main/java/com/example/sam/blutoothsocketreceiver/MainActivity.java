@@ -522,7 +522,7 @@ public class MainActivity extends ActionBarActivity {
 
 
                     } catch (JSONException JE) {
-                        Log.e("json error", "failed to get super json");
+                        Log.e("json error", "failed to get super json"); //TODO: Find out why this is failing.
                     }
                 }
                 toasts("Resent Super data!", false);

@@ -113,6 +113,7 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceFoul.setText(allianceFoulData);
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data");
     }
+
     @Override
     public void onBackPressed(){
         final Activity activity = this;
@@ -338,7 +339,18 @@ public class FinalDataPoints extends ActionBarActivity {
 
     public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
         //TODO: Prevent submission of vault data different than forpowerup (other than 0 -> higher)
+        //TODO: Add teamnumbers
+        JSONObject allianceTeams = new JSONObject();
+        try {
+            allianceTeams.put("0", teamNumberOne);
+            allianceTeams.put("1", teamNumberTwo);
+            allianceTeams.put("2", teamNumberThree);
+        } catch(JSONException JE) {
+            Log.e("JSONException", "Failed to make allianceTeams");
+        }
+
         if (alliance.equals("Blue Alliance")) {
+            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams);
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
@@ -348,6 +360,7 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
 
         } else if (alliance.equals("Red Alliance")) {
+            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams);
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidFaceBoss").setValue(facedTheBoss.isChecked());
