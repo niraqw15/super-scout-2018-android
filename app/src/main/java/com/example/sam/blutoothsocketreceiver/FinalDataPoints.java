@@ -343,14 +343,20 @@ public class FinalDataPoints extends ActionBarActivity {
         JSONObject allianceTeams = new JSONObject();
         try {
             allianceTeams.put("0", teamNumberOne);
+            Log.d("Debug Team One", teamNumberOne);
             allianceTeams.put("1", teamNumberTwo);
+            Log.d("Debug Team Two", teamNumberTwo);
             allianceTeams.put("2", teamNumberThree);
+            Log.d("Debug Team Three", teamNumberThree);
         } catch(JSONException JE) {
             Log.e("JSONException", "Failed to make allianceTeams");
         }
 
+        Log.d("Debug alliance", alliance);
+        //TODO: Convert allianceTeams to gson
         if (alliance.equals("Blue Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams);
+            Log.d("Debug Run", "blue");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams.toString());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
@@ -358,9 +364,10 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-
+            Log.d("Debug Ran", "blue");
         } else if (alliance.equals("Red Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams);
+            Log.d("Debug Run", "red");
+            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams.toString());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidFaceBoss").setValue(facedTheBoss.isChecked());
@@ -368,7 +375,7 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-
+            Log.d("Debug Ran", "red");
         }
     }
 }

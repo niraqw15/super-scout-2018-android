@@ -106,7 +106,7 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.view_files_received);
         listView.setAdapter(adapter);
         updateListView();
-        updateListView(); //TODO: Why?
+        updateListView(); //TODO: Why is this called twice?
 
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(new BroadcastReceiver() {
@@ -441,7 +441,7 @@ public class MainActivity extends ActionBarActivity {
                 //read data from file
                 for (int j = 0; j < dataPoints.size(); j++) {
 
-                    try { //TODO: Nathan: Make sure that this has all datapoints & is written to firebase
+                    try {
                         JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
@@ -453,7 +453,7 @@ public class MainActivity extends ActionBarActivity {
                         String teamThreeNotes = superData.getString("teamThreeNotes");
                         */
 
-                        String teamOneNumber = superData.getString("teamOne"); //TODO: Nathan: Convert this to a jsonObject before storing or store cube data individually?
+                        String teamOneNumber = superData.getString("teamOne");
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
                         String matchNum = superData.get("matchNumber").toString();
@@ -488,6 +488,7 @@ public class MainActivity extends ActionBarActivity {
                         Iterator getTeamThreeKeys = teamThreeKeyNames.keys();
                         ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
+                        //TODO: Find out why this isn't writing to firebase.
                         for(int i = 0; i < teamNumbers.size(); i++) {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("teamNumber").setValue(teamNumbers.get(i));
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
