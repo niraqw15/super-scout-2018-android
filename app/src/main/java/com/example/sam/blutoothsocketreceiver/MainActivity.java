@@ -510,10 +510,6 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum)); //TODO: Shouldn't this be matchNumber on firebase?
 
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneData.get("superNotes"));
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoData.get("superNotes"));
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeData.get("superNotes"));
-
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
