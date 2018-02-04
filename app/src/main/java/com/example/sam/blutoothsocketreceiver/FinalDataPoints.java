@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 
 public class FinalDataPoints extends ActionBarActivity {
     String numberOfMatch;
@@ -174,14 +175,19 @@ public class FinalDataPoints extends ActionBarActivity {
                     } catch (IOException IOE) {
                         return;
                     }
+
+                    //TODO: Add if statement to make sure this is only added once.
                     teamOneDataName.add("superNotes");
+                    teamOneNotes = Constants.teamOneNoteHolder;
                     teamOneDataScore.add(teamOneNotes);
                     teamTwoDataName.add("superNotes");
+                    teamTwoNotes = Constants.teamTwoNoteHolder;
                     teamTwoDataScore.add(teamTwoNotes);
                     teamThreeDataName.add("superNotes");
+                    teamThreeNotes = Constants.teamThreeNoteHolder;
                     teamThreeDataScore.add(teamThreeNotes);
 
-                    try { //TODO: Figure out why this is failing. (Looks like I need to use primitive datatypes (boolean instead of Boolean) & just put data into subJSONObjects instead of making a string or use .put("Key", jsonObj.toMap())
+                    try {
 
                         JSONObject jsonTeamOne = new JSONObject();
                         JSONObject jsonTeamTwo = new JSONObject();
@@ -194,41 +200,28 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonScale = new JSONObject(scale);
 
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
-                            if(teamOneDataName.get(position).equals("superNotes")) {
-                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), Constants.teamOneNoteHolder);
-                            } else {
-                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
-                            }
+                            jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
                         }
                         for(int position = 0; position < teamTwoDataScore.size(); position++){
-                            if(teamTwoDataName.get(position).equals("superNotes")) {
-                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), Constants.teamTwoNoteHolder);
-                            } else {
-                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
-                            }                        }
+                            jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                        }
                         for(int position = 0; position < teamThreeDataScore.size(); position++){
-                            if(teamThreeDataName.get(position).equals("superNotes")) {
-                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), Constants.teamThreeNoteHolder);
-                            } else {
-                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
-                            }                        }
+                            jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                        }
 
                         jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
 
-                        jsonCubesForPowerup.put("Boost", boostForPowerup); //TODO: Finish this!
+                        jsonCubesForPowerup.put("Boost", boostForPowerup);
                         jsonCubesForPowerup.put("Levitate", levitateForPowerup);
                         jsonCubesForPowerup.put("Force", forceForPowerup);
-
-                        //TODO: Nathan: Add superdata for everything (cube numbers, didautoquest, didfacedtheboss) (remove this after checking for everything)
-                        //TODO: Nathan: Missing: blue&redAllianceTeamNumbers, number(matchNumber),
 
                         String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
                         superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
-                        superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal); //TODO: Nathan: Check if format is correct (should probably be one JsonObject for all vault values) & Check about adding vault values from before end of match (CubesForPowerup).
+                        superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
                         superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
@@ -240,11 +233,6 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
-                        /*
-                        superExternalData.put("teamOneNotes", Constants.teamOneNoteHolder);
-                        superExternalData.put("teamTwoNotes", Constants.teamTwoNoteHolder);
-                        superExternalData.put("teamThreeNotes", Constants.teamThreeNoteHolder);
-                        */
                         superExternalData.put("blueSwitch", jsonBlueSwitch);
                         superExternalData.put("redSwitch", jsonRedSwitch);
                         superExternalData.put("scale", jsonScale);
@@ -253,24 +241,14 @@ public class FinalDataPoints extends ActionBarActivity {
                     }
                     ArrayList<String> teamNumbers = new ArrayList<>(Arrays.asList(teamNumberOne, teamNumberTwo, teamNumberThree));
 
-                    /* TODO: Uncomment:
                     for (int i = 0; i < teamNumbers.size(); i++){ //TODO: Fix this
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberOne + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamOneNoteHolder);
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberTwo + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamTwoNoteHolder);
-                        firebaseRef.child("TeamInMatchDatas").child(teamNumberThree + "Q" + numberOfMatch).child("superNotes").setValue(Constants.teamThreeNoteHolder);
                     }
-                    */
+                    firebaseRef.child("TeamInMatDatas").child(teamNumberOne + "Q" + numberOfMatch).child("superNotes").setValue(teamOneNotes);
+                    firebaseRef.child("TeamInMatDatas").child(teamNumberTwo + "Q" + numberOfMatch).child("superNotes").setValue(teamTwoNotes);
+                    firebaseRef.child("TeamInMatDatas").child(teamNumberThree + "Q" + numberOfMatch).child("superNotes").setValue(teamThreeNotes);
                     sendAfterMatchData();
-
-                    /*TODO: Temporary test. Remove when done!
-                    try {
-                        superExternalData.put("TestKey", "TestValue");
-                    } catch(JSONException JE) {
-                        Log.e("JSONException", "JSON Test Failed!");
-                    }
-                    */
 
                     System.out.println("SuperExternalData: " + superExternalData.toString());
 
@@ -301,7 +279,10 @@ public class FinalDataPoints extends ActionBarActivity {
             finalNotesIntent.putExtra("teamNumOne", teamNumberOne);
             finalNotesIntent.putExtra("teamNumTwo", teamNumberTwo);
             finalNotesIntent.putExtra("teamNumThree", teamNumberThree);
-            finalNotesIntent.putExtra("teamOneNotes", teamOneNotes);
+            teamOneNotes = Constants.teamOneNoteHolder;
+            teamTwoNotes = Constants.teamTwoNoteHolder;
+            teamThreeNotes = Constants.teamThreeNoteHolder;
+            finalNotesIntent.putExtra("teamOneNotes", teamOneNotes); //TODO: Make sure notes are saved on return & save notes to teamOneNotes.
             finalNotesIntent.putExtra("teamTwoNotes", teamTwoNotes);
             finalNotesIntent.putExtra("teamThreeNotes", teamThreeNotes);
             finalNotesIntent.putExtra("qualNum", numberOfMatch);
@@ -356,6 +337,7 @@ public class FinalDataPoints extends ActionBarActivity {
     }
 
     public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
+        //TODO: Prevent submission of vault data different than forpowerup (other than 0 -> higher)
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
