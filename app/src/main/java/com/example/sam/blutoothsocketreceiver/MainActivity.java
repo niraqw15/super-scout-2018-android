@@ -618,6 +618,7 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {  //TODO: Incomplete. Add ability to change all data and autofill with previous data.
+                /* TODO: Add this back in when it works.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
@@ -712,6 +713,11 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
                 builder.show();
+                */
+                //TODO: Temporary, remove when done.
+                toasts("That feature is not available right now.", false);
+
+
                 return true;
             }
         });
