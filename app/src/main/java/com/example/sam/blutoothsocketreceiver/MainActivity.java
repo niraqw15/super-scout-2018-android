@@ -453,13 +453,13 @@ public class MainActivity extends ActionBarActivity {
                         String teamThreeNotes = superData.getString("teamThreeNotes");
                         */
 
-                        String matchNum = superData.get("matchNumber").toString();
-                        String matchAndTeamOne = superData.get("teamOne") + "Q" + matchNum;
-                        String matchAndTeamTwo = superData.get("teamTwo") + "Q" + matchNum;
-                        String matchAndTeamThree = superData.get("teamThree") + "Q" + matchNum;
                         String teamOneNumber = superData.getString("teamOne"); //TODO: Nathan: Convert this to a jsonObject before storing or store cube data individually?
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
+                        String matchNum = superData.get("matchNumber").toString();
+                        String matchAndTeamOne = teamOneNumber + "Q" + matchNum;
+                        String matchAndTeamTwo = teamTwoNumber + "Q" + matchNum;
+                        String matchAndTeamThree = teamThreeNumber + "Q" + matchNum;
 
                         Boolean didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
                         Boolean didFaceBoss = superData.getBoolean(allianceSimple + "DidFaceBoss");
@@ -478,6 +478,7 @@ public class MainActivity extends ActionBarActivity {
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
                         JSONObject teamThreeData = superData.getJSONObject(teamThreeNumber);
 
+                        //TODO: Why convert to a string and back to a JSONObject (why not just use teamOneData?).
                         JSONObject teamOneKeyNames = new JSONObject(teamOneData.toString());
                         JSONObject teamTwoKeyNames = new JSONObject(teamTwoData.toString());
                         JSONObject teamThreeKeyNames = new JSONObject(teamThreeData.toString());
@@ -507,21 +508,16 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
-                        dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
-                        /*
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
-                        */
+                        dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum)); //TODO: Shouldn't this be matchNumber on firebase?
+
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneData.get("superNotes"));
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoData.get("superNotes"));
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeData.get("superNotes"));
+
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
-                        /* TODO: Implement this
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
-                        */
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
                         dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);

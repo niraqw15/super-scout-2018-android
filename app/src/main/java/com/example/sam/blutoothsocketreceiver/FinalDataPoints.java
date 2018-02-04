@@ -195,7 +195,6 @@ public class FinalDataPoints extends ActionBarActivity {
 
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
                             if(teamOneDataName.get(position).equals("superNotes")) {
-                                Log.d("DataName " + position, "ran");
                                 jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), Constants.teamOneNoteHolder);
                             } else {
                                 jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
