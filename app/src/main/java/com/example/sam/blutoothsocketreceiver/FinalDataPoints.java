@@ -356,7 +356,7 @@ public class FinalDataPoints extends ActionBarActivity {
         //TODO: Convert allianceTeams to gson
         if (alliance.equals("Blue Alliance")) {
             Log.d("Debug Run", "blue");
-            //firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work.
+            //firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work. (use gson?)
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
