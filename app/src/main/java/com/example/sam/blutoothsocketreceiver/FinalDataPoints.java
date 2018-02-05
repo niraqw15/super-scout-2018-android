@@ -356,7 +356,7 @@ public class FinalDataPoints extends ActionBarActivity {
         //TODO: Convert allianceTeams to gson
         if (alliance.equals("Blue Alliance")) {
             Log.d("Debug Run", "blue");
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams.toString());
+            //firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work.
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
@@ -367,7 +367,7 @@ public class FinalDataPoints extends ActionBarActivity {
             Log.d("Debug Ran", "blue");
         } else if (alliance.equals("Red Alliance")) {
             Log.d("Debug Run", "red");
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams.toString());
+            //firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work.
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidFaceBoss").setValue(facedTheBoss.isChecked());

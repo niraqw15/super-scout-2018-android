@@ -488,7 +488,6 @@ public class MainActivity extends ActionBarActivity {
                         Iterator getTeamThreeKeys = teamThreeKeyNames.keys();
                         ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
-                        //TODO: Find out why this isn't writing to firebase.
                         for(int i = 0; i < teamNumbers.size(); i++) {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("teamNumber").setValue(teamNumbers.get(i));
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
@@ -523,7 +522,7 @@ public class MainActivity extends ActionBarActivity {
 
 
                     } catch (JSONException JE) {
-                        Log.e("json error", "failed to get super json"); //TODO: Find out why this is failing.
+                        Log.e("json error", "failed to get super json"); //TODO: Find out why this is failing to write to firebase.
                     }
                 }
                 toasts("Resent Super data!", false);
@@ -610,7 +609,7 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {  //TODO: Incomplete. Add ability to change all data and autofill with previous data.
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) { //TODO: Incomplete. Add ability to change all data and autofill with previous data.
                 /* TODO: Add this back in when it works.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
