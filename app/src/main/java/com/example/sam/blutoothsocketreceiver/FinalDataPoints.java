@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.jcodec.common.DictionaryCompressor;
 import org.json.JSONArray;
@@ -32,7 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class FinalDataPoints extends ActionBarActivity {
     String numberOfMatch;
@@ -339,24 +343,26 @@ public class FinalDataPoints extends ActionBarActivity {
 
     public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
         //TODO: Prevent submission of vault data different than forpowerup (other than 0 -> higher)
-        //TODO: Add teamnumbers
         JSONObject allianceTeams = new JSONObject();
+        int teamIntOne = Integer.parseInt(teamNumberOne);
+        int teamIntTwo = Integer.parseInt(teamNumberTwo);
+        int teamIntThree = Integer.parseInt(teamNumberThree);
+
         try {
-            allianceTeams.put("0", teamNumberOne);
-            Log.d("Debug Team One", teamNumberOne);
-            allianceTeams.put("1", teamNumberTwo);
-            Log.d("Debug Team Two", teamNumberTwo);
-            allianceTeams.put("2", teamNumberThree);
-            Log.d("Debug Team Three", teamNumberThree);
+            allianceTeams.put("0", teamIntOne);
+            allianceTeams.put("1", teamIntTwo);
+            allianceTeams.put("2", teamIntThree);
         } catch(JSONException JE) {
             Log.e("JSONException", "Failed to make allianceTeams");
         }
+
+        Map<String, Object> allianceTeamsJsonMap = new Gson().fromJson(allianceTeams.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
         Log.d("Debug alliance", alliance);
         //TODO: Convert allianceTeams to gson
         if (alliance.equals("Blue Alliance")) {
             Log.d("Debug Run", "blue");
-            //firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work. (use gson?)
+            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
@@ -367,7 +373,7 @@ public class FinalDataPoints extends ActionBarActivity {
             Log.d("Debug Ran", "blue");
         } else if (alliance.equals("Red Alliance")) {
             Log.d("Debug Run", "red");
-            //firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeams); //TODO: Get this line to work.
+            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("redDidFaceBoss").setValue(facedTheBoss.isChecked());
