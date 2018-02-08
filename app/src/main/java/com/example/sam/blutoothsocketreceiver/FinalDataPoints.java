@@ -358,10 +358,7 @@ public class FinalDataPoints extends ActionBarActivity {
 
         Map<String, Object> allianceTeamsJsonMap = new Gson().fromJson(allianceTeams.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-        Log.d("Debug alliance", alliance);
-        //TODO: Convert allianceTeams to gson
         if (alliance.equals("Blue Alliance")) {
-            Log.d("Debug Run", "blue");
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
@@ -370,9 +367,7 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-            Log.d("Debug Ran", "blue");
         } else if (alliance.equals("Red Alliance")) {
-            Log.d("Debug Run", "red");
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
             firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
             firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
@@ -381,7 +376,6 @@ public class FinalDataPoints extends ActionBarActivity {
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
             firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-            Log.d("Debug Ran", "red");
         }
     }
 }
