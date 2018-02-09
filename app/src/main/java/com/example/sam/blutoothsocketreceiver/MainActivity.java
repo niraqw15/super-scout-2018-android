@@ -43,11 +43,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -442,6 +447,9 @@ public class MainActivity extends ActionBarActivity {
                 for (int j = 0; j < dataPoints.size(); j++) {
 
                     try {
+                        //TODO: Temp
+                        int i = 0;
+
                         JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
@@ -471,12 +479,23 @@ public class MainActivity extends ActionBarActivity {
                         JSONObject redSwitch = superData.getJSONObject("redSwitch");
                         JSONObject scale = superData.getJSONObject("scale");
 
+                        Map<String, Object> blueSwitchJsonMap = new Gson().fromJson(blueSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> redSwitchJsonMap = new Gson().fromJson(redSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> scaleJsonMap = new Gson().fromJson(scale.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+
                         JSONObject cubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
                         JSONObject cubesForPowerup = superData.getJSONObject(allianceSimple + "CubesForPowerup");
+
+                        Map<String, Object> cubesInVaultFinalJsonMap = new Gson().fromJson(cubesInVaultFinal.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> cubesForPowerupJsonMap = new Gson().fromJson(cubesForPowerup.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
                         JSONObject teamOneData = superData.getJSONObject(teamOneNumber);
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
                         JSONObject teamThreeData = superData.getJSONObject(teamThreeNumber);
+
+                        Map<String, Object> teamOneDataJsonMap = new Gson().fromJson(teamOneData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> teamTwoDataJsonMap = new Gson().fromJson(teamTwoData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> teamThreeDataJsonMap = new Gson().fromJson(teamThreeData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
                         //TODO: Why convert to a string and back to a JSONObject (why not just use teamOneData?).
                         JSONObject teamOneKeyNames = new JSONObject(teamOneData.toString());
@@ -505,24 +524,53 @@ public class MainActivity extends ActionBarActivity {
                             String teamThreeKeys = (String) getTeamThreeKeys.next();
                             dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
                         }
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
+                        //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum)); //TODO: Shouldn't this be matchNumber on firebase?
-
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinalJsonMap);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerupJsonMap);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);
-                        dataBase.child("Matches").child(matchNum).child("scale").setValue(scale);
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitch);
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitchJsonMap);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
+                        dataBase.child("Matches").child(matchNum).child("scale").setValue(scaleJsonMap);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitchJsonMap);
+                        //TODO: Temp
+                        Log.d("This ran", "" + i);
+                        i++;
 
 
                     } catch (JSONException JE) {
-                        Log.e("json error", "failed to get super json"); //TODO: Find out why this is failing to write to firebase.
+                        Log.e("json error", "failed to get super json"); //TODO: Figure out why this is failing!!!
                     }
                 }
                 toasts("Resent Super data!", false);

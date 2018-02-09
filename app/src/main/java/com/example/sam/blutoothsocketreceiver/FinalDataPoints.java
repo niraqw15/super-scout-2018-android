@@ -204,10 +204,6 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonRedSwitch = new JSONObject(redSwitch);
                         JSONObject jsonScale = new JSONObject(scale);
 
-                        Map<String, Object> blueSwitchJsonMap = new Gson().fromJson(jsonBlueSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                        Map<String, Object> redSwitchJsonMap = new Gson().fromJson(jsonRedSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                        Map<String, Object> scaleJsonMap = new Gson().fromJson(jsonScale.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
                             jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
                         }
@@ -218,42 +214,33 @@ public class FinalDataPoints extends ActionBarActivity {
                             jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
                         }
 
-                        Map<String, Object> teamOneJsonMap = new Gson().fromJson(jsonTeamOne.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                        Map<String, Object> teamTwoJsonMap = new Gson().fromJson(jsonTeamTwo.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                        Map<String, Object> teamThreeJsonMap = new Gson().fromJson(jsonTeamThree.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-
                         jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
                         jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
-
-                        Map<String, Object> cubesInVaultFinalJsonMap = new Gson().fromJson(jsonCubesInVaultFinal.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-
 
                         jsonCubesForPowerup.put("Boost", boostForPowerup);
                         jsonCubesForPowerup.put("Levitate", levitateForPowerup);
                         jsonCubesForPowerup.put("Force", forceForPowerup);
 
-                        Map<String, Object> cubesForPowerupJsonMap = new Gson().fromJson(jsonCubesForPowerup.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-
                         String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
                         superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
-                        superExternalData.put(allianceSimple + "CubesInVaultFinal", cubesInVaultFinalJsonMap);
-                        superExternalData.put(allianceSimple + "CubesForPowerup", cubesForPowerupJsonMap);
+                        superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
+                        superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(allianceSimple + "Score", allianceScoreNum);
                         superExternalData.put(allianceSimple + "FoulPointsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
-                        superExternalData.put(teamNumberOne, teamOneJsonMap); //TODO: Nathan: Check if teamOne etc. can be put into these or should be & delete teamOneNotes etc. and make sure notes actually go into notes in teamdata & remove the rank part of the dataname(check why notes are stored as 'ranksuperNotes' and why are notes both under team and match).
-                        superExternalData.put(teamNumberTwo, teamTwoJsonMap);
-                        superExternalData.put(teamNumberThree, teamThreeJsonMap);
+                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be & delete teamOneNotes etc. and make sure notes actually go into notes in teamdata & remove the rank part of the dataname(check why notes are stored as 'ranksuperNotes' and why are notes both under team and match).
+                        superExternalData.put(teamNumberTwo, jsonTeamTwo);
+                        superExternalData.put(teamNumberThree, jsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);
                         superExternalData.put("teamTwo", teamNumberTwo);
                         superExternalData.put("teamThree", teamNumberThree);
-                        superExternalData.put("blueSwitch", blueSwitchJsonMap);
-                        superExternalData.put("redSwitch", redSwitchJsonMap);
-                        superExternalData.put("scale", scaleJsonMap);
+                        superExternalData.put("blueSwitch", jsonBlueSwitch);
+                        superExternalData.put("redSwitch", jsonRedSwitch);
+                        superExternalData.put("scale", jsonScale);
                     } catch(JSONException JE) {
                         Log.e("JSON Error", "couldn't put keys and values in json object");
                     }
