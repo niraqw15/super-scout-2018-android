@@ -75,6 +75,7 @@ public class FinalDataPoints extends ActionBarActivity {
     PrintWriter file;
     DatabaseReference firebaseRef;
     Intent intent;
+    boolean hasRun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,8 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceScore.setText(allianceScoreData);
         allianceFoul.setText(allianceFoulData);
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data");
+
+        hasRun = false;
     }
 
     @Override
@@ -182,16 +185,18 @@ public class FinalDataPoints extends ActionBarActivity {
                         return;
                     }
 
-                    //TODO: Add if statement to make sure this is only added once.
-                    teamOneDataName.add("superNotes");
-                    teamOneNotes = Constants.teamOneNoteHolder;
-                    teamOneDataScore.add(teamOneNotes);
-                    teamTwoDataName.add("superNotes");
-                    teamTwoNotes = Constants.teamTwoNoteHolder;
-                    teamTwoDataScore.add(teamTwoNotes);
-                    teamThreeDataName.add("superNotes");
-                    teamThreeNotes = Constants.teamThreeNoteHolder;
-                    teamThreeDataScore.add(teamThreeNotes);
+                    if(!hasRun) {
+                        teamOneDataName.add("superNotes");
+                        teamOneNotes = Constants.teamOneNoteHolder;
+                        teamOneDataScore.add(teamOneNotes);
+                        teamTwoDataName.add("superNotes");
+                        teamTwoNotes = Constants.teamTwoNoteHolder;
+                        teamTwoDataScore.add(teamTwoNotes);
+                        teamThreeDataName.add("superNotes");
+                        teamThreeNotes = Constants.teamThreeNoteHolder;
+                        teamThreeDataScore.add(teamThreeNotes);
+                        hasRun = true;
+                    }
 
                     try {
 
@@ -245,7 +250,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         superExternalData.put("alliance", alliance);
                         superExternalData.put(allianceSimple + "Score", allianceScoreNum);
                         superExternalData.put(allianceSimple + "FoulPointsGained", allianceFoulNum); //TODO: Why is the firebase datapoint for this foulPointsGained<COLOR> instead of <color>FoulPointsGained?
-                        superExternalData.put(teamNumberOne, jsonTeamOne); //TODO: Nathan: Check if teamOne etc. can be put into these or should be & delete teamOneNotes etc. and make sure notes actually go into notes in teamdata & remove the rank part of the dataname(check why notes are stored as 'ranksuperNotes' and why are notes both under team and match).
+                        superExternalData.put(teamNumberOne, jsonTeamOne);
                         superExternalData.put(teamNumberTwo, jsonTeamTwo);
                         superExternalData.put(teamNumberThree, jsonTeamThree);
                         superExternalData.put("teamOne", teamNumberOne);

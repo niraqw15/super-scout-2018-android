@@ -439,7 +439,7 @@ public class MainActivity extends ActionBarActivity {
         return dataOfFile;
     }
 
-    public void resendSuperData(final List<JSONObject> dataPoints) { //TODO: Nathan: Reformat & add ability to view and changefield setup (?) & include everything else from finaldatapoints
+    public void resendSuperData(final List<JSONObject> dataPoints) {
         new Thread() {
             @Override
             public void run() {
@@ -501,7 +501,7 @@ public class MainActivity extends ActionBarActivity {
                         //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
-                        dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum)); //TODO: Shouldn't this be matchNumber on firebase?
+                        dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinalJsonMap);
@@ -513,7 +513,7 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitchJsonMap);
 
                     } catch (JSONException JE) {
-                        Log.e("json error", "failed to get super json"); //TODO: Figure out why this is failing!!!
+                        Log.e("json error", "failed to get super json");
                     }
                 }
                 toasts("Resent Super data!", false);
