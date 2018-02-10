@@ -498,7 +498,8 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).updateChildren(teamTwoDataJsonMap);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
 
-                        //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
+                        //TODO: Add this in.
+                        //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
