@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.jcodec.common.DictionaryCompressor;
+import org.jcodec.common.RunLength;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -205,13 +206,25 @@ public class FinalDataPoints extends ActionBarActivity {
                         JSONObject jsonScale = new JSONObject(scale);
 
                         for(int position = 0; position < teamOneDataScore.size(); position++) {
-                            jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                            if(teamOneDataName.get(position).equals("superNotes")) {
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), teamOneDataScore.get(position));
+                            } else {
+                                jsonTeamOne.put(reformatDataNames(teamOneDataName.get(position)), Integer.parseInt(teamOneDataScore.get(position)));
+                            }
                         }
                         for(int position = 0; position < teamTwoDataScore.size(); position++){
-                            jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                            if(teamOneDataName.get(position).equals("superNotes")) {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), teamTwoDataScore.get(position));
+                            } else {
+                                jsonTeamTwo.put(reformatDataNames(teamTwoDataName.get(position)), Integer.parseInt(teamTwoDataScore.get(position)));
+                            }
                         }
                         for(int position = 0; position < teamThreeDataScore.size(); position++){
-                            jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                            if(teamOneDataName.get(position).equals("superNotes")) {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), teamThreeDataScore.get(position));
+                            } else {
+                                jsonTeamThree.put(reformatDataNames(teamThreeDataName.get(position)), Integer.parseInt(teamThreeDataScore.get(position)));
+                            }
                         }
 
                         jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
@@ -348,6 +361,8 @@ public class FinalDataPoints extends ActionBarActivity {
         int teamIntTwo = Integer.parseInt(teamNumberTwo);
         int teamIntThree = Integer.parseInt(teamNumberThree);
 
+        //TODO: Remove these logs.
+        Log.d("teamOne", "" + teamIntOne);
         try {
             allianceTeams.put("0", teamIntOne);
             allianceTeams.put("1", teamIntTwo);
@@ -356,7 +371,9 @@ public class FinalDataPoints extends ActionBarActivity {
             Log.e("JSONException", "Failed to make allianceTeams");
         }
 
+        Log.d("allianceTeams", allianceTeams.toString());
         Map<String, Object> allianceTeamsJsonMap = new Gson().fromJson(allianceTeams.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+        Log.d("allianceTeamsJsonMap", allianceTeamsJsonMap.toString());
 
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);

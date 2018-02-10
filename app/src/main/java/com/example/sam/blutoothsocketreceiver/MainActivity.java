@@ -487,14 +487,6 @@ public class MainActivity extends ActionBarActivity {
                         Map<String, Object> teamTwoDataJsonMap = new Gson().fromJson(teamTwoData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
                         Map<String, Object> teamThreeDataJsonMap = new Gson().fromJson(teamThreeData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-                        //TODO: Why convert to a string and back to a JSONObject (why not just use teamOneData?).
-                        JSONObject teamOneKeyNames = new JSONObject(teamOneData.toString());
-                        JSONObject teamTwoKeyNames = new JSONObject(teamTwoData.toString());
-                        JSONObject teamThreeKeyNames = new JSONObject(teamThreeData.toString());
-
-                        Iterator getTeamOneKeys = teamOneKeyNames.keys();
-                        Iterator getTeamTwoKeys = teamTwoKeyNames.keys();
-                        Iterator getTeamThreeKeys = teamThreeKeyNames.keys();
                         ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
                         for(int i = 0; i < teamNumbers.size(); i++) {
@@ -502,26 +494,9 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
                         }
 
-                        //TODO: IMPORTANT NOTE: rankAgility is not being sent from anywhere (possibly all rank values?)
-                        //TODO: Fully test this.
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).setValue(teamOneDataJsonMap);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).setValue(teamTwoDataJsonMap);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).setValue(teamThreeDataJsonMap);
-                        //TODO: Why is this failing? Remove if above code works.
-                        /*
-                        while (getTeamOneKeys.hasNext()) {
-                            String teamOneKeys = (String) getTeamOneKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child(teamOneKeys).setValue(Integer.parseInt(teamOneData.get(teamOneKeys).toString()));
-                        }
-                        while (getTeamTwoKeys.hasNext()) {
-                            String teamTwoKeys = (String) getTeamTwoKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child(teamTwoKeys).setValue(Integer.parseInt(teamTwoData.get(teamTwoKeys).toString()));
-                        }
-                        while (getTeamThreeKeys.hasNext()) {
-                            String teamThreeKeys = (String) getTeamThreeKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
-                        }
-                        */
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).updateChildren(teamOneDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).updateChildren(teamTwoDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
 
                         //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
