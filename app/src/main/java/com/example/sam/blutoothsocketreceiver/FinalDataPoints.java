@@ -225,7 +225,7 @@ public class FinalDataPoints extends ActionBarActivity {
                         String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
-                        superExternalData.put(allianceSimple + "DidFaceTheBoss", facedTheBoss.isChecked());
+                        superExternalData.put(allianceSimple + "DidFaceBoss", facedTheBoss.isChecked());
                         superExternalData.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
                         superExternalData.put(allianceSimple + "CubesForPowerup", jsonCubesForPowerup);
                         superExternalData.put("matchNumber", numberOfMatch);

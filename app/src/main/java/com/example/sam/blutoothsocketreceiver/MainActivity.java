@@ -446,20 +446,10 @@ public class MainActivity extends ActionBarActivity {
                 //read data from file
                 for (int j = 0; j < dataPoints.size(); j++) {
 
-                    try {
-                        //TODO: Temp
-                        int i = 0;
-
-                        JSONObject superData = dataPoints.get(j);
+                    try {JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
                         String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring(1,allianceString.indexOf(" "));
-
-                        /*
-                        String teamOneNotes = superData.getString("teamOneNotes");
-                        String teamTwoNotes = superData.getString("teamTwoNotes");
-                        String teamThreeNotes = superData.getString("teamThreeNotes");
-                        */
 
                         String teamOneNumber = superData.getString("teamOne");
                         String teamTwoNumber = superData.getString("teamTwo");
@@ -512,6 +502,13 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
                         }
 
+                        //TODO: IMPORTANT NOTE: rankAgility is not being sent from anywhere (possibly all rank values?)
+                        //TODO: Fully test this.
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).setValue(teamOneDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).setValue(teamTwoDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).setValue(teamThreeDataJsonMap);
+                        //TODO: Why is this failing? Remove if above code works.
+                        /*
                         while (getTeamOneKeys.hasNext()) {
                             String teamOneKeys = (String) getTeamOneKeys.next();
                             dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child(teamOneKeys).setValue(Integer.parseInt(teamOneData.get(teamOneKeys).toString()));
@@ -524,50 +521,21 @@ public class MainActivity extends ActionBarActivity {
                             String teamThreeKeys = (String) getTeamThreeKeys.next();
                             dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
                         }
+                        */
+
                         //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson?
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum)); //TODO: Shouldn't this be matchNumber on firebase?
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinalJsonMap);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerupJsonMap);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
                         dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitchJsonMap);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child("scale").setValue(scaleJsonMap);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
                         dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitchJsonMap);
-                        //TODO: Temp
-                        Log.d("This ran", "" + i);
-                        i++;
-
 
                     } catch (JSONException JE) {
                         Log.e("json error", "failed to get super json"); //TODO: Figure out why this is failing!!!
