@@ -79,6 +79,10 @@ public class finalNotes extends ActionBarActivity {
         teamOneEditText.setText(teamOneNotes);
         teamTwoEditText.setText(teamTwoNotes);
         teamThreeEditText.setText(teamThreeNotes);
+
+        teamOneEditText.setFocusable(true);
+        teamTwoEditText.setFocusable(true);
+        teamThreeEditText.setFocusable(true);
     }
 
     @Override

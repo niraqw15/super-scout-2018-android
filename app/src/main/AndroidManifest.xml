@@ -27,7 +27,10 @@
         <activity android:name=".FieldSetupPage"/>
         <activity android:name=".ScoutingPage"/>
         <activity android:name=".FinalDataPoints"/>
-        <activity android:name=".finalNotes"/>
+        <activity
+            android:name=".finalNotes"
+            android:windowSoftInputMode="adjustPan"
+            />
     </application>
 
 </manifest>
