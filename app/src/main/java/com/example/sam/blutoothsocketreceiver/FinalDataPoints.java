@@ -48,6 +48,7 @@ public class FinalDataPoints extends ActionBarActivity {
     String teamTwoNotes;
     String teamThreeNotes;
     String alliance;
+    String allianceSimple;
     String dataBaseUrl;
     String allianceScoreData, allianceFoulData;
     String blueSwitch;
@@ -114,6 +115,8 @@ public class FinalDataPoints extends ActionBarActivity {
         }else if(alliance.equals("Red Alliance")){
             finalScore.setTextColor(Color.RED);
         }
+
+        allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
         allianceScore.setText(allianceScoreData);
         allianceFoul.setText(allianceFoulData);
@@ -239,8 +242,6 @@ public class FinalDataPoints extends ActionBarActivity {
                         jsonCubesForPowerup.put("Boost", boostForPowerup);
                         jsonCubesForPowerup.put("Levitate", levitateForPowerup);
                         jsonCubesForPowerup.put("Force", forceForPowerup);
-
-                        String allianceSimple = alliance.substring(0,1).toLowerCase() + alliance.substring(1,alliance.indexOf(" "));
 
                         superExternalData.put(allianceSimple + "DidAutoQuest", completedAutoQuest.isChecked());
                         superExternalData.put(allianceSimple + "DidFaceBoss", facedTheBoss.isChecked());
@@ -376,24 +377,15 @@ public class FinalDataPoints extends ActionBarActivity {
 
         Map<String, Object> allianceTeamsJsonMap = new Gson().fromJson(allianceTeams.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-        if (alliance.equals("Blue Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedBlue").setValue(Integer.parseInt(allianceFoul.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidFaceBoss").setValue(facedTheBoss.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueDidAutoQuest").setValue(completedAutoQuest.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("blueCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-        } else if (alliance.equals("Red Alliance")) {
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redScore").setValue(Integer.parseInt(allianceScore.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGainedRed").setValue(Integer.parseInt(allianceFoul.getText().toString()));
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redDidFaceBoss").setValue(facedTheBoss.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redDidAutoQuest").setValue(completedAutoQuest.isChecked());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
-            firebaseRef.child("/Matches").child(numberOfMatch).child("redCubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
-        }
+        String uppercaseAllianceSimple = alliance.substring(0, alliance.indexOf(" "));
+
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "AllianceTeamNumbers").setValue(allianceTeamsJsonMap);
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "Score").setValue(Integer.parseInt(allianceScore.getText().toString()));
+        firebaseRef.child("/Matches").child(numberOfMatch).child("foulPointsGained" + uppercaseAllianceSimple).setValue(Integer.parseInt(allianceFoul.getText().toString()));
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "DidFaceBoss").setValue(facedTheBoss.isChecked());
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "DidAutoQuest").setValue(completedAutoQuest.isChecked());
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
+        firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
     }
 }
