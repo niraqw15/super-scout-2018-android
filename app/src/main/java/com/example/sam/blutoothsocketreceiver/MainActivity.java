@@ -111,7 +111,6 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.view_files_received);
         listView.setAdapter(adapter);
         updateListView();
-        updateListView(); //TODO: Why is this called twice?
 
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(new BroadcastReceiver() {
@@ -498,7 +497,7 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).updateChildren(teamTwoDataJsonMap);
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
 
-                        //TODO: Add this in.
+                        //TODO: Add this line in.
                         //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
@@ -698,7 +697,7 @@ public class MainActivity extends ActionBarActivity {
                 });
                 builder.show();
                 */
-                //TODO: Temporary, remove when done.
+                //TODO: Temporary, remove when feature is re-implemented.
                 toasts("That feature is not available right now.", false);
 
 

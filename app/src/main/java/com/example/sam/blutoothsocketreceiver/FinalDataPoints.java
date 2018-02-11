@@ -264,7 +264,7 @@ public class FinalDataPoints extends ActionBarActivity {
                     }
                     ArrayList<String> teamNumbers = new ArrayList<>(Arrays.asList(teamNumberOne, teamNumberTwo, teamNumberThree));
 
-                    for (int i = 0; i < teamNumbers.size(); i++){ //TODO: Fix this
+                    for (int i = 0; i < teamNumbers.size(); i++){ //TODO: Fix this (?)
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("teamNumber").setValue(Integer.parseInt(teamNumbers.get(i)));
                         firebaseRef.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + numberOfMatch).child("matchNumber").setValue(Integer.parseInt(numberOfMatch));
                     }
@@ -360,14 +360,12 @@ public class FinalDataPoints extends ActionBarActivity {
     }
 
     public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
-        //TODO: Prevent submission of vault data different than forpowerup (other than 0 -> higher)
+        //TODO: Prevent submission of vault data lower than ForPowerup
         JSONObject allianceTeams = new JSONObject();
         int teamIntOne = Integer.parseInt(teamNumberOne);
         int teamIntTwo = Integer.parseInt(teamNumberTwo);
         int teamIntThree = Integer.parseInt(teamNumberThree);
 
-        //TODO: Remove these logs.
-        Log.d("teamOne", "" + teamIntOne);
         try {
             allianceTeams.put("0", teamIntOne);
             allianceTeams.put("1", teamIntTwo);
@@ -376,9 +374,7 @@ public class FinalDataPoints extends ActionBarActivity {
             Log.e("JSONException", "Failed to make allianceTeams");
         }
 
-        Log.d("allianceTeams", allianceTeams.toString());
         Map<String, Object> allianceTeamsJsonMap = new Gson().fromJson(allianceTeams.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-        Log.d("allianceTeamsJsonMap", allianceTeamsJsonMap.toString());
 
         if (alliance.equals("Blue Alliance")) {
             firebaseRef.child("/Matches").child(numberOfMatch).child("blueAllianceTeamNumbers").setValue(allianceTeamsJsonMap);
