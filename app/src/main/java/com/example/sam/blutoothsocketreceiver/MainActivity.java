@@ -43,11 +43,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +111,6 @@ public class MainActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.view_files_received);
         listView.setAdapter(adapter);
         updateListView();
-        updateListView(); //TODO: Why?
 
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(new BroadcastReceiver() {
@@ -434,32 +438,25 @@ public class MainActivity extends ActionBarActivity {
         return dataOfFile;
     }
 
-    public void resendSuperData(final List<JSONObject> dataPoints) { //TODO: Nathan: Reformat & add ability to view and changefield setup (?) & include everything else from finaldatapoints
+    public void resendSuperData(final List<JSONObject> dataPoints) {
         new Thread() {
             @Override
             public void run() {
                 //read data from file
                 for (int j = 0; j < dataPoints.size(); j++) {
 
-                    try { //TODO: Nathan: Make sure that this has all datapoints & is written to firebase
-                        JSONObject superData = dataPoints.get(j);
+                    try {JSONObject superData = dataPoints.get(j);
 
                         String allianceString = superData.getString("alliance");
                         String allianceSimple = allianceString.substring(0,1).toLowerCase() + allianceString.substring(1,allianceString.indexOf(" "));
 
-                        /*
-                        String teamOneNotes = superData.getString("teamOneNotes");
-                        String teamTwoNotes = superData.getString("teamTwoNotes");
-                        String teamThreeNotes = superData.getString("teamThreeNotes");
-                        */
-
-                        String matchNum = superData.get("matchNumber").toString();
-                        String matchAndTeamOne = superData.get("teamOne") + "Q" + matchNum;
-                        String matchAndTeamTwo = superData.get("teamTwo") + "Q" + matchNum;
-                        String matchAndTeamThree = superData.get("teamThree") + "Q" + matchNum;
-                        String teamOneNumber = superData.getString("teamOne"); //TODO: Nathan: Convert this to a jsonObject before storing or store cube data individually?
+                        String teamOneNumber = superData.getString("teamOne");
                         String teamTwoNumber = superData.getString("teamTwo");
                         String teamThreeNumber = superData.getString("teamThree");
+                        String matchNum = superData.get("matchNumber").toString();
+                        String matchAndTeamOne = teamOneNumber + "Q" + matchNum;
+                        String matchAndTeamTwo = teamTwoNumber + "Q" + matchNum;
+                        String matchAndTeamThree = teamThreeNumber + "Q" + matchNum;
 
                         Boolean didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
                         Boolean didFaceBoss = superData.getBoolean(allianceSimple + "DidFaceBoss");
@@ -471,20 +468,24 @@ public class MainActivity extends ActionBarActivity {
                         JSONObject redSwitch = superData.getJSONObject("redSwitch");
                         JSONObject scale = superData.getJSONObject("scale");
 
+                        Map<String, Object> blueSwitchJsonMap = new Gson().fromJson(blueSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> redSwitchJsonMap = new Gson().fromJson(redSwitch.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> scaleJsonMap = new Gson().fromJson(scale.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+
                         JSONObject cubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
                         JSONObject cubesForPowerup = superData.getJSONObject(allianceSimple + "CubesForPowerup");
+
+                        Map<String, Object> cubesInVaultFinalJsonMap = new Gson().fromJson(cubesInVaultFinal.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> cubesForPowerupJsonMap = new Gson().fromJson(cubesForPowerup.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
                         JSONObject teamOneData = superData.getJSONObject(teamOneNumber);
                         JSONObject teamTwoData = superData.getJSONObject(teamTwoNumber);
                         JSONObject teamThreeData = superData.getJSONObject(teamThreeNumber);
 
-                        JSONObject teamOneKeyNames = new JSONObject(teamOneData.toString());
-                        JSONObject teamTwoKeyNames = new JSONObject(teamTwoData.toString());
-                        JSONObject teamThreeKeyNames = new JSONObject(teamThreeData.toString());
+                        Map<String, Object> teamOneDataJsonMap = new Gson().fromJson(teamOneData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> teamTwoDataJsonMap = new Gson().fromJson(teamTwoData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        Map<String, Object> teamThreeDataJsonMap = new Gson().fromJson(teamThreeData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-                        Iterator getTeamOneKeys = teamOneKeyNames.keys();
-                        Iterator getTeamTwoKeys = teamTwoKeyNames.keys();
-                        Iterator getTeamThreeKeys = teamThreeKeyNames.keys();
                         ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
                         for(int i = 0; i < teamNumbers.size(); i++) {
@@ -492,42 +493,24 @@ public class MainActivity extends ActionBarActivity {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("matchNumber").setValue(Integer.parseInt(matchNum));
                         }
 
-                        while (getTeamOneKeys.hasNext()) {
-                            String teamOneKeys = (String) getTeamOneKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child(teamOneKeys).setValue(Integer.parseInt(teamOneData.get(teamOneKeys).toString()));
-                        }
-                        while (getTeamTwoKeys.hasNext()) {
-                            String teamTwoKeys = (String) getTeamTwoKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child(teamTwoKeys).setValue(Integer.parseInt(teamTwoData.get(teamTwoKeys).toString()));
-                        }
-                        while (getTeamThreeKeys.hasNext()) {
-                            String teamThreeKeys = (String) getTeamThreeKeys.next();
-                            dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child(teamThreeKeys).setValue(Integer.parseInt(teamThreeData.get(teamThreeKeys).toString()));
-                        }
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).updateChildren(teamOneDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).updateChildren(teamTwoDataJsonMap);
+                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
+
+                        //TODO: Add this line in.
+                        //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
-                        /*
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
-                        */
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidiFaceBoss").setValue(didFaceBoss);
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinal);
-                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerup);
-                        /* TODO: Implement this
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamOne).child("superNotes").setValue(teamOneNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamTwo).child("superNotes").setValue(teamTwoNotes);
-                        dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).child("superNotes").setValue(teamThreeNotes);
-                        */
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "DidFaceBoss").setValue(didFaceBoss);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinalJsonMap);
+                        dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerupJsonMap);
 
                         //TODO: Nathan: Add check against current Firebase (low priority)
-                        dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitch);
-                        dataBase.child("Matches").child(matchNum).child("scale").setValue(scale);
-                        dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitch);
-
+                        dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitchJsonMap);
+                        dataBase.child("Matches").child(matchNum).child("scale").setValue(scaleJsonMap);
+                        dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitchJsonMap);
 
                     } catch (JSONException JE) {
                         Log.e("json error", "failed to get super json");
@@ -617,7 +600,8 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {  //TODO: Incomplete. Add ability to change all data and autofill with previous data.
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) { //TODO: Incomplete. Add ability to change all data and autofill with previous data.
+                /* TODO: Add this back in when it works.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
@@ -712,6 +696,11 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
                 builder.show();
+                */
+                //TODO: Temporary, remove when feature is re-implemented.
+                toasts("That feature is not available right now.", false);
+
+
                 return true;
             }
         });

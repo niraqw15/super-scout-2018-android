@@ -107,6 +107,9 @@ public class ScoutingPage extends ActionBarActivity {
         teamTwoNotes = "";
         teamThreeNotes = "";
 
+        allianceCubesForPowerup.put("Force", 0);
+        allianceCubesForPowerup.put("Boost", 0);
+        allianceCubesForPowerup.put("Levitate", 0);
     }
 
     //Warns the user that going back will change data
@@ -264,13 +267,13 @@ public class ScoutingPage extends ActionBarActivity {
         }
         ((Switch) finalDataView.findViewById(R.id.didAutoQuestBoolean)).setChecked(didAutoQuest);
         ((Switch) finalDataView.findViewById(R.id.didFaceBossBoolean)).setChecked(facedTheBoss);
-        if (boostC != null && boostC != 0) {
+        if (boostC != null) {
             boostCounterView.refreshCounter(boostC);
         }
-        if (levitateC != null && levitateC != 0) {
+        if (levitateC != null) {
             levitateCounterView.refreshCounter(levitateC);
         }
-        if (forceC != null && forceC != 0) {
+        if (forceC != null) {
             forceCounterView.refreshCounter(forceC);
         }
         endDataBuilder.setView(finalDataView);
