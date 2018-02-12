@@ -171,6 +171,24 @@ public class FinalDataPoints extends ActionBarActivity {
                 Toast.makeText(this, "Enter a score and foul", Toast.LENGTH_LONG).show();
                 return false;
             }
+
+            final int boostFinal = boostCounterView.getDataValue();
+            final int levitateFinal = levitateCounterView.getDataValue();
+            final int forceFinal = forceCounterView.getDataValue();
+
+            if(boostFinal < boostForPowerup) {
+                Toast.makeText(this, "Boost can't be lower than " + boostForPowerup, Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if(levitateFinal < levitateForPowerup) {
+                Toast.makeText(this, "Levitate can't be lower than " + levitateForPowerup, Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if(forceFinal < forceForPowerup) {
+                Toast.makeText(this, "Force can't be lower than " + forceForPowerup, Toast.LENGTH_LONG).show();
+                return false;
+            }
+
             final int allianceScoreNum = score;
             final int allianceFoulNum = foul;
 
@@ -235,9 +253,9 @@ public class FinalDataPoints extends ActionBarActivity {
                             }
                         }
 
-                        jsonCubesInVaultFinal.put("Boost", boostCounterView.getDataValue());
-                        jsonCubesInVaultFinal.put("Levitate", levitateCounterView.getDataValue());
-                        jsonCubesInVaultFinal.put("Force", forceCounterView.getDataValue());
+                        jsonCubesInVaultFinal.put("Boost", boostFinal);
+                        jsonCubesInVaultFinal.put("Levitate", levitateFinal);
+                        jsonCubesInVaultFinal.put("Force", forceFinal);
 
                         jsonCubesForPowerup.put("Boost", boostForPowerup);
                         jsonCubesForPowerup.put("Levitate", levitateForPowerup);
