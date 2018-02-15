@@ -148,6 +148,7 @@ public class ScoutingPage extends ActionBarActivity {
         SuperScoutingPanel panelone = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelOne);
         SuperScoutingPanel paneltwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelTwo);
         SuperScoutingPanel panelthree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
+        //Important TODO: All three robots can be 0, but can't share other numbers.
         for (int i = 0; i < 3; i++) {
             if (panelone.getData().get(dataNames.get(i)) == paneltwo.getData().get(dataNames.get(i)) ||
                     (panelone.getData().get(dataNames.get(i))) == (panelthree.getData().get(dataNames.get(i))) || (paneltwo.getData().get(dataNames.get(i)) == panelthree.getData().get(dataNames.get(i))) ){

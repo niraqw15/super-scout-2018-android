@@ -50,7 +50,7 @@ public class Counter extends RelativeLayout {
 
             this.dataName = a.getString(R.styleable.Counter_dataName);
             this.max = a.getInt(R.styleable.Counter_max, 4);
-            this.min = a.getInt(R.styleable.Counter_min, 1);
+            this.min = a.getInt(R.styleable.Counter_min, 0);
             this.startingValue = a.getInt(R.styleable.Counter_startingValue, 2);
             this.increment = a.getInt(R.styleable.Counter_increment, 1);
 
