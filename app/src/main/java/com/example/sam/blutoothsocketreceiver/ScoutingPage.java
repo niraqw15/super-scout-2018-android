@@ -148,14 +148,16 @@ public class ScoutingPage extends ActionBarActivity {
         SuperScoutingPanel panelone = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelOne);
         SuperScoutingPanel paneltwo = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(panelTwo);
         SuperScoutingPanel panelthree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
-        //Important TODO: All three robots can be 0, but can't share other numbers.
+
         for (int i = 0; i < 3; i++) {
-            if (panelone.getData().get(dataNames.get(i)) == paneltwo.getData().get(dataNames.get(i)) ||
-                    (panelone.getData().get(dataNames.get(i))) == (panelthree.getData().get(dataNames.get(i))) || (paneltwo.getData().get(dataNames.get(i)) == panelthree.getData().get(dataNames.get(i))) ){
-            canProceed = false;
-            return canProceed;}
-           /* if (panelone.getData().get(dataNames.get(i)) == paneltwo.getData().get(dataNames.get(i))){
-            }*/
+            int valOne = panelone.getData().get(dataNames.get(i));
+            int valTwo = paneltwo.getData().get(dataNames.get(i));
+            int valThree = panelthree.getData().get(dataNames.get(i));
+
+            if ((valOne != 0 && valTwo != 0 && valOne == valTwo) || (valOne != 0 && valThree != 0 && valOne == valThree) || (valTwo != 0 && valThree != 0 && valTwo == valThree)){
+                canProceed = false;
+                return canProceed;
+            }
         }
         return canProceed;
     }
@@ -164,10 +166,6 @@ public class ScoutingPage extends ActionBarActivity {
     //The next Button, to see if boolean r valid
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-
-
-
-
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
