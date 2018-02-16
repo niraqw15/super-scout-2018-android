@@ -232,7 +232,7 @@ public class ScoutingPage extends ActionBarActivity {
                 sendExtras();
             } else {
                 //toast
-                final String NextString = "Teams cannot have the same ranking values!";
+                final String NextString = "Active teams cannot have the same ranking values!";
 
                 Toast.makeText(getApplicationContext(), NextString, Toast.LENGTH_LONG).show();
 
