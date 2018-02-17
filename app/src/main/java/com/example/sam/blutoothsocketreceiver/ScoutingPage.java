@@ -150,13 +150,21 @@ public class ScoutingPage extends ActionBarActivity {
         SuperScoutingPanel panelthree = (SuperScoutingPanel) getSupportFragmentManager().findFragmentById(R.id.panelThree);
 
         for (int i = 0; i < 3; i++) {
-            int valOne = panelone.getData().get(dataNames.get(i));
-            int valTwo = paneltwo.getData().get(dataNames.get(i));
-            int valThree = panelthree.getData().get(dataNames.get(i));
+            String dataName = dataNames.get(i);
+            int valOne = panelone.getData().get(dataName);
+            int valTwo = paneltwo.getData().get(dataName);
+            int valThree = panelthree.getData().get(dataName);
 
-            if ((valOne != 0 && valTwo != 0 && valOne == valTwo) || (valOne != 0 && valThree != 0 && valOne == valThree) || (valTwo != 0 && valThree != 0 && valTwo == valThree)){
-                canProceed = false;
-                return canProceed;
+            if(dataName.equals("Defense")) {
+                if ((valOne != 0 && valTwo != 0 && valOne != 1 && valTwo != 1 && valOne == valTwo) || (valOne != 0 && valThree != 0 && valOne != 1 && valThree != 1 && valOne == valThree) || (valTwo != 0 && valThree != 0 && valTwo != 1 && valThree != 1 && valTwo == valThree)){
+                    canProceed = false;
+                    return canProceed;
+                }
+            } else {
+                if ((valOne != 0 && valTwo != 0 && valOne == valTwo) || (valOne != 0 && valThree != 0 && valOne == valThree) || (valTwo != 0 && valThree != 0 && valTwo == valThree)){
+                    canProceed = false;
+                    return canProceed;
+                }
             }
         }
         return canProceed;
