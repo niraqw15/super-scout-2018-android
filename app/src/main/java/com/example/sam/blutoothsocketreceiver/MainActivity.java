@@ -347,16 +347,13 @@ public class MainActivity extends ActionBarActivity {
 
                 List<Integer> teamsOnAlliance = new ArrayList<>();
                 teamsOnAlliance.addAll((isRed) ? match.redAllianceTeamNumbers : match.blueAllianceTeamNumbers);
-                alliance.setTextColor((isRed) ? Color.RED : Color.BLUE);
-                alliance.setText((isRed) ? "Red Alliance" : "Blue Alliance");
 
                 teamNumberOne.setText(teamsOnAlliance.get(0).toString());
                 teamNumberTwo.setText(teamsOnAlliance.get(1).toString());
                 teamNumberThree.setText(teamsOnAlliance.get(2).toString());
-                teamNumberOne.setHint("");
-                teamNumberTwo.setHint("");
-                teamNumberThree.setHint("");
-
+                teamNumberOne.setHint("Enter a team number");
+                teamNumberTwo.setHint("Enter a team number");
+                teamNumberThree.setHint("Enter a team number");
             } else {
                 teamNumberOne.setHint("Not Available");
                 teamNumberTwo.setHint("Not Available");
@@ -364,11 +361,13 @@ public class MainActivity extends ActionBarActivity {
                 teamNumberOne.setText("");
                 teamNumberTwo.setText("");
                 teamNumberThree.setText("");
-
             }
         }catch(NullPointerException NPE){
             toasts("Teams not available", true);
         }
+
+        alliance.setTextColor((isRed) ? Color.RED : Color.BLUE);
+        alliance.setText((isRed) ? "Red Alliance" : "Blue Alliance");
     }
 
     public void commitSharedPreferences() {
