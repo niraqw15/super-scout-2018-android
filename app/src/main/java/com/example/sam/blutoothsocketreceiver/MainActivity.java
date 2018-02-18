@@ -351,9 +351,9 @@ public class MainActivity extends ActionBarActivity {
                 teamNumberOne.setText(teamsOnAlliance.get(0).toString());
                 teamNumberTwo.setText(teamsOnAlliance.get(1).toString());
                 teamNumberThree.setText(teamsOnAlliance.get(2).toString());
-                teamNumberOne.setHint("");
-                teamNumberTwo.setHint("");
-                teamNumberThree.setHint("");
+                teamNumberOne.setHint("Enter a team number");
+                teamNumberTwo.setHint("Enter a team number");
+                teamNumberThree.setHint("Enter a team number");
             } else {
                 teamNumberOne.setHint("Not Available");
                 teamNumberTwo.setHint("Not Available");
