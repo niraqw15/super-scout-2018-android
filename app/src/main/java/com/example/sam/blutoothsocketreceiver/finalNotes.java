@@ -93,6 +93,7 @@ public class finalNotes extends ActionBarActivity {
                 .setMessage("Send before leaving?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         try {
                             Constants.teamOneNoteHolder = teamOneEditText.getText().toString();
                             Constants.teamTwoNoteHolder = teamTwoEditText.getText().toString();
