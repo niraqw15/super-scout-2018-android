@@ -207,14 +207,12 @@ public class FinalDataPoints extends ActionBarActivity {
                     }
 
                     if(!hasRun) {
+                        updateNotes();
                         teamOneDataName.add("superNotes");
-                        teamOneNotes = Constants.teamOneNoteHolder;
                         teamOneDataScore.add(teamOneNotes);
                         teamTwoDataName.add("superNotes");
-                        teamTwoNotes = Constants.teamTwoNoteHolder;
                         teamTwoDataScore.add(teamTwoNotes);
                         teamThreeDataName.add("superNotes");
-                        teamThreeNotes = Constants.teamThreeNoteHolder;
                         teamThreeDataScore.add(teamThreeNotes);
                         hasRun = true;
                     }
@@ -321,9 +319,7 @@ public class FinalDataPoints extends ActionBarActivity {
             finalNotesIntent.putExtra("teamNumOne", teamNumberOne);
             finalNotesIntent.putExtra("teamNumTwo", teamNumberTwo);
             finalNotesIntent.putExtra("teamNumThree", teamNumberThree);
-            teamOneNotes = Constants.teamOneNoteHolder;
-            teamTwoNotes = Constants.teamTwoNoteHolder;
-            teamThreeNotes = Constants.teamThreeNoteHolder;
+            updateNotes();
             finalNotesIntent.putExtra("teamOneNotes", teamOneNotes); //TODO: Make sure notes are saved on return & save notes to teamOneNotes.
             finalNotesIntent.putExtra("teamTwoNotes", teamTwoNotes);
             finalNotesIntent.putExtra("teamThreeNotes", teamThreeNotes);
@@ -405,5 +401,17 @@ public class FinalDataPoints extends ActionBarActivity {
         firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Boost").setValue(boostCounterView.getDataValue());
         firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Levitate").setValue(levitateCounterView.getDataValue());
         firebaseRef.child("/Matches").child(numberOfMatch).child(allianceSimple + "CubesInVaultFinal").child("Force").setValue(forceCounterView.getDataValue());
+    }
+
+    private void updateNotes() {
+        if(!Constants.teamOneNoteHolder.equals("")) {
+            teamOneNotes = Constants.teamOneNoteHolder;
+        }
+        if(!Constants.teamTwoNoteHolder.equals("")) {
+            teamTwoNotes = Constants.teamTwoNoteHolder;
+        }
+        if(!Constants.teamThreeNoteHolder.equals("")) {
+            teamThreeNotes = Constants.teamThreeNoteHolder;
+        }
     }
 }

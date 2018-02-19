@@ -456,20 +456,20 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberOneTextview.getText().toString();
 
-                final EditText pilotNotesETOne = new EditText(context);
+                final EditText teamOneNotesEditText = new EditText(context);
 
                 if (!teamOneNotes.equals("")) {
-                    pilotNotesETOne.setText(teamOneNotes);
+                    teamOneNotesEditText.setText(teamOneNotes);
                 }
-                pilotNotesETOne.setTextColor(Color.BLACK);
+                teamOneNotesEditText.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for team " + teamNumber)
-                        .setView(pilotNotesETOne)
+                        .setView(teamOneNotesEditText)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                teamOneNotes = pilotNotesETOne.getText().toString();
+                                teamOneNotes = teamOneNotesEditText.getText().toString();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -485,20 +485,20 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberTwoTextview.getText().toString();
 
-                final EditText pilotNotesETTwo = new EditText(context);
+                final EditText teamTwoNotesEditText = new EditText(context);
 
                 if (!teamTwoNotes.equals("")) {
-                    pilotNotesETTwo.setText(teamTwoNotes);
+                    teamTwoNotesEditText.setText(teamTwoNotes);
                 }
-                pilotNotesETTwo.setTextColor(Color.BLACK);
+                teamTwoNotesEditText.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for " + teamNumber)
-                        .setView(pilotNotesETTwo)
+                        .setView(teamTwoNotesEditText)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                teamTwoNotes = pilotNotesETTwo.getText().toString();
+                                teamTwoNotes = teamTwoNotesEditText.getText().toString();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -514,20 +514,20 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberThreeTextview.getText().toString();
 
-                final EditText pilotNotesETThree = new EditText(context);
+                final EditText teamThreeNotesEditText = new EditText(context);
 
                 if (!teamThreeNotes.equals("")) {
-                    pilotNotesETThree.setText(teamThreeNotes);
+                    teamThreeNotesEditText.setText(teamThreeNotes);
                 }
-                pilotNotesETThree.setTextColor(Color.BLACK);
+                teamThreeNotesEditText.setTextColor(Color.BLACK);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for " + teamNumber)
-                        .setView(pilotNotesETThree)
+                        .setView(teamThreeNotesEditText)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                teamThreeNotes = pilotNotesETThree.getText().toString();
+                                teamThreeNotes = teamThreeNotesEditText.getText().toString();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
