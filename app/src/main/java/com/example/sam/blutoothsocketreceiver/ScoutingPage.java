@@ -458,8 +458,12 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText teamOneNotesEditText = new EditText(context);
 
-                if (!teamOneNotes.equals("")) {
-                    teamOneNotesEditText.setText(teamOneNotes);
+                if(!Constants.teamOneNoteHolder.equals("")) {
+                    teamOneNotesEditText.setText(Constants.teamOneNoteHolder);
+                } else {
+                    if (!teamOneNotes.equals("")) {
+                        teamOneNotesEditText.setText(teamOneNotes);
+                    }
                 }
                 teamOneNotesEditText.setTextColor(Color.BLACK);
 
@@ -487,8 +491,12 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText teamTwoNotesEditText = new EditText(context);
 
-                if (!teamTwoNotes.equals("")) {
-                    teamTwoNotesEditText.setText(teamTwoNotes);
+                if(!Constants.teamTwoNoteHolder.equals("")) {
+                    teamTwoNotesEditText.setText(Constants.teamTwoNoteHolder);
+                } else {
+                    if (!teamTwoNotes.equals("")) {
+                        teamTwoNotesEditText.setText(teamTwoNotes);
+                    }
                 }
                 teamTwoNotesEditText.setTextColor(Color.BLACK);
 
@@ -516,8 +524,12 @@ public class ScoutingPage extends ActionBarActivity {
 
                 final EditText teamThreeNotesEditText = new EditText(context);
 
-                if (!teamThreeNotes.equals("")) {
-                    teamThreeNotesEditText.setText(teamThreeNotes);
+                if(!Constants.teamThreeNoteHolder.equals("")) {
+                    teamThreeNotesEditText.setText(Constants.teamThreeNoteHolder);
+                } else {
+                    if (!teamThreeNotes.equals("")) {
+                        teamThreeNotesEditText.setText(teamThreeNotes);
+                    }
                 }
                 teamThreeNotesEditText.setTextColor(Color.BLACK);
 

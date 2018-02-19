@@ -122,6 +122,11 @@ public class FinalDataPoints extends ActionBarActivity {
         allianceFoul.setText(allianceFoulData);
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data");
 
+        //Ensures that notes from ScoutingPage are always used.
+        Constants.teamOneNoteHolder = "";
+        Constants.teamTwoNoteHolder = "";
+        Constants.teamThreeNoteHolder = "";
+
         hasRun = false;
     }
 
