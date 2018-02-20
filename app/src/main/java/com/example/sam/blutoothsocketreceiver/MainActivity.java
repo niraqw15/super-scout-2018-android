@@ -16,7 +16,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +50,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
@@ -217,6 +221,21 @@ public class MainActivity extends ActionBarActivity {
             SuperScoutApplication.isRed = true;
             commitSharedPreferences();
             updateUI();
+
+            //Important: Just for fun
+            Spannable wordtoSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+
+            boolean condition = true;
+            while(condition) {
+                for(int i = 0; i < wordtoSpan.length(); i++) {
+                    Random rnd = new Random();
+                    int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                    wordtoSpan.setSpan(new ForegroundColorSpan(color/*Color.parseColor("#0000FF")*/), i, i+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                alliance.setText(wordtoSpan);
+
+                condition = false;
+            }
         }
         if (id == R.id.scout) {
             if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString()) && !isOverriden){
