@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -83,6 +84,9 @@ public class MainActivity extends ActionBarActivity {
     boolean isOverriden;
     ToggleButton mute;
     ArrayAdapter<String> adapter;
+    Spannable wordToSpan;
+    int shade;
+    Thread thread;
 
     //THIS IS THE MASTER BRANCH
 
@@ -223,19 +227,21 @@ public class MainActivity extends ActionBarActivity {
             updateUI();
 
             //Important: Just for fun
-            Spannable wordtoSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+            funColorChange(isRed);
 
+            /*
             boolean condition = true;
             while(condition) {
                 for(int i = 0; i < wordtoSpan.length(); i++) {
                     Random rnd = new Random();
                     int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                    wordtoSpan.setSpan(new ForegroundColorSpan(color/*Color.parseColor("#0000FF")*/), i, i+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    wordtoSpan.setSpan(new ForegroundColorSpan(color/*Color.parseColor("#0000FF")* /), i, i+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
                 alliance.setText(wordtoSpan);
 
                 condition = false;
             }
+            */
         }
         if (id == R.id.scout) {
             if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString()) && !isOverriden){
@@ -723,6 +729,72 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    //Important: Just for fun!
+    private void funColorChange(boolean isRed) {
+        thread.st
+        Handler handler = new Handler();
+        wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+        boolean condition = true;
+
+        thread = new Thread(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                shade = 255;
+                while (!Thread.interrupted() && shade > 0)
+                    try
+                    {
+                        for (int i = 0; i < wordToSpan.length(); i++) {
+                            int color = Color.argb(255, shade, 0, 0);
+                            wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                        shade--;
+                        runOnUiThread(new Runnable() // start actions in UI thread
+                        {
+
+                            @Override
+                            public void run()
+                            {
+                                alliance.setText(wordToSpan);
+                            }
+                        });
+
+                        Thread.sleep(100);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // ooops
+                    }
+            }
+        });
+        thread.start();
+        /*
+        while(condition) {
+            for(shade = 0; shade < 256; shade++) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < wordToSpan.length(); i++) {
+                            int color = Color.argb(255, shade, shade, shade);
+                            wordToSpan.setSpan(new ForegroundColorSpan(color/*Color.parseColor("#0000FF")* /), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alliance.setText(wordToSpan);
+                            }
+                        });
+                    }
+                }, 100);
+            }
+
+            condition = false;
+        }
+        */
     }
 
 }
