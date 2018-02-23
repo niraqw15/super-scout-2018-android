@@ -139,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
         listenForResendClick();
         listLongClick();
 
-
+        initializeThread();
     }
 
     //resends all data on the currently viewed list of data
@@ -732,12 +732,53 @@ public class MainActivity extends ActionBarActivity {
     }
 
     //Important: Just for fun!
+    private void initializeThread() {
+        thread = new Thread(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                shade = 255;
+                while (!Thread.interrupted() && shade > 0)
+                    try
+                    {
+                        for (int i = 0; i < wordToSpan.length(); i++) {
+                            int color = Color.argb(255, shade, 0, 0);
+                            wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                        shade--;
+                        runOnUiThread(new Runnable() // start actions in UI thread
+                        {
+
+                            @Override
+                            public void run()
+                            {
+                                alliance.setText(wordToSpan);
+                            }
+                        });
+
+                        Thread.sleep(100);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // ooops
+                    }
+            }
+        });
+    }
+
     private void funColorChange(boolean isRed) {
-        thread.st
-        Handler handler = new Handler();
-        wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+        if(thread == null) {
+            initializeThread();
+        } else {
+            wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+            thread.start();
+        }
+        //Handler handler = new Handler();
         boolean condition = true;
 
+        /*
         thread = new Thread(new Runnable()
         {
 
