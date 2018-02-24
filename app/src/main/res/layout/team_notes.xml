@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left">
+
+    <RadioButton
+        android:id="@+id/radioButton1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The robot is tippy." />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The robot can go under the scale." />
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Put something here!" />
+
+    <EditText
+        android:id="@+id/notesotesEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter notes" />
+
+</LinearLayout>
