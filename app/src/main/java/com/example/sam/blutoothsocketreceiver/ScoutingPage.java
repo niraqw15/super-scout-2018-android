@@ -457,7 +457,9 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberOneTextview.getText().toString();
 
-                final EditText teamOneNotesEditText = new EditText(context);
+                LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final LinearLayout teamTwoNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamOneNotesEditText = (EditText)teamTwoNotesLayout.findViewById(R.id.notesEditText);
 
                 if (!teamOneNotes.equals("")) {
                     teamOneNotesEditText.setText(teamOneNotes);
@@ -487,8 +489,8 @@ public class ScoutingPage extends ActionBarActivity {
                 final String teamNumber = teamNumberTwoTextview.getText().toString();
 
                 LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View teamTwoNotesLayout = layoutInflater.inflate(R.layout.team_notes, null);
-                final EditText teamTwoNotesEditText = teamTwoNotesLayout
+                final LinearLayout teamTwoNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamTwoNotesEditText = (EditText)teamTwoNotesLayout.findViewById(R.id.notesEditText);
 
                 if (!teamTwoNotes.equals("")) {
                     teamTwoNotesEditText.setText(teamTwoNotes);
@@ -517,8 +519,10 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberThreeTextview.getText().toString();
 
-                final EditText teamThreeNotesEditText = new EditText(context);
-
+                LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final LinearLayout teamTwoNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamThreeNotesEditText = (EditText)teamTwoNotesLayout.findViewById(R.id.notesEditText);
+                
                 if (!teamThreeNotes.equals("")) {
                     teamThreeNotesEditText.setText(teamThreeNotes);
                 }
