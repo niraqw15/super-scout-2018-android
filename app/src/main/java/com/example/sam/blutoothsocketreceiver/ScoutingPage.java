@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -485,7 +486,9 @@ public class ScoutingPage extends ActionBarActivity {
             public void onClick(View view) {
                 final String teamNumber = teamNumberTwoTextview.getText().toString();
 
-                final EditText teamTwoNotesEditText = new EditText(context);
+                LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View teamTwoNotesLayout = layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamTwoNotesEditText = teamTwoNotesLayout
 
                 if (!teamTwoNotes.equals("")) {
                     teamTwoNotesEditText.setText(teamTwoNotes);
@@ -495,7 +498,7 @@ public class ScoutingPage extends ActionBarActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for " + teamNumber)
-                        .setView(teamTwoNotesEditText)
+                        .setView(teamTwoNotesLayout/*teamTwoNotesEditText*/)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 teamTwoNotes = teamTwoNotesEditText.getText().toString();
