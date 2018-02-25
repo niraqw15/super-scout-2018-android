@@ -2,7 +2,6 @@ package com.example.sam.blutoothsocketreceiver;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,27 +28,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.example.sam.blutoothsocketreceiver.firebase_classes.Match;
 import com.google.firebase.database.DatabaseReference;
@@ -59,7 +50,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,6 +77,8 @@ public class MainActivity extends ActionBarActivity {
     Spannable wordToSpan;
     int shade;
     Thread thread;
+    Runnable runnable;
+    boolean canRun = true;
 
     //THIS IS THE MASTER BRANCH
 
@@ -139,7 +131,7 @@ public class MainActivity extends ActionBarActivity {
         listenForResendClick();
         listLongClick();
 
-        initializeThread();
+        initializeRunnable();
     }
 
     //resends all data on the currently viewed list of data
@@ -221,27 +213,15 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.changeAlliance) {
-            isRed = !isRed;
-            SuperScoutApplication.isRed = true;
-            commitSharedPreferences();
-            updateUI();
+            if(canRun) {
+                isRed = !isRed;
+                SuperScoutApplication.isRed = true;
+                commitSharedPreferences();
+                updateUI();
 
-            //Important: Just for fun
-            funColorChange(isRed);
-
-            /*
-            boolean condition = true;
-            while(condition) {
-                for(int i = 0; i < wordtoSpan.length(); i++) {
-                    Random rnd = new Random();
-                    int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                    wordtoSpan.setSpan(new ForegroundColorSpan(color/*Color.parseColor("#0000FF")* /), i, i+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                alliance.setText(wordtoSpan);
-
-                condition = false;
+                //Important: Just for fun
+                funColorChange(isRed);
             }
-            */
         }
         if (id == R.id.scout) {
             if (!FirebaseLists.matchesList.getKeys().contains(matchNumber.toString()) && !isOverriden){
@@ -732,12 +712,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     //Important: Just for fun!
-    private void initializeThread() {
-        thread = new Thread(new Runnable()
+    private void initializeRunnable() {
+        runnable = new Runnable()
         {
 
             @Override
             public void run() {
+                canRun = false;
                 shade = 255;
                 while (!Thread.interrupted() && shade >= 0) {
                     for (int i = 0; i < wordToSpan.length(); i++) {
@@ -759,17 +740,20 @@ public class MainActivity extends ActionBarActivity {
                         Thread.sleep(100);
                     } catch(InterruptedException e) {
                         //TODO: Add color reset?
+                        canRun = true;
                         return;
                     }
                 }
+                canRun = true;
                 return;
             }
-        });
+        };
     }
 
     private void funColorChange(boolean isRed) {
-        if(thread == null) initializeThread();
-        thread.interrupt();
+
+        if(!canRun) return;
+        Thread thread = new Thread(runnable);
         wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
         thread.start();
 
