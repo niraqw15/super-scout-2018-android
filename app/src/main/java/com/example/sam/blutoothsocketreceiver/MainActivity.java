@@ -79,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
     Thread thread;
     Runnable runnable;
     boolean canRun = true;
+    boolean stopThread = false;
 
     //THIS IS THE MASTER BRANCH
 
@@ -221,6 +222,8 @@ public class MainActivity extends ActionBarActivity {
 
                 //Important: Just for fun
                 funColorChange(isRed);
+            } else {
+                stopThread = true;
             }
         }
         if (id == R.id.scout) {
@@ -751,7 +754,7 @@ public class MainActivity extends ActionBarActivity {
                 */
 
                 int pos = 0;
-                while (!Thread.interrupted() && pos < 22) {
+                while (!Thread.interrupted() && pos < 22 && !stopThread) {
                     wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     pos++;
@@ -774,16 +777,17 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
                 canRun = true;
-                return;
             }
         };
     }
 
     private void funColorChange(boolean isRed) {
 
+        stopThread = false;
         if(!canRun) return;
         Thread thread = new Thread(runnable);
         wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+        thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
 
         /*
