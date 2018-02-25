@@ -719,14 +719,15 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 canRun = false;
-                shade = 255;
-                while (!Thread.interrupted() && shade >= 0) {
+                shade = 0;
+                boolean isR = isRed;
+                while (!Thread.interrupted() && shade < 256) {
                     for (int i = 0; i < wordToSpan.length(); i++) {
                         //TODO: Use correct color depending on alliance
-                        int color = Color.argb(255, shade, 0, 0);
+                        int color = (isR) ? Color.argb(255, shade, 0, 0) : Color.argb(255, 0, 0, shade);
                         wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
-                    shade -= 10;
+                    shade += 10;
                     runOnUiThread(new Runnable() // start actions in UI thread
                     {
 
