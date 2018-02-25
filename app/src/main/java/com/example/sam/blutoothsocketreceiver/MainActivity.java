@@ -723,6 +723,7 @@ public class MainActivity extends ActionBarActivity {
                 canRun = false;
                 shade = 0;
                 boolean isR = isRed;
+                /*
                 while (!Thread.interrupted() && shade < 256) {
                     for (int i = 0; i < wordToSpan.length(); i++) {
                         //TODO: Use correct color depending on alliance
@@ -730,6 +731,31 @@ public class MainActivity extends ActionBarActivity {
                         wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     shade += 10;
+                    runOnUiThread(new Runnable() // start actions in UI thread
+                    {
+
+                        @Override
+                        public void run() {
+                            alliance.setText(wordToSpan);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(100);
+                    } catch(InterruptedException e) {
+                        //TODO: Add color reset?
+                        canRun = true;
+                        return;
+                    }
+                }
+                */
+
+                int pos = 0;
+                while (!Thread.interrupted() && pos < 32) {
+                    wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    pos++;
+                    if(pos == 32) pos = 0;
                     runOnUiThread(new Runnable() // start actions in UI thread
                     {
 
@@ -818,6 +844,14 @@ public class MainActivity extends ActionBarActivity {
             condition = false;
         }
         */
+    }
+
+    public int colorWheel(int position) {
+        double freq = 0.3;
+        int red = (int) Math.round(Math.sin(freq*position + 0) * 127 + 128);
+        int green = (int) Math.round(Math.sin(freq*position + 2) * 127 + 128);
+        int blue  = (int) Math.round(Math.sin(freq*position + 4) * 127 + 128);
+        return Color.argb(255, red, green, blue);
     }
 
 }
