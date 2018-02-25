@@ -243,6 +243,7 @@ public class MainActivity extends ActionBarActivity {
 //                    Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_SHORT).show();
 //                }
                 else {
+                    stopThread = true;
                     commitSharedPreferences();
                     Intent intent = new Intent(context, FieldSetupPage.class);
                     intent.putExtra("matchNumber", numberOfMatch.getText().toString());
