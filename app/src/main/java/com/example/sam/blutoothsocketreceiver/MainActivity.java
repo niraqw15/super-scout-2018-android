@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
         dataBase = FirebaseDatabase.getInstance().getReference();
         //If got intent from the last activity
         checkPreviousMatchNumAndAlliance();
-        updateUI();
+        updateUI(true);
         numberOfMatch.setText(matchNumber.toString());
         matchNumber = Integer.parseInt(numberOfMatch.getText().toString());
         disenableEditTextEditing();
@@ -117,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 try {
-                    updateUI();
+                    updateUI(false);
                 } catch (NullPointerException NPE) {
                     toasts("Teams not available", true);
                 }
@@ -217,7 +217,7 @@ public class MainActivity extends ActionBarActivity {
                 isRed = !isRed;
                 SuperScoutApplication.isRed = true;
                 commitSharedPreferences();
-                updateUI();
+                updateUI(false);
 
                 //Important: Just for fun
                 funColorChange(isRed);
@@ -260,7 +260,7 @@ public class MainActivity extends ActionBarActivity {
                 item.setTitle("Automate");
             } else if (item.getTitle().toString().equals("Automate")) {
                 View view = context.getCurrentFocus();
-                updateUI();
+                updateUI(false);
                 commitSharedPreferences();
                 disenableEditTextEditing();
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -345,7 +345,7 @@ public class MainActivity extends ActionBarActivity {
         adapter.notifyDataSetChanged();
     }
     //updates the team numbers in the front screen according to the match number and the alliance;
-    private void updateUI() {
+    private void updateUI(boolean updateAlliance) {
         try {
             if (FirebaseLists.matchesList.getKeys().contains(matchNumber.toString())) {
                 Match match = FirebaseLists.matchesList.getFirebaseObjectByKey(matchNumber.toString());
@@ -371,8 +371,10 @@ public class MainActivity extends ActionBarActivity {
             toasts("Teams not available", true);
         }
 
-        alliance.setTextColor((isRed) ? Color.RED : Color.BLUE);
-        alliance.setText((isRed) ? "Red Alliance" : "Blue Alliance");
+        if(updateAlliance) {
+            alliance.setTextColor((isRed) ? Color.RED : Color.BLUE);
+            alliance.setText((isRed) ? "Red Alliance" : "Blue Alliance");
+        }
     }
 
     public void commitSharedPreferences() {
@@ -397,7 +399,7 @@ public class MainActivity extends ActionBarActivity {
                 } catch (NumberFormatException NFE) {
                     matchNumber = 0;
                 }
-                updateUI();
+                updateUI(false);
             }
         });
     }
