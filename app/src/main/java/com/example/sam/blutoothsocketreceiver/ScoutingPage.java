@@ -458,8 +458,8 @@ public class ScoutingPage extends ActionBarActivity {
                 final String teamNumber = teamNumberOneTextview.getText().toString();
 
                 LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final LinearLayout teamTwoNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
-                final EditText teamOneNotesEditText = (EditText)teamTwoNotesLayout.findViewById(R.id.notesEditText);
+                final LinearLayout teamOneNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamOneNotesEditText = (EditText)teamOneNotesLayout.findViewById(R.id.notesEditText);
 
                 if (!teamOneNotes.equals("")) {
                     teamOneNotesEditText.setText(teamOneNotes);
@@ -469,7 +469,7 @@ public class ScoutingPage extends ActionBarActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for team " + teamNumber)
-                        .setView(teamOneNotesEditText)
+                        .setView(teamOneNotesLayout)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 teamOneNotes = teamOneNotesEditText.getText().toString();
@@ -500,7 +500,7 @@ public class ScoutingPage extends ActionBarActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for " + teamNumber)
-                        .setView(teamTwoNotesLayout/*teamTwoNotesEditText*/)
+                        .setView(teamTwoNotesLayout)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 teamTwoNotes = teamTwoNotesEditText.getText().toString();
@@ -520,9 +520,9 @@ public class ScoutingPage extends ActionBarActivity {
                 final String teamNumber = teamNumberThreeTextview.getText().toString();
 
                 LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final LinearLayout teamTwoNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
-                final EditText teamThreeNotesEditText = (EditText)teamTwoNotesLayout.findViewById(R.id.notesEditText);
-                
+                final LinearLayout teamThreeNotesLayout = (LinearLayout)layoutInflater.inflate(R.layout.team_notes, null);
+                final EditText teamThreeNotesEditText = (EditText)teamThreeNotesLayout.findViewById(R.id.notesEditText);
+
                 if (!teamThreeNotes.equals("")) {
                     teamThreeNotesEditText.setText(teamThreeNotes);
                 }
@@ -531,7 +531,7 @@ public class ScoutingPage extends ActionBarActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                 builder.setTitle("Super Notes for " + teamNumber)
-                        .setView(teamThreeNotesEditText)
+                        .setView(teamThreeNotesLayout)
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 teamThreeNotes = teamThreeNotesEditText.getText().toString();
