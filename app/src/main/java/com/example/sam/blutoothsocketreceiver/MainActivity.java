@@ -737,46 +737,41 @@ public class MainActivity extends ActionBarActivity {
         {
 
             @Override
-            public void run()
-            {
+            public void run() {
                 shade = 255;
-                while (!Thread.interrupted() && shade > 0)
-                    try
+                while (!Thread.interrupted() && shade >= 0) {
+                    for (int i = 0; i < wordToSpan.length(); i++) {
+                        //TODO: Use correct color depending on alliance
+                        int color = Color.argb(255, shade, 0, 0);
+                        wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    shade -= 10;
+                    runOnUiThread(new Runnable() // start actions in UI thread
                     {
-                        for (int i = 0; i < wordToSpan.length(); i++) {
-                            int color = Color.argb(255, shade, 0, 0);
-                            wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        @Override
+                        public void run() {
+                            alliance.setText(wordToSpan);
                         }
-                        shade--;
-                        runOnUiThread(new Runnable() // start actions in UI thread
-                        {
+                    });
 
-                            @Override
-                            public void run()
-                            {
-                                alliance.setText(wordToSpan);
-                            }
-                        });
-
+                    try {
                         Thread.sleep(100);
+                    } catch(InterruptedException e) {
+                        //TODO: Add color reset?
+                        return;
                     }
-                    catch (InterruptedException e)
-                    {
-                        // ooops
-                    }
+                }
+                return;
             }
         });
     }
 
     private void funColorChange(boolean isRed) {
-        if(thread == null) {
-            initializeThread();
-        } else {
-            wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
-            thread.start();
-        }
-        //Handler handler = new Handler();
-        boolean condition = true;
+        if(thread == null) initializeThread();
+        thread.interrupt();
+        wordToSpan = new SpannableString((isRed) ? "Red Alliance" : "Blue Alliance");
+        thread.start();
 
         /*
         thread = new Thread(new Runnable()
