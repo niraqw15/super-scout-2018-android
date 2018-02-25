@@ -751,11 +751,11 @@ public class MainActivity extends ActionBarActivity {
                 */
 
                 int pos = 0;
-                while (!Thread.interrupted() && pos < 32) {
+                while (!Thread.interrupted() && pos < 22) {
                     wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     pos++;
-                    if(pos == 32) pos = 0;
+                    if(pos == 22) pos = 0;
                     runOnUiThread(new Runnable() // start actions in UI thread
                     {
 
