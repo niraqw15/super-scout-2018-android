@@ -730,7 +730,6 @@ public class MainActivity extends ActionBarActivity {
                 /*
                 while (!Thread.interrupted() && shade < 256) {
                     for (int i = 0; i < wordToSpan.length(); i++) {
-                        //TODO: Use correct color depending on alliance
                         int color = (isR) ? Color.argb(255, shade, 0, 0) : Color.argb(255, 0, 0, shade);
                         wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
@@ -747,7 +746,6 @@ public class MainActivity extends ActionBarActivity {
                     try {
                         Thread.sleep(100);
                     } catch(InterruptedException e) {
-                        //TODO: Add color reset?
                         canRun = true;
                         return;
                     }
@@ -772,7 +770,6 @@ public class MainActivity extends ActionBarActivity {
                     try {
                         Thread.sleep(100);
                     } catch(InterruptedException e) {
-                        //TODO: Add color reset?
                         canRun = true;
                         return;
                     }
@@ -782,6 +779,7 @@ public class MainActivity extends ActionBarActivity {
         };
     }
 
+    //TODO: Use AsyncTask
     private void funColorChange(boolean isRed) {
 
         stopThread = false;
