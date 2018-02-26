@@ -754,7 +754,14 @@ public class MainActivity extends ActionBarActivity {
 
                 int pos = 0;
                 while (!Thread.interrupted() && pos < 22 && !stopThread) {
-                    wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    int pos2 = pos;
+                    for (int i = 0; i < wordToSpan.length(); i++) {
+                        int color = colorWheel(pos2);
+                        wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        if(!(pos < 22)) pos2 = 0;
+                        else pos2++;
+                    }
 
                     pos++;
                     if(pos == 22) pos = 0;
