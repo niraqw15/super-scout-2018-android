@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="15dp"
-        android:text="\u2022 Is the robot tippy?\n\u2022 Can the robot can go under the scale?\n\u2022 Exchange efficiency.\n\u2022 Climb ability specifics.\n     \u25E6 Rampbot, clampbot, popup, etc."/>
+        android:text="\u2022 Is the robot tippy?\n\u2022 Can the robot can go under the scale?\n\u2022 Exchange efficiency.\n\u2022 Does the team misuse cubes? \n     \u25E6 i.e. Place excess cubes in the scale. \n\u2022 Climb ability specifics.\n     \u25E6 Rampbot, clampbot, popup, etc."/>
 
     <EditText
         android:id="@+id/notesEditText"
