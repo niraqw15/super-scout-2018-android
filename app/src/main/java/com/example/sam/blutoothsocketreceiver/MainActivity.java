@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
     Integer matchNumber = 0;
     DatabaseReference dataBase;
     //TODO: Why are these global?
-    String previousScore, previousFoul;
+    String previousScore, previousFoul, allianceSimple;
     Boolean facedTheBoss = false, didAutoQuest = false;
     Integer previousBoost = 0, previousLevitate = 0, previousForce = 0;
 
@@ -612,11 +612,9 @@ public class MainActivity extends ActionBarActivity {
                 final JSONObject superData;
                 try {
                     superData = new JSONObject(content);
-                    //TODO: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
-                    //TODO: Make sure all external data is received
 
                     String allianceString = superData.getString("alliance");
-                    String allianceSimple = "";
+                    allianceSimple = "";
                     if(allianceString.equals("Blue Alliance")){
                         allianceSimple = "blue";
                     }else if(allianceString.equals("Red Alliance")){
@@ -668,29 +666,18 @@ public class MainActivity extends ActionBarActivity {
                             try {
                                 JSONObject superScore = new JSONObject(content);
                                 PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
-                                if(isRed) {
-                                    superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
-                                    superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
-                                    dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("redDidFaceBoss").setValue(facedTheBoss);
-                                    dataBase.child("Matches").child(editMatchNumber).child("redDidAutoQuest").setValue(didAutoQuest);
-                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Boost").setValue(previousBoost);
-                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Levitate").setValue(previousLevitate);
-                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Force").setValue(previousForce);
 
+                                superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
+                                superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
 
-                                } else {
-                                    superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
-                                    superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
-                                    dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidFaceBoss").setValue(facedTheBoss);
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidAutoQuest").setValue(didAutoQuest);
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Boost").setValue(previousBoost);
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Levitate").setValue(previousLevitate);
-                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Force").setValue(previousForce);
-                                }
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "Score").setValue(Integer.parseInt(previousScore));
+                                dataBase.child("Matches").child(editMatchNumber).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(Integer.parseInt(previousFoul));
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "DidFaceBoss").setValue(facedTheBoss);
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Boost").setValue(previousBoost);
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Levitate").setValue(previousLevitate);
+                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Force").setValue(previousForce);
+
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();
                                 toasts("Score Updated.", false);
