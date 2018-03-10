@@ -71,9 +71,11 @@ public class MainActivity extends ActionBarActivity {
     Boolean isRed = false;
     Integer matchNumber = 0;
     DatabaseReference dataBase;
+    //TODO: Why are these global?
     String previousScore, previousFoul;
     Boolean facedTheBoss = false, didAutoQuest = false;
     Integer boost = 0, levitate = 0, force = 0;
+
     final static String dataBaseUrl = Constants.dataBaseUrl;
     boolean isMute = false;
     boolean isOverriden;
@@ -619,9 +621,10 @@ public class MainActivity extends ActionBarActivity {
                     }else if(allianceString.equals("Red Alliance")){
                         allianceSimple = "red";
                     }
-                    previousScore = superData.get(allianceSimple + "").toString();
-                    previousFoul = superData.get(allianceSimple + "").toString();
-                    facedTheBoss = superData.getBoolean(allianceSimple + "DidFaceTheBoss");
+
+                    previousScore = superData.get(allianceSimple + "Score").toString();
+                    previousFoul = superData.get(allianceSimple + "FoulPointsGained").toString();
+                    facedTheBoss = superData.getBoolean(allianceSimple + "DidFaceBoss");
                     didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
 
                     JSONObject jsonCubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
@@ -632,7 +635,6 @@ public class MainActivity extends ActionBarActivity {
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
                     toasts("Failed to read Super Data.", false);
-                    return true;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Add an edit alertdialog for fieldsetup and notes (maybe-check)
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
