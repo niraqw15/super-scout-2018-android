@@ -600,7 +600,7 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) { //TODO: Incomplete. Add ability to change all data and autofill with previous data.
-                /* TODO: Add this back in when it works.
+                // TODO: Add this back in when it works.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
@@ -611,6 +611,7 @@ public class MainActivity extends ActionBarActivity {
                     superData = new JSONObject(content);
                     //TODO: Nathan: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
                     //TODO: Nathan: Make sure all external data is received
+
                     String allianceString = superData.getString("alliance");
                     String allianceSimple = "";
                     if(allianceString.equals("Blue Alliance")){
@@ -630,6 +631,8 @@ public class MainActivity extends ActionBarActivity {
 
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
+                    toasts("Failed to read Super Data.", false);
+                    return true;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Nathan: Add an edit alertdialog for fieldsetup and notes (maybe-check)
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
@@ -695,7 +698,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
                 builder.show();
-                */
+
                 //TODO: Temporary, remove when feature is re-implemented.
                 toasts("That feature is not available right now.", false);
 
