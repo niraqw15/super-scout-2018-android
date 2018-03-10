@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
     DatabaseReference dataBase;
     String previousScore, previousFoul;
     Boolean facedTheBoss = false, didAutoQuest = false;
-    Integer boost = 0, levitate = 0, force = 0;
+    Integer previousBoost = 0, previousLevitate = 0, previousForce = 0;
     final static String dataBaseUrl = Constants.dataBaseUrl;
     boolean isMute = false;
     boolean isOverriden;
@@ -600,7 +600,7 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) { //TODO: Incomplete. Add ability to change all data and autofill with previous data.
-                /* TODO: Add this back in when it works.
+                 //TODO: Add this back in when it works.
                 final String name = parent.getItemAtPosition(position).toString();
                 String splitName[] = name.split("_");
                 final String editMatchNumber = splitName[0].replace("Q", "");
@@ -624,9 +624,9 @@ public class MainActivity extends ActionBarActivity {
                     didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
 
                     JSONObject jsonCubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
-                    boost = jsonCubesInVaultFinal.getInt("Boost");
-                    force = jsonCubesInVaultFinal.getInt("Force");
-                    levitate = jsonCubesInVaultFinal.getInt("Levitate");
+                    //boost = jsonCubesInVaultFinal.getInt("Boost");
+                   // force = jsonCubesInVaultFinal.getInt("Force");
+                    //levitate = jsonCubesInVaultFinal.getInt("Levitate");
 
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
@@ -636,9 +636,9 @@ public class MainActivity extends ActionBarActivity {
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalFoulEditText)).setText(previousFoul);
-                ((Counter) finalDataPtsView.findViewById(R.id.BoostCounter)).refreshCounter(boost);
-                ((Counter) finalDataPtsView.findViewById(R.id.LevitateCounter)).refreshCounter(levitate);
-                ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(force);
+                ((Counter) finalDataPtsView.findViewById(R.id.BoostCounter)).refreshCounter(previousBoost);
+                ((Counter) finalDataPtsView.findViewById(R.id.LevitateCounter)).refreshCounter(previousLevitate);
+                ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(previousForce);
                 ((Switch) finalDataPtsView.findViewById(R.id.didFaceBossBoolean)).setChecked(facedTheBoss);
                 ((Switch) finalDataPtsView.findViewById(R.id.didAutoQuestBoolean)).setChecked(didAutoQuest);
 
@@ -649,12 +649,12 @@ public class MainActivity extends ActionBarActivity {
                         Dialog d = (Dialog) dialog;
                         File dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name);
                         dir.mkdir();
-                        //TODO: Nathan: Get all values here and send to firebase.
+                        //TODO: Get all values here and send to firebase.
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
-                        boost = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
-                        levitate = ((Counter) d.findViewById(R.id.LevitateCounter)).getDataValue();
-                        force = ((Counter) d.findViewById(R.id.ForceCounter)).getDataValue();
+                        previousBoost = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
+                        previousLevitate = ((Counter) d.findViewById(R.id.LevitateCounter)).getDataValue();
+                        previousForce = ((Counter) d.findViewById(R.id.ForceCounter)).getDataValue();
                         facedTheBoss = ((Switch) d.findViewById(R.id.didFaceBossBoolean)).isChecked();
                         didAutoQuest = ((Switch) d.findViewById(R.id.didAutoQuestBoolean)).isChecked();
 
@@ -667,11 +667,23 @@ public class MainActivity extends ActionBarActivity {
                                     superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("redScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedRed").setValue(Integer.parseInt(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("redDidFaceBoss").setValue(facedTheBoss);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redDidAutoQuest").setValue(didAutoQuest);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Boost").setValue(previousBoost);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Levitate").setValue(previousLevitate);
+                                    dataBase.child("Matches").child(editMatchNumber).child("redCubesInVaultFinal").child("Force").setValue(previousForce);
+
+
                                 } else {
                                     superScore.put("Blue Alliance Score", Integer.valueOf(previousScore));
                                     superScore.put("Blue Alliance Foul", Integer.valueOf(previousFoul));
                                     dataBase.child("Matches").child(editMatchNumber).child("blueScore").setValue(Integer.parseInt(previousScore));
                                     dataBase.child("Matches").child(editMatchNumber).child("foulPointsGainedBlue").setValue(Integer.parseInt(previousFoul));
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidFaceBoss").setValue(facedTheBoss);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueDidAutoQuest").setValue(didAutoQuest);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Boost").setValue(previousBoost);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Levitate").setValue(previousLevitate);
+                                    dataBase.child("Matches").child(editMatchNumber).child("blueCubesInVaultFinal").child("Force").setValue(previousForce);
                                 }
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();
@@ -695,10 +707,6 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
                 builder.show();
-                */
-                //TODO: Temporary, remove when feature is re-implemented.
-                toasts("That feature is not available right now.", false);
-
 
                 return true;
             }
