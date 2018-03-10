@@ -667,8 +667,16 @@ public class MainActivity extends ActionBarActivity {
                                 JSONObject superScore = new JSONObject(content);
                                 PrintWriter dirWriter = new PrintWriter(new FileOutputStream(dir, false));
 
-                                superScore.put("Red Alliance Score", Integer.valueOf(previousScore));
-                                superScore.put("Red Alliance Foul", Integer.valueOf(previousFoul));
+                                JSONObject jsonCubesInVaultFinal = new JSONObject();
+                                jsonCubesInVaultFinal.put("Boost", previousBoost);
+                                jsonCubesInVaultFinal.put("Levitate", previousLevitate);
+                                jsonCubesInVaultFinal.put("Force", previousForce);
+
+                                superScore.put(allianceSimple + "Score", Integer.valueOf(previousScore));
+                                superScore.put(allianceSimple + "FoulPointsGained", Integer.valueOf(previousFoul));
+                                superScore.put(allianceSimple + "DidFaceBoss", facedTheBoss);
+                                superScore.put(allianceSimple + "DidAutoQuest", didAutoQuest);
+                                superScore.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
 
                                 dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "Score").setValue(Integer.parseInt(previousScore));
                                 dataBase.child("Matches").child(editMatchNumber).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(Integer.parseInt(previousFoul));
