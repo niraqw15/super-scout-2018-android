@@ -76,8 +76,9 @@ See [here](https://gist.github.com/Chaser324/ce0505fbed06b947d962) for more info
  	 + Follow [these](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) conventions for commit messages.
  	 + If your change is anything more than a few lines or small fixes, don't skip the extended description. If you are always using git commit with the -m option, stop doing that.
 See this [stackoverflow question](https://stackoverflow.com/questions/9562304/github-commit-with-extended-message) for instructions on how to write an extended commit description.
-5. Push to your forked repo.
  	 + `git push origin <your_branch_name>`.
+	+ Make sure to update version_number in strings.xml **before** submitting a pull request.
+	 + Use the format yy.mm.dd:[# that your pull request will be]. For example, if I mke a pull request on 3/10/2018, and the most recently closed pull request is #42, the version number will be "18.03.10:43".
 6. Submit a pull request.
  	 1. Log into github.
  	 2. Go to the page for your forked repo.
@@ -100,8 +101,3 @@ See this [stackoverflow question](https://stackoverflow.com/questions/9562304/gi
 ### Other remotes
 
 You can add "remotes" to github that refer to other people's robot code repos. This allows you to, for example, take a look at someone else's code to look over it. You would be able to `git checkout <name_of_person>/juicy-commit` to see it. To add a remote, just do `git remote add <name_of_person> https://github.com/<username>/<repo_name>.git`. Once you've done this, you can use `git fetch <name_of_person>` to get updated code from other people's repos!
-
-
-
-
-
