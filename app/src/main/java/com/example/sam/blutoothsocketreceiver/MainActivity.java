@@ -44,7 +44,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +53,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
     Integer matchNumber = 0;
     DatabaseReference dataBase;
     //TODO: Why are these global?
-    String previousScore, previousFoul, allianceSimple;
+    String previousScore, previousFoul, previousAllianceSimple;
     Boolean facedTheBoss = false, didAutoQuest = false;
     Integer previousBoost = 0, previousLevitate = 0, previousForce = 0;
 
@@ -499,7 +497,7 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
 
                         //TODO: Add this line in.
-                        //dataBase.child("Matches").child(matchNum).child(allianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
+                        //dataBase.child("Matches").child(matchNum).child(previousAllianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
@@ -614,19 +612,19 @@ public class MainActivity extends ActionBarActivity {
                     superData = new JSONObject(content);
 
                     String allianceString = superData.getString("alliance");
-                    allianceSimple = "";
+                    previousAllianceSimple = "";
                     if(allianceString.equals("Blue Alliance")){
-                        allianceSimple = "blue";
+                        previousAllianceSimple = "blue";
                     }else if(allianceString.equals("Red Alliance")){
-                        allianceSimple = "red";
+                        previousAllianceSimple = "red";
                     }
 
-                    previousScore = superData.get(allianceSimple + "Score").toString();
-                    previousFoul = superData.get(allianceSimple + "FoulPointsGained").toString();
-                    facedTheBoss = superData.getBoolean(allianceSimple + "DidFaceBoss");
-                    didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
+                    previousScore = superData.get(previousAllianceSimple + "Score").toString();
+                    previousFoul = superData.get(previousAllianceSimple + "FoulPointsGained").toString();
+                    facedTheBoss = superData.getBoolean(previousAllianceSimple + "DidFaceBoss");
+                    didAutoQuest = superData.getBoolean(previousAllianceSimple + "DidAutoQuest");
 
-                    JSONObject jsonCubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
+                    JSONObject jsonCubesInVaultFinal = superData.getJSONObject(previousAllianceSimple + "CubesInVaultFinal");
                     previousBoost = jsonCubesInVaultFinal.getInt("Boost");
                     previousForce = jsonCubesInVaultFinal.getInt("Force");
                     previousLevitate = jsonCubesInVaultFinal.getInt("Levitate");
@@ -645,6 +643,14 @@ public class MainActivity extends ActionBarActivity {
                 ((Counter) finalDataPtsView.findViewById(R.id.ForceCounter)).refreshCounter(previousForce);
                 ((Switch) finalDataPtsView.findViewById(R.id.didFaceBossBoolean)).setChecked(facedTheBoss);
                 ((Switch) finalDataPtsView.findViewById(R.id.didAutoQuestBoolean)).setChecked(didAutoQuest);
+
+                if(previousAllianceSimple.equals("blue")) {
+                    ((TextView) finalDataPtsView.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLUE);
+                } else if(previousAllianceSimple.equals("red")) {
+                    ((TextView) finalDataPtsView.findViewById(R.id.finalScoreTextView)).setTextColor(Color.RED);
+                } else {
+                    ((TextView) finalDataPtsView.findViewById(R.id.finalScoreTextView)).setTextColor(Color.BLACK);
+                }
 
                 builder.setView(finalDataPtsView);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -672,19 +678,19 @@ public class MainActivity extends ActionBarActivity {
                                 jsonCubesInVaultFinal.put("Levitate", previousLevitate);
                                 jsonCubesInVaultFinal.put("Force", previousForce);
 
-                                superScore.put(allianceSimple + "Score", Integer.valueOf(previousScore));
-                                superScore.put(allianceSimple + "FoulPointsGained", Integer.valueOf(previousFoul));
-                                superScore.put(allianceSimple + "DidFaceBoss", facedTheBoss);
-                                superScore.put(allianceSimple + "DidAutoQuest", didAutoQuest);
-                                superScore.put(allianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
+                                superScore.put(previousAllianceSimple + "Score", Integer.valueOf(previousScore));
+                                superScore.put(previousAllianceSimple + "FoulPointsGained", Integer.valueOf(previousFoul));
+                                superScore.put(previousAllianceSimple + "DidFaceBoss", facedTheBoss);
+                                superScore.put(previousAllianceSimple + "DidAutoQuest", didAutoQuest);
+                                superScore.put(previousAllianceSimple + "CubesInVaultFinal", jsonCubesInVaultFinal);
 
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "Score").setValue(Integer.parseInt(previousScore));
-                                dataBase.child("Matches").child(editMatchNumber).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(Integer.parseInt(previousFoul));
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "DidFaceBoss").setValue(facedTheBoss);
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "DidAutoQuest").setValue(didAutoQuest);
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Boost").setValue(previousBoost);
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Levitate").setValue(previousLevitate);
-                                dataBase.child("Matches").child(editMatchNumber).child(allianceSimple + "CubesInVaultFinal").child("Force").setValue(previousForce);
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "Score").setValue(Integer.parseInt(previousScore));
+                                dataBase.child("Matches").child(editMatchNumber).child("foulPointsGained" + previousAllianceSimple.substring(0,1).toUpperCase() + previousAllianceSimple.substring(1)).setValue(Integer.parseInt(previousFoul));
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "DidFaceBoss").setValue(facedTheBoss);
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "DidAutoQuest").setValue(didAutoQuest);
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "CubesInVaultFinal").child("Boost").setValue(previousBoost);
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "CubesInVaultFinal").child("Levitate").setValue(previousLevitate);
+                                dataBase.child("Matches").child(editMatchNumber).child(previousAllianceSimple + "CubesInVaultFinal").child("Force").setValue(previousForce);
 
                                 dirWriter.println(superScore.toString());
                                 dirWriter.close();
