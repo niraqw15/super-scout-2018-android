@@ -506,7 +506,7 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesInVaultFinal").setValue(cubesInVaultFinalJsonMap);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "CubesForPowerup").setValue(cubesForPowerupJsonMap);
 
-                        //TODO: Nathan: Add check against current Firebase (low priority)
+                        //TODO: Add check against current Firebase (low priority)
                         dataBase.child("Matches").child(matchNum).child("blueSwitch").setValue(blueSwitchJsonMap);
                         dataBase.child("Matches").child(matchNum).child("scale").setValue(scaleJsonMap);
                         dataBase.child("Matches").child(matchNum).child("redSwitch").setValue(redSwitchJsonMap);
@@ -609,8 +609,8 @@ public class MainActivity extends ActionBarActivity {
                 final JSONObject superData;
                 try {
                     superData = new JSONObject(content);
-                    //TODO: Nathan: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
-                    //TODO: Nathan: Make sure all external data is received
+                    //TODO: Show Faced the Boss, Did Auto Quest, and Cube numbers for final alliance data
+                    //TODO: Make sure all external data is received
 
                     String allianceString = superData.getString("alliance");
                     String allianceSimple = "";
@@ -634,7 +634,7 @@ public class MainActivity extends ActionBarActivity {
                     toasts("Failed to read Super Data.", false);
                     return true;
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Nathan: Add an edit alertdialog for fieldsetup and notes (maybe-check)
+                AlertDialog.Builder builder = new AlertDialog.Builder(context); //TODO: Add an edit alertdialog for fieldsetup and notes (maybe-check)
                 builder.setTitle("Edit Alliance Score for " + name + ": ");
                 final View finalDataPtsView = LayoutInflater.from(context).inflate(R.layout.finaldatapoints, null);
                 ((EditText) finalDataPtsView.findViewById(R.id.finalScoreEditText)).setText(previousScore);
@@ -652,7 +652,7 @@ public class MainActivity extends ActionBarActivity {
                         Dialog d = (Dialog) dialog;
                         File dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/Super_scout_data/" + name);
                         dir.mkdir();
-                        //TODO: Nathan: Get all values here and send to firebase.
+                        //TODO: Get all values here and send to firebase.
                         previousScore = ((EditText) d.findViewById(R.id.finalScoreEditText)).getText().toString(); //Now it's the new score
                         previousFoul = ((EditText) d.findViewById(R.id.finalFoulEditText)).getText().toString(); //Foul refers to foul points gained by that team
                         boost = ((Counter) d.findViewById(R.id.BoostCounter)).getDataValue();
