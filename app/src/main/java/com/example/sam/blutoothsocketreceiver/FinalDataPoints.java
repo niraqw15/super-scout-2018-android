@@ -374,7 +374,7 @@ public class FinalDataPoints extends ActionBarActivity {
         levitateForPowerup = intent.getExtras().getInt("levitateForPowerup");
     }
 
-    public void sendAfterMatchData(){ //TODO: Nathan: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
+    public void sendAfterMatchData(){ //TODO: Replace 'hard-coded' red abd blue with a variable (ex: alliance + "Score")
         //TODO: Prevent submission of vault data lower than ForPowerup
         JSONObject allianceTeams = new JSONObject();
         int teamIntOne = Integer.parseInt(teamNumberOne);
