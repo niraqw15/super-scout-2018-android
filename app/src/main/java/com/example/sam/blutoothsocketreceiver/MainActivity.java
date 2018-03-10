@@ -629,9 +629,9 @@ public class MainActivity extends ActionBarActivity {
                     didAutoQuest = superData.getBoolean(allianceSimple + "DidAutoQuest");
 
                     JSONObject jsonCubesInVaultFinal = superData.getJSONObject(allianceSimple + "CubesInVaultFinal");
-                    //boost = jsonCubesInVaultFinal.getInt("Boost");
-                   // force = jsonCubesInVaultFinal.getInt("Force");
-                    //levitate = jsonCubesInVaultFinal.getInt("Levitate");
+                    previousBoost = jsonCubesInVaultFinal.getInt("Boost");
+                    previousForce = jsonCubesInVaultFinal.getInt("Force");
+                    previousLevitate = jsonCubesInVaultFinal.getInt("Levitate");
 
                 } catch (JSONException JE) {
                     Log.e("read Super Data", "failed");
