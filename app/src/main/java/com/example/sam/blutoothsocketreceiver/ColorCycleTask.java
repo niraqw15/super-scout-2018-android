@@ -34,7 +34,6 @@ public class ColorCycleTask {
     //TODO: Use AsyncTask
     public void startCycle() {
         stopThread = false;
-        this.isRed = isRed;
         if(!canRun) return;
         Thread thread = new Thread(runnable);
         thread.setPriority(Thread.MIN_PRIORITY);
@@ -83,12 +82,12 @@ public class ColorCycleTask {
                     for (int i = 0; i < wordToSpan.length(); i++) {
                         int color = colorWheel(pos2);
                         wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        if (!(pos < 22)) pos2 = 0;
+                        if (!(pos2 < 21)) pos2 = 0;
                         else pos2++;
                     }
 
                     pos++;
-                    //if(pos == 22) pos = 0;
+
                     ((Activity) context).runOnUiThread(new Runnable() // start actions in UI thread
                     {
 
@@ -108,7 +107,7 @@ public class ColorCycleTask {
                 }
                 canRun = true;
 
-                if (!stopThread) startCycle();
+                if(!stopThread) startCycle();
             }
         };
     }

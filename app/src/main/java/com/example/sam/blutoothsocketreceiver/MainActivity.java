@@ -221,7 +221,7 @@ public class MainActivity extends ActionBarActivity {
                 commitSharedPreferences();
                 updateUI(false);
 
-                //Important: Just for fun
+                cycleTask.setText((isRed) ? "Red Alliance" : "Blue Alliance");
                 cycleTask.startCycle();
             } else {
                 cycleTask.stopCycle();
@@ -718,6 +718,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    /*
     //Important: Just for fun!
     private void initializeRunnable() {
         //TODO: Make this it's own class.
@@ -754,6 +755,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 */
 
+    /*
                 int pos = 0;
                 int repetitions = 0;
                 while (!Thread.interrupted() && pos < 22 && !stopThread && repetitions < 67) {
@@ -859,7 +861,7 @@ public class MainActivity extends ActionBarActivity {
 
             condition = false;
         }
-        */
+        *//*
     }
 
     public int colorWheel(int position) {
@@ -869,5 +871,5 @@ public class MainActivity extends ActionBarActivity {
         int blue  = (int) Math.round(Math.sin(freq*position + 4) * 127 + 128);
         return Color.argb(255, red, green, blue);
     }
-
+*/
 }
