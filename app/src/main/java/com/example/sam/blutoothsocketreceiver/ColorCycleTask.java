@@ -47,6 +47,10 @@ public class ColorCycleTask {
         if(context != null) canRun = true;
     }
 
+    public void setText(String string) {
+        wordToSpan = new SpannableString(string);
+    }
+
     //TODO: Test if this is necessary (EditText extends TextView).
     public void setView(EditText editText) {
         id = editText.getId();
