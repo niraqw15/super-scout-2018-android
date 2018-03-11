@@ -766,7 +766,7 @@ public class MainActivity extends ActionBarActivity {
 
                     pos++;
                     repetitions++;
-                    if(pos == 22) pos = 0;
+                    //if(pos == 22) pos = 0;
                     runOnUiThread(new Runnable() // start actions in UI thread
                     {
 
