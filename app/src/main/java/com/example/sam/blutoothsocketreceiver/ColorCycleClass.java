@@ -38,6 +38,7 @@ public class ColorCycleClass {
         stopCycle();
         if(!canRun) return;
         stopThread = false;
+        thread = null;
         thread = new Thread(runnable);
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
@@ -81,6 +82,7 @@ public class ColorCycleClass {
     }
 
     private void initializeRunnable() {
+        runnable = null;
         runnable = new Runnable() {
 
             @Override
@@ -91,6 +93,7 @@ public class ColorCycleClass {
 
                     int pos2 = pos;
                     for (int i = 0; i < wordToSpan.length(); i++) {
+                        if(Thread.interrupted() || stopThread) return;
                         int color = colorWheel(pos2);
                         wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         if (!(pos2 < 21)) pos2 = 0;
@@ -98,6 +101,13 @@ public class ColorCycleClass {
                     }
 
                     pos++;
+
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        canRun = true;
+                        return;
+                    }
 
                     ((Activity) context).runOnUiThread(new Runnable() // start actions in UI thread
                     {
@@ -108,13 +118,6 @@ public class ColorCycleClass {
                             view.setText(wordToSpan);
                         }
                     });
-
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        canRun = true;
-                        return;
-                    }
                 }
                 canRun = true;
 
