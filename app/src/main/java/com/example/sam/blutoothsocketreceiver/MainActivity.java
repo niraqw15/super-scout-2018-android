@@ -719,6 +719,7 @@ public class MainActivity extends ActionBarActivity {
 
     //Important: Just for fun!
     private void initializeRunnable() {
+        //TODO: Make this it's own class.
         runnable = new Runnable()
         {
 
