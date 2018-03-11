@@ -754,7 +754,7 @@ public class MainActivity extends ActionBarActivity {
 
                 int pos = 0;
                 int repetitions = 0;
-                while (!Thread.interrupted() && pos < 22 && !stopThread && repetitions < 111) {
+                while (!Thread.interrupted() && pos < 22 && !stopThread && repetitions < 67) {
                     //wordToSpan.setSpan(new ForegroundColorSpan(colorWheel(pos)), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     int pos2 = pos;
                     for (int i = 0; i < wordToSpan.length(); i++) {
@@ -777,7 +777,7 @@ public class MainActivity extends ActionBarActivity {
                     });
 
                     try {
-                        Thread.sleep(80);
+                        Thread.sleep(40);
                     } catch(InterruptedException e) {
                         canRun = true;
                         return;
