@@ -23,65 +23,22 @@ public class ColorCycleTask {
     private Spannable wordToSpan;
     private Context context;
 
-    private void initializeRunnable() {
-        runnable = new Runnable()
-        {
-
-            @Override
-            public void run() {
-                canRun = false;
-                int pos = 0;
-                while (pos < 22 && !Thread.interrupted() && !stopThread) {
-
-                    int pos2 = pos;
-                    for (int i = 0; i < wordToSpan.length(); i++) {
-                        int color = colorWheel(pos2);
-                        wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        if(!(pos < 22)) pos2 = 0;
-                        else pos2++;
-                    }
-
-                    pos++;
-                    //if(pos == 22) pos = 0;
-                    ((Activity) context).runOnUiThread(new Runnable() // start actions in UI thread
-                        {
-
-                            @Override
-                            public void run() {
-                                TextView view = (TextView) ((Activity) context).findViewById(id);
-                                view.setText(wordToSpan);
-                            }
-                        });
-
-                    try {
-                        Thread.sleep(50);
-                    } catch(InterruptedException e) {
-                        canRun = true;
-                        return;
-                    }
-                }
-                canRun = true;
-
-                if(!stopThread) startColorCycle(isRed);
-            }
-        };
+    public ColorCycleTask(Context context, TextView textView) {
+        this.context = context;
+        id = textView.getId();
+        wordToSpan = new SpannableString(textView.toString());
+        initializeRunnable();
+        if(id != null) canRun = true;
     }
 
     //TODO: Use AsyncTask
     public void startColorCycle(boolean isRed) {
-
         stopThread = false;
         this.isRed = isRed;
         if(!canRun) return;
         Thread thread = new Thread(runnable);
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
-
-    }
-
-    public void initializeClass(Context context) {
-        this.context = context;
-        if(id != null) canRun = true;
     }
 
     public void setView(TextView textView) {
@@ -107,6 +64,49 @@ public class ColorCycleTask {
         int green = (int) Math.round(Math.sin(freq*position + 2) * 127 + 128);
         int blue  = (int) Math.round(Math.sin(freq*position + 4) * 127 + 128);
         return Color.argb(255, red, green, blue);
+    }
+
+    private void initializeRunnable() {
+        runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                canRun = false;
+                int pos = 0;
+                while (pos < 22 && !Thread.interrupted() && !stopThread) {
+
+                    int pos2 = pos;
+                    for (int i = 0; i < wordToSpan.length(); i++) {
+                        int color = colorWheel(pos2);
+                        wordToSpan.setSpan(new ForegroundColorSpan(color), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        if (!(pos < 22)) pos2 = 0;
+                        else pos2++;
+                    }
+
+                    pos++;
+                    //if(pos == 22) pos = 0;
+                    ((Activity) context).runOnUiThread(new Runnable() // start actions in UI thread
+                    {
+
+                        @Override
+                        public void run() {
+                            TextView view = (TextView) ((Activity) context).findViewById(id);
+                            view.setText(wordToSpan);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        canRun = true;
+                        return;
+                    }
+                }
+                canRun = true;
+
+                if (!stopThread) startColorCycle(isRed);
+            }
+        };
     }
 
 }
