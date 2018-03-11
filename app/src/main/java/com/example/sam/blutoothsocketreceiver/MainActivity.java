@@ -224,7 +224,7 @@ public class MainActivity extends ActionBarActivity {
                 //Important: Just for fun
                 cycleTask.startCycle();
             } else {
-                stopThread = true;
+                cycleTask.stopCycle();
             }
         }
         if (id == R.id.scout) {
@@ -244,7 +244,7 @@ public class MainActivity extends ActionBarActivity {
 //                    Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_SHORT).show();
 //                }
                 else {
-                    stopThread = true;
+                    cycleTask.stopCycle();
                     commitSharedPreferences();
                     Intent intent = new Intent(context, FieldSetupPage.class);
                     intent.putExtra("matchNumber", numberOfMatch.getText().toString());
