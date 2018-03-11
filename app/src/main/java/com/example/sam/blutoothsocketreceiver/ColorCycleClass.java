@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by niraq on 3/11/2018.
  */
 
-public class ColorCycleTask {
+public class ColorCycleClass {
 
     private Runnable runnable;
     private boolean stopThread, isRed;
@@ -22,8 +22,9 @@ public class ColorCycleTask {
     private Integer id;
     private Spannable wordToSpan;
     private Context context;
+    private Thread thread;
 
-    public ColorCycleTask(Context context, TextView textView) {
+    public ColorCycleClass(Context context, TextView textView) {
         this.context = context;
         id = textView.getId();
         wordToSpan = new SpannableString(textView.toString());
@@ -33,9 +34,11 @@ public class ColorCycleTask {
 
     //TODO: Use AsyncTask
     public void startCycle() {
-        stopThread = false;
+        initializeRunnable();
+        stopCycle();
         if(!canRun) return;
-        Thread thread = new Thread(runnable);
+        stopThread = false;
+        thread = new Thread(runnable);
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
     }
@@ -55,6 +58,14 @@ public class ColorCycleTask {
         id = editText.getId();
         wordToSpan = new SpannableString(editText.toString());
         if(context != null) canRun = true;
+    }
+
+    public boolean isRunning() {
+        if(thread != null) {
+            return thread.isAlive();
+        } else {
+            return false;
+        }
     }
 
     public void stopCycle() {

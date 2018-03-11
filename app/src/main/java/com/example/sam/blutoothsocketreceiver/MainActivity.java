@@ -16,9 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,13 +72,14 @@ public class MainActivity extends ActionBarActivity {
     boolean isOverriden;
     ToggleButton mute;
     ArrayAdapter<String> adapter;
-    Spannable wordToSpan;
+    /*Spannable wordToSpan;
     int shade;
     Thread thread;
     Runnable runnable;
+    boolean stopThread = false; */
+
     boolean canRun = true;
-    boolean stopThread = false;
-    ColorCycleTask cycleTask;
+    ColorCycleClass cycleTask;
 
     //THIS IS THE MASTER BRANCH
 
@@ -133,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
         listenForResendClick();
         listLongClick();
 
-        cycleTask = new ColorCycleTask(context, alliance);
+        cycleTask = new ColorCycleClass(context, alliance);
     }
 
     //resends all data on the currently viewed list of data
@@ -215,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.changeAlliance) {
-            if(canRun) {
+            if(!cycleTask.isRunning()) {
                 isRed = !isRed;
                 SuperScoutApplication.isRed = true;
                 commitSharedPreferences();
