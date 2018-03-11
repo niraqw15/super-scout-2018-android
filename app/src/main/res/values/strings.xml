@@ -2,7 +2,7 @@
     <string name="app_name">BlutoothSocketReceiver</string>
 
     <!-- The version number of the app. Must be updated with every pull request. Format: yy.mm.dd.[pull request #] -->
-    <string name="version_number">Super Scout | 18.03.10:44</string>
+    <string name="version_number">Super Scout | 18.03.11:45</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_view__files">View_Files</string>

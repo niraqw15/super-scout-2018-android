@@ -5,7 +5,7 @@ This is a guideline for handling and contributing to the 2018 season’s project
 
 ## Application Information
 									
-Collects more subjective data on comparative robot performance on the field, such as robot speed, agility, and gear control. Generally used by a team member who is able to effectively rank the three robots playing on their assigned alliance from best to worst in each category. 1 Super Scout collects data on each alliance in each qualifying match. 												
+Collects more subjective data on comparative robot performance on the field, such as robot speed, agility, and defense. Generally used by a team member who is able to effectively rank the three robots playing on their assigned alliance from best to worst in each category. 1 Super Scout collects data on each alliance in each qualifying match. 												
 ## Use Notes
 
 See the [Super Scout](https://docs.google.com/document/d/159PaCnExGtZYFpsA3HxMCevKZBWVccw01g_FTKpb3ww/edit) section in the Basic App Requirements doc for more details on the Scout.
