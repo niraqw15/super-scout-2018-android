@@ -80,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
     Runnable runnable;
     boolean canRun = true;
     boolean stopThread = false;
+    ColorCycleTask cycleTask;
 
     //THIS IS THE MASTER BRANCH
 
@@ -132,7 +133,7 @@ public class MainActivity extends ActionBarActivity {
         listenForResendClick();
         listLongClick();
 
-        initializeRunnable();
+        cycleTask = new ColorCycleTask(context, alliance);
     }
 
     //resends all data on the currently viewed list of data
@@ -221,7 +222,7 @@ public class MainActivity extends ActionBarActivity {
                 updateUI(false);
 
                 //Important: Just for fun
-                funColorChange(isRed);
+                cycleTask.startCycle();
             } else {
                 stopThread = true;
             }
@@ -786,7 +787,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 canRun = true;
 
-                if(!stopThread) funColorChange(isRed);
+                if(!stopThread) cycleTask.startCycle();
             }
         };
     }

@@ -32,7 +32,7 @@ public class ColorCycleTask {
     }
 
     //TODO: Use AsyncTask
-    public void startColorCycle(boolean isRed) {
+    public void startCycle() {
         stopThread = false;
         this.isRed = isRed;
         if(!canRun) return;
@@ -104,7 +104,7 @@ public class ColorCycleTask {
                 }
                 canRun = true;
 
-                if (!stopThread) startColorCycle(isRed);
+                if (!stopThread) startCycle();
             }
         };
     }
