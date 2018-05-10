@@ -95,7 +95,6 @@ public class FinalDataPoints extends ActionBarActivity {
         firebaseRef = FirebaseDatabase.getInstance().getReference();
         allianceScore = (EditText) findViewById(R.id.finalScoreEditText);
         allianceFoul = (EditText) findViewById(R.id.finalFoulEditText);
-        //
         facedTheBoss = (Switch) findViewById(R.id.didFaceBossBoolean);
         facedTheBoss.setChecked(intent.getExtras().getBoolean("facedTheBoss"));
         completedAutoQuest = (Switch) findViewById(R.id.didAutoQuestBoolean);
@@ -106,7 +105,6 @@ public class FinalDataPoints extends ActionBarActivity {
         levitateCounterView.refreshCounter(intent.getExtras().getInt("levitateCount"));
         forceCounterView = (Counter) findViewById(R.id.ForceCounter);
         forceCounterView.refreshCounter(intent.getExtras().getInt("forceCount"));
-        //
         finalScore = (TextView)findViewById(R.id.finalScoreTextView);
         allianceScore.setCursorVisible(false);
 

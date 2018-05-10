@@ -80,13 +80,11 @@ public class PlateConfig {
         if(isRed) {
             if(configMap.get(buttonId).equals("red")) {
                 button.setBackgroundColor(Color.parseColor(blue));
-                //button.setBackgroundDrawable(blueDrawable);
                 configMap.put(buttonId, "blue");
                 oppositeButtonState = "red";
                 oppositeButtonColor = red;
             } else {
                 button.setBackgroundColor(Color.parseColor(red));
-                //button.setBackgroundDrawable(blueDrawable);
                 configMap.put(buttonId, "red");
                 oppositeButtonState = "blue";
                 oppositeButtonColor = blue;
@@ -94,13 +92,11 @@ public class PlateConfig {
         } else {
             if(configMap.get(buttonId).equals("blue")) {
                 button.setBackgroundColor(Color.parseColor(red));
-                //button.setBackgroundDrawable(redDrawable);
                 configMap.put(buttonId, "red");
                 oppositeButtonState = "blue";
                 oppositeButtonColor = blue;
             } else {
                 button.setBackgroundColor(Color.parseColor(blue));
-                //button.setBackgroundDrawable(redDrawable);
                 configMap.put(buttonId, "blue");
                 oppositeButtonState = "red";
                 oppositeButtonColor = red;

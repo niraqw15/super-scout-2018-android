@@ -142,7 +142,6 @@ public class ScoutingPage extends ActionBarActivity {
         return true;
     }
 
-    // work these two below
     public Boolean canProceed() {
         Boolean canProceed = true;
         ArrayList<String> dataNames = new ArrayList<>(Arrays.asList("Speed", "Agility", "Defense"));
@@ -375,7 +374,7 @@ public class ScoutingPage extends ActionBarActivity {
         panelThree.setAllianceColor(isRed);
         panelThree.setTeamNumber(teamNumberThree);
     }
-    
+
     public void sendExtras() {
         Intent intent = new Intent(this, FinalDataPoints.class);
         intent.putExtra("teamOneNotes", teamOneNotes);

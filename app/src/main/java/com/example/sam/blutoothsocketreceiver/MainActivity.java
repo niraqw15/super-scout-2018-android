@@ -79,8 +79,6 @@ public class MainActivity extends ActionBarActivity {
     ToggleButton mute;
     ArrayAdapter<String> adapter;
 
-    //THIS IS THE MASTER BRANCH
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,7 +164,6 @@ public class MainActivity extends ActionBarActivity {
     public void getSuperData(View view) {
         searchBar = (EditText) findViewById(R.id.searchEditText);
         searchBar.setFocusable(false);
-        //listenForFileListClick();
         updateListView();
         searchBar.setFocusableInTouchMode(true);
     }
@@ -230,9 +227,7 @@ public class MainActivity extends ActionBarActivity {
                     Toast.makeText(context, "Input team two number!", Toast.LENGTH_SHORT).show();
                 } else if (teamNumberThree.getText().toString().equals("")) {
                     Toast.makeText(context, "Input team three number!", Toast.LENGTH_SHORT).show();
-                } //else if(teamNumberOne.getText().toString().equals("Not Available")){
-//                    Toast.makeText(context, "This Match Does Not Exist!", Toast.LENGTH_SHORT).show();
-//                }
+                }
                 else {
                     commitSharedPreferences();
                     Intent intent = new Intent(context, FieldSetupPage.class);
