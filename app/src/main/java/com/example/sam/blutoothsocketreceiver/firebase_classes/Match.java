@@ -20,8 +20,6 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @IgnoreExtraProperties
 public class Match extends Object {
-	//TODO : Keep up with schema changes
-
 	public CalculatedMatchData calculatedMatchData;
 	public Integer redScore;
 	public Integer blueScore;

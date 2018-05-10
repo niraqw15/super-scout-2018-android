@@ -11,7 +11,6 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class CalculatedMatchData extends Object {
-    //TODO : Add stuff in here according to the schema changes page or the server people
     public Float predictedRedScore;
     public Float predictedBlueScore;
     public Float predictedBlueRPs;
@@ -27,6 +26,4 @@ public class CalculatedMatchData extends Object {
     public Float lfmAvgSpeed;
     public Float lfmAvgDefense;
     public Float lfmAvgAgility;
-
-    //TODO: Update other LFMDs when they are sent out
 }

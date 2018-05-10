@@ -100,7 +100,6 @@ public class FieldSetupPage extends AppCompatActivity{
                 toast.setGravity(Gravity.CENTER, 0, 65);
                 toast.show();
             } else {
-                //TODO: Add data check against other scout if extra time (check if what is currently in the switches and plates conflicts with what this has, notify).
 
                 dataBase.child("Matches").child(numberOfMatch).child("blueSwitch").child("left").setValue(configMap.get(R.id.blueTopPlateButton));
                 dataBase.child("Matches").child(numberOfMatch).child("blueSwitch").child("right").setValue(configMap.get(R.id.blueBottomPlateButton));

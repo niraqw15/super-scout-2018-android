@@ -375,7 +375,7 @@ public class ScoutingPage extends ActionBarActivity {
         panelThree.setAllianceColor(isRed);
         panelThree.setTeamNumber(teamNumberThree);
     }
-    // TODO: Fix the above error.
+    
     public void sendExtras() {
         Intent intent = new Intent(this, FinalDataPoints.class);
         intent.putExtra("teamOneNotes", teamOneNotes);
