@@ -485,7 +485,7 @@ public class MainActivity extends ActionBarActivity {
                         Map<String, Object> teamTwoDataJsonMap = new Gson().fromJson(teamTwoData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
                         Map<String, Object> teamThreeDataJsonMap = new Gson().fromJson(teamThreeData.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
 
-                        ArrayList<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
+                        List<Integer> teamNumbers = new ArrayList<>(Arrays.asList(Integer.valueOf(teamOneNumber), Integer.valueOf(teamTwoNumber), Integer.valueOf(teamThreeNumber)));
 
                         for(int i = 0; i < teamNumbers.size(); i++) {
                             dataBase.child("TeamInMatchDatas").child(teamNumbers.get(i) + "Q" + matchNum).child("teamNumber").setValue(teamNumbers.get(i));
@@ -497,7 +497,7 @@ public class MainActivity extends ActionBarActivity {
                         dataBase.child("TeamInMatchDatas").child(matchAndTeamThree).updateChildren(teamThreeDataJsonMap);
 
                         //TODO: Add this line in.
-                        //dataBase.child("Matches").child(matchNum).child(previousAllianceSimple + "AllianceTeamNumbers").setValue(teamNumbers); //TODO: Convert this to Gson
+                        dataBase.child("Matches").child(matchNum).child(previousAllianceSimple + "AllianceTeamNumbers").setValue(teamNumbers);
                         dataBase.child("Matches").child(matchNum).child(allianceSimple + "Score").setValue(score);
                         dataBase.child("Matches").child(matchNum).child("foulPointsGained" + allianceSimple.substring(0,1).toUpperCase() + allianceSimple.substring(1)).setValue(foulPointsGained);
                         dataBase.child("Matches").child(matchNum).child("number").setValue(Integer.valueOf(matchNum));
